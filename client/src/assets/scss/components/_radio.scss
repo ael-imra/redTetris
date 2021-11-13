@@ -1,0 +1,36 @@
+.radio {
+  width: 100%;
+  flex-wrap: wrap;
+  &__box {
+    width: 100px;
+    height: 70px;
+    position: relative;
+    &__radio {
+      display: none;
+    }
+    &__checkbox {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      transition: all 0.5s;
+      border-radius: 5px;
+      &__checked {
+        background-color: $color-secondary-dark;
+        p {
+          color: $color-black;
+        }
+      }
+      &__not-checked {
+        background-color: $color-black;
+        border: 1.5px solid $color-secondary-dark;
+        p {
+          color: $color-secondary-dark;
+        }
+      }
+      img {
+        width: 24px;
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+.start-container {
+	width: 50rem;
+	max-width: 450px;
+	background-color: $color-bg;
+	border-radius: 5px;
+	margin-top: 114px;
+	&__list-User {
+		width: 100%;
+		box-sizing: border-box;
+		& .list-User__border .test {
+			margin-left: auto;
+		}
+	}
+}
