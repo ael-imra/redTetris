@@ -12,6 +12,7 @@ const LiveGame = ({ infoGame, listUserAction, userActiveAction, initArenas }) =>
 	}, [infoGame.players]);
 	return (
 		<div className={`game__parts__1 flex flex__justify-content__space-between ${infoGame.options.mode === 'single' ? 'mode-sing' : ''}`}>
+			{console.log(infoGame.arenas)}
 			<div className='game__parts__1__top'>
 				{infoGame.options.mode !== 'single' ? (
 					<>

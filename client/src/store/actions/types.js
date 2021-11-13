@@ -17,3 +17,5 @@ export const INIT_GAME = 'initGame';
 export const PIECE_MOVE = 'pieceMove';
 export const NEW_ARENA = 'nweArena';
 export const STATE_GAME = 'stateGame';
+export const NEW_SCORE = 'newScore';
+export const NEW_ARENAS = 'newArenas';

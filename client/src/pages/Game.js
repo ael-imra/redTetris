@@ -23,11 +23,11 @@ const Game = ({
 	startGameAction,
 	newArenaAction,
 	StateGameActon,
-	nextPiece,
+	newScoreAction,
 	nextPieceAction,
+	newArenasAction,
 }) => {
 	const [arena, setArena] = React.useState(myArena);
-	const [color, setColor] = React.useState(1);
 	const arenaRef = useRef(null);
 	const resetNext = init(0, true);
 	React.useEffect(() => {
@@ -49,22 +49,32 @@ const Game = ({
 
 		socket.on('game started', () => {
 			startGameAction(true);
+			// arenasInitAction(gameInfo.players);
 		});
 
 		socket.on('piece moved', (info) => {
 			if (info.player === auth) {
 				const newShape = shapes[info.shape](...info.point);
-				setArena(draw(newShape, JSON.parse(JSON.stringify(myArena)), color));
+				let test = draw(newShape, JSON.parse(JSON.stringify(myArena)), info.color);
+				setArena(test);
+				const shadow = shapes[info.shape](info.point[0], info.shadow);
+				setArena(draw(shadow, JSON.parse(JSON.stringify(test)), 7));
 			}
 		});
 
 		socket.on('piece completed', (info) => {
-			setColor(Math.floor(Math.random() * 5) + 1);
-			// nextPieceAction(draw(shapes[info.nextPiecePiece](0, 2), JSON.parse(JSON.stringify(resetNext))));
-			StateGameActon(!info.failed && !info.win ? 'waiting' : info.win ? 'win' : 'failed');
-			newArenaAction(info.field);
+			// setColor(Math.floor(Math.random() * 5) + 1);
+			if (info.player === auth) {
+				nextPieceAction(draw(shapes[info.nextPiecePiece](2, 2), JSON.parse(JSON.stringify(resetNext))));
+				StateGameActon(!info.failed && !info.win ? 'waiting' : info.win ? 'win' : 'failed');
+				newArenaAction(info.field);
+				newScoreAction(info.score);
+			} else {
+				// console.log(info, '|ok|', gameInfo);
+				newArenasAction(info.field, info.player);
+			}
 		});
-	}, [myArena, color, arena]);
+	}, [myArena, arena, gameInfo]);
 	return (
 		<div className='game flex flex__direction__column'>
 			<Header type='home' />
@@ -104,7 +114,6 @@ const Game = ({
 							centerAlign
 							data={arena}
 							onKeyDown={(e) => {
-								console.log(e.keyCode);
 								socket.emit('move piece', e.keyCode);
 							}}
 							refArena={arenaRef}
@@ -143,14 +152,14 @@ const Game = ({
 							</div>
 						</div>
 						<div className='game__parts__3__box'>
-							<BoxHeader text='You Score' isBorder />
+							<BoxHeader text='You Score' />
 							<div className='flex flex__align-items__center flex__justify-content__center game__parts__3__box__div'>
-								<p className='text__game text__lato__white text__small text__large__l'>250</p>
+								<p className='text__game text__lato__white text__small text__large__l'>{gameInfo.score}</p>
 							</div>
 						</div>
 					</div>
 					<div className='game__parts__3__chat'>
-						<BoxHeader text='Box chat' isBorder />
+						<BoxHeader text='Box chat' />
 						<Chat />
 					</div>
 				</div>
@@ -176,4 +185,6 @@ export default connect(mapStateToProps, {
 	newArenaAction: actions.newArena,
 	StateGameActon: actions.stateGame,
 	nextPieceAction: actions.nextPiece,
+	newScoreAction: actions.newScore,
+	newArenasAction: actions.newArenas,
 })(Game);

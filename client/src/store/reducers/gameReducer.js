@@ -42,8 +42,7 @@ export const startGame = (state = false, action) => {
 			return state;
 	}
 };
-export const userReducer = (state = { players: [] }, action) => {
-
+export const userReducer = (state = { players: [], score: 0 }, action) => {
 	switch (action.type) {
 		case types.ADD_USER:
 			return { ...state, players: [...state.players, action.payload] };
@@ -53,12 +52,18 @@ export const userReducer = (state = { players: [] }, action) => {
 			return { ...state, userActive: action.payload };
 		case types.ARENAS_INIT:
 			return { ...state, arenas: ArenaInit(action.payload) };
+		case types.NEW_ARENAS:
+			let newArenas = state.arenas;
+			newArenas[action.payload.user] = action.payload.newArena;
+			return { ...state, arenas: { ...newArenas } };
 		case types.INIT_GAME:
 			return { ...action.payload };
 		case types.INIT_GAME:
 			return { ...action.payload };
 		case types.STATE_GAME:
 			return { ...state, stateGame: action.payload };
+		case types.NEW_SCORE:
+			return { ...state, score: action.payload };
 		default:
 			return state;
 	}

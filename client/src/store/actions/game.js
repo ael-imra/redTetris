@@ -39,6 +39,15 @@ export const arenasInit = (list) => {
 		payload: list,
 	};
 };
+export const newArenas = (newArena, user) => {
+	return {
+		type: types.NEW_ARENAS,
+		payload: {
+			newArena: newArena,
+			user: user,
+		},
+	};
+};
 
 export const nextPiece = (piece) => {
 	return {
@@ -61,12 +70,14 @@ export const initGame = (info) => {
 		},
 	};
 };
+
 export const newArena = (arena) => {
 	return {
 		type: types.NEW_ARENA,
 		payload: arena,
 	};
 };
+
 export const pieceMove = (map) => {
 	return {
 		type: types.PIECE_MOVE,
@@ -75,9 +86,17 @@ export const pieceMove = (map) => {
 		},
 	};
 };
+
 export const stateGame = (state) => {
 	return {
 		type: types.STATE_GAME,
+		payload: state,
+	};
+};
+
+export const newScore = (state) => {
+	return {
+		type: types.NEW_SCORE,
 		payload: state,
 	};
 };

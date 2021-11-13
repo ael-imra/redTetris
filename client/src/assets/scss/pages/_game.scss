@@ -16,20 +16,25 @@
 		&__3 {
 			width: 28%;
 			min-width: 410px;
+			&__box:nth-of-type(1) {
+				width: 210px;
+			}
+			&__box:nth-of-type(2) {
+				width: calc(100% - 230px);
+			}
 			&__box {
 				border-radius: 10px;
-				width: 47%;
-				height: 220px;
+				height: 250px;
 				background-color: $color-white;
 				&__div {
-					height: calc(220px - 45px);
+					height: calc(250px - 45px);
 				}
 			}
 			&__chat {
 				border-radius: 10px;
 				overflow: hidden;
 				width: 100%;
-				height: calc(100% - 250px);
+				height: calc(100% - 290px);
 				margin-top: 30px;
 				background-color: $color-white;
 			}

@@ -10,9 +10,12 @@ import CreateRoom from '../parts/CreateRoom';
 import actions from '../store/actions';
 const Home = ({ socket, listRoomsAction, auth, changeUrlAction, initGameAction, initArena, initNextPieceAction }) => {
 	const [nameSearch, setNameSearch] = useState('');
+	const [interval, setIntervalDestroy] = useState(null);
 	const [visible, setVisible] = React.useState(false);
 	React.useEffect(() => {
-		socket.on('list room', (listRoom) => {
+		socket.off('list rooms');
+		socket.off('room joined');
+		socket.on('list rooms', (listRoom) => {
 			listRoomsAction(listRoom.data);
 		});
 		socket.on('room joined', (room) => {
@@ -24,11 +27,14 @@ const Home = ({ socket, listRoomsAction, auth, changeUrlAction, initGameAction, 
 			window.location.href = `#${gameInfo.name}[${auth}]`;
 			changeUrlAction(`#${gameInfo.name}[${auth}]`);
 		});
-		socket.emit('list rooms');
-		setInterval(() => {
-			socket.emit('list rooms');
-		}, 2000);
-	}, []);
+		socket.emit('list rooms', nameSearch);
+		if (interval) clearInterval(interval);
+		setIntervalDestroy(
+			setInterval(() => {
+				socket.emit('list rooms', nameSearch);
+			}, 2000)
+		);
+	}, [nameSearch]);
 	return (
 		<div className='home'>
 			<Header type='home' />
@@ -56,6 +62,9 @@ const Home = ({ socket, listRoomsAction, auth, changeUrlAction, initGameAction, 
 					placeHolder='type your username'
 					onChange={(value) => {
 						setNameSearch(value);
+					}}
+					onEnter={() => {
+						socket.emit('list rooms', nameSearch);
 					}}
 					defaultValue={nameSearch}
 				/>
