@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Piece from './Piece';
 
 const Arena = ({ size, centerAlign, className = '', data, onKeyDown, refArena = null }) => {

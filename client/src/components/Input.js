@@ -16,7 +16,6 @@ const Input = (props) => {
 			ref={refInput}
 			onBlur={blue}
 			className={className}
-			tabIndex='1'
 			onChange={(e) => {
 				props.onChange(e.target.value);
 			}}

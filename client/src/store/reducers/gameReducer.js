@@ -32,17 +32,18 @@ export const myArena = (state = [], action) => {
 		default:
 			return state;
 	}
-	// not test yat
 };
 export const startGame = (state = false, action) => {
 	switch (action.type) {
 		case types.START_GAME:
 			return true;
+		case types.RESET_GAME:
+			return false;
 		default:
 			return state;
 	}
 };
-export const userReducer = (state = { players: [], score: 0 }, action) => {
+export const userReducer = (state = { players: [], score: 0, messages: [], pause: false }, action) => {
 	switch (action.type) {
 		case types.ADD_USER:
 			return { ...state, players: [...state.players, action.payload] };
@@ -58,12 +59,18 @@ export const userReducer = (state = { players: [], score: 0 }, action) => {
 			return { ...state, arenas: { ...newArenas } };
 		case types.INIT_GAME:
 			return { ...action.payload };
-		case types.INIT_GAME:
-			return { ...action.payload };
 		case types.STATE_GAME:
 			return { ...state, stateGame: action.payload };
 		case types.NEW_SCORE:
 			return { ...state, score: action.payload };
+		case types.ADD_MESSAGE:
+			return { ...state, messages: [...state.messages, { name: action.payload.name, message: action.payload.message }] };
+		case types.ADD_REFERENCE_BOX:
+			return { ...state, refBoxChat: action.payload };
+		case types.RESET_GAME:
+			return { ...state };
+		case types.PAUSE_GAME:
+			return { ...state, pause: !state.pause };
 		default:
 			return state;
 	}

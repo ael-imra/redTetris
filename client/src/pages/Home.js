@@ -34,6 +34,7 @@ const Home = ({ socket, listRoomsAction, auth, changeUrlAction, initGameAction, 
 				socket.emit('list rooms', nameSearch);
 			}, 2000)
 		);
+		// eslint-disable-next-line
 	}, [nameSearch]);
 	return (
 		<div className='home'>
@@ -81,7 +82,6 @@ const mapStateToProps = (state) => {
 	};
 };
 export default connect(mapStateToProps, {
-	addNumUserInRoom: actions.addUserToRoom,
 	listRoomsAction: actions.addRoom,
 	changeUrlAction: actions.changePath,
 	initGameAction: actions.initGame,

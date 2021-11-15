@@ -100,3 +100,30 @@ export const newScore = (state) => {
 		payload: state,
 	};
 };
+
+export const addMessage = (message, name) => {
+	return {
+		type: types.ADD_MESSAGE,
+		payload: {
+			message: message,
+			name: name,
+		},
+	};
+};
+export const AddRefBoxMessage = (ref) => {
+	return {
+		type: types.ADD_REFERENCE_BOX,
+		payload: ref,
+	};
+};
+
+export const ResetGame = () => {
+	return {
+		type: types.RESET_GAME,
+	};
+};
+export const pauseGame = () => {
+	return {
+		type: types.PAUSE_GAME,
+	};
+};

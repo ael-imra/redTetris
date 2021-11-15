@@ -8,9 +8,8 @@ import group from '../assets/images/group.png';
 import groupA from '../assets/images/groupA.png';
 import { Validator } from '../assets/utils/validator';
 import { connect } from 'react-redux';
-import actions from '../store/actions';
 
-const CreateRoom = ({ visible, setVisible, addListRoom, socket }) => {
+const CreateRoom = ({ visible, setVisible, socket }) => {
 	const [infoRoom, setInfoRoom] = React.useState({ name: '', type: '', numMax: 0, number: 0 });
 	const [error, setError] = React.useState({ name: false, type: false, numMax: false });
 	const handleCloseModel = () => {
@@ -106,4 +105,4 @@ const mapStateToProps = (state) => {
 		socket: state.socket,
 	};
 };
-export default connect(mapStateToProps, { addListRoom: actions.addRoom })(CreateRoom);
+export default connect(mapStateToProps)(CreateRoom);

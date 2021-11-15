@@ -26,9 +26,13 @@ const Game = ({
 	newScoreAction,
 	nextPieceAction,
 	newArenasAction,
+	addMessageAction,
+	resetGameAction,
+	pauseGameAction,
 }) => {
 	const [arena, setArena] = React.useState(myArena);
 	const arenaRef = useRef(null);
+	const chatRef = useRef(null);
 	const resetNext = init(0, true);
 	React.useEffect(() => {
 		if (arenaRef && arenaRef?.current) arenaRef.current.focus();
@@ -39,42 +43,51 @@ const Game = ({
 		socket.off('piece completed');
 		socket.off('room exited');
 		socket.off('player joined');
+		socket.off('message');
 		socket.on('player joined', (player) => {
 			addUserInRoomAction(player.name);
 		});
 
 		socket.on('room exited', () => {
+			window.location.href = '/#';
 			changeUrlAction('/');
+			resetGameAction();
+		});
+
+		socket.on('message', (message) => {
+			addMessageAction(message.message, message.name);
+			setTimeout((gameInfo.refBoxChat.current.scrollTop = gameInfo.refBoxChat.current.scrollHeight), 0);
 		});
 
 		socket.on('game started', () => {
 			startGameAction(true);
-			// arenasInitAction(gameInfo.players);
+		});
+		socket.on('game paused', () => {
+			pauseGameAction();
 		});
 
 		socket.on('piece moved', (info) => {
 			if (info.player === auth) {
 				const newShape = shapes[info.shape](...info.point);
 				let test = draw(newShape, JSON.parse(JSON.stringify(myArena)), info.color);
-				setArena(test);
 				const shadow = shapes[info.shape](info.point[0], info.shadow);
 				setArena(draw(shadow, JSON.parse(JSON.stringify(test)), 7));
 			}
 		});
 
 		socket.on('piece completed', (info) => {
-			// setColor(Math.floor(Math.random() * 5) + 1);
 			if (info.player === auth) {
 				nextPieceAction(draw(shapes[info.nextPiecePiece](2, 2), JSON.parse(JSON.stringify(resetNext))));
 				StateGameActon(!info.failed && !info.win ? 'waiting' : info.win ? 'win' : 'failed');
 				newArenaAction(info.field);
 				newScoreAction(info.score);
 			} else {
-				// console.log(info, '|ok|', gameInfo);
 				newArenasAction(info.field, info.player);
 			}
 		});
+		// eslint-disable-next-line
 	}, [myArena, arena, gameInfo]);
+
 	return (
 		<div className='game flex flex__direction__column'>
 			<Header type='home' />
@@ -101,8 +114,7 @@ const Game = ({
 								font='game'
 								style={{ padding: '1.5rem 4rem' }}
 								onclick={() => {
-									window.location.href = '/#';
-									changeUrlAction('/');
+									socket.emit('exit room');
 								}}
 							/>
 						</div>
@@ -135,12 +147,46 @@ const Game = ({
 								font='game'
 								style={{ padding: '1.5rem 4rem' }}
 								onclick={() => {
-									window.location.href = '/#';
-									changeUrlAction('/');
+									socket.emit('exit room');
 								}}
 							/>
 						</div>
 					)}
+					{gameInfo && gameInfo.pause && startGame ? (
+						<div className='Result-game flex flex__align-items__center  flex__direction__column flex__justify-content__center game-result'>
+							<p className='text__debug  text__large__l text__center ' style={{ marginBottom: 20 }}>
+								pause game
+							</p>
+						</div>
+					) : (
+						''
+					)}
+					<div className='flex flex__justify-content__space-evenly u__margin--medium__x__x'>
+						<Button
+							type='primary'
+							text='leave game'
+							// size='large'
+							font='game'
+							style={{ padding: '1.5rem 4rem' }}
+							onclick={() => {
+								socket.emit('exit room');
+							}}
+						/>
+						{startGame ? (
+							<Button
+								type='primary'
+								text={gameInfo.pause ? 'resume' : 'pause game'}
+								// size='large'
+								font='game'
+								style={{ padding: '1.5rem 4rem' }}
+								onclick={() => {
+									socket.emit('pause game');
+								}}
+							/>
+						) : (
+							''
+						)}
+					</div>
 				</div>
 
 				<div className={`game__parts__3 ${gameInfo.options.mode === 'single' ? 'mode-sing' : ''}`}>
@@ -160,7 +206,7 @@ const Game = ({
 					</div>
 					<div className='game__parts__3__chat'>
 						<BoxHeader text='Box chat' />
-						<Chat />
+						<Chat chartRef={chatRef} />
 					</div>
 				</div>
 			</div>
@@ -187,4 +233,7 @@ export default connect(mapStateToProps, {
 	nextPieceAction: actions.nextPiece,
 	newScoreAction: actions.newScore,
 	newArenasAction: actions.newArenas,
+	addMessageAction: actions.addMessage,
+	resetGameAction: actions.ResetGame,
+	pauseGameAction: actions.pauseGame,
 })(Game);

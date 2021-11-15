@@ -21,6 +21,7 @@ describe('test before start game in auth === hosted', () => {
 					gameInfo: {
 						players: ['root', 'root1'],
 						hosted: 'root',
+						messages: [],
 						options: {
 							mode: 'single',
 						},
@@ -67,6 +68,7 @@ describe('test before start game in auth !== hosted', () => {
 					gameInfo: {
 						players: ['root', 'root1'],
 						hosted: 'root',
+						messages: [],
 						options: {
 							mode: 'single',
 						},
@@ -143,13 +145,22 @@ describe('test in end game', () => {
 					gameInfo: {
 						players: ['root', 'root1'],
 						hosted: 'root',
+						messages: [],
 						options: {
 							mode: 'single',
 						},
 						stateGame: 'failed',
 					},
 
-					socket: { off: jest.fn(() => {}), on: jest.fn(() => {}) },
+					socket: {
+						off: jest.fn(() => {}),
+						on: jest.fn((param) => {
+							if (param === 'room exited') window.location.href = '/';
+						}),
+						emit: jest.fn((param) => {
+							if (param === 'exit room') window.location.href = '/';
+						}),
+					},
 					startGame: true,
 				}}>
 				<Game />
@@ -175,6 +186,7 @@ describe('test players === 0', () => {
 					gameInfo: {
 						players: [],
 						hosted: 'root',
+						messages: [],
 						options: {
 							mode: 'single',
 						},

@@ -5,21 +5,28 @@ import iconSend from '../assets/icons/send.png';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
 
-const Chat = ({ addMessage, listMessage, auth }) => {
+const Chat = ({ socket, listMessage = [], AddRefBoxMessageAction }) => {
 	const [message, setMessage] = useState('');
+	const chatRef = React.useRef(null);
 	const handleSubmit = () => {
-		addMessage({ owner: auth, content: message });
 		setMessage('');
+		if (message !== '') {
+			socket.emit('message', message);
+		}
 	};
+	React.useEffect(() => {
+		AddRefBoxMessageAction(chatRef);
+		// eslint-disable-next-line
+	}, []);
 	return (
 		<div className='chat'>
-			<div className='chat__body u__padding--medium scroll'>
+			<div className='chat__body u__padding--medium scroll' ref={chatRef}>
 				{listMessage.map((item, key) => (
 					<p key={key} className='text__lato text__lato__white text__small text__small__l u__margin--medium__y__x'>
-						{`[${item.owner.toString()}]`}:
+						{`[${item.name}]`}:
 						<span className='text__lato text__lato__white text__small text__small__l' style={{ wordBreak: 'break-all' }}>
 							{' '}
-							{item.content}
+							{item.message}
 						</span>
 					</p>
 				))}
@@ -45,8 +52,9 @@ const Chat = ({ addMessage, listMessage, auth }) => {
 };
 const matStateToProps = (state) => {
 	return {
-		listMessage: state.addMessage,
+		listMessage: state.gameInfo.messages,
 		auth: state.auth,
+		socket: state.socket,
 	};
 };
-export default connect(matStateToProps, { addMessage: actions.addMessage })(Chat);
+export default connect(matStateToProps, { AddRefBoxMessageAction: actions.AddRefBoxMessage })(Chat);

@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Validator } from '../assets/utils/validator';
 import ItemJoin from '../components/ItemJoin';
-import actions from '../store/actions';
 
 const ListRooms = ({ listRooms, socket }) => {
 	return (

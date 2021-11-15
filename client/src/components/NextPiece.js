@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import types from '../store/actions';
 import Piece from './Piece';
 
-const NextPiece = ({ nextPiece, initNextPieceAction, nextPieceAction }) => {
+const NextPiece = ({ nextPiece, initNextPieceAction }) => {
 	React.useEffect(() => {
 		initNextPieceAction();
+		// eslint-disable-next-line
 	}, []);
 	return (
 		<div className='arena arena__next-piece arena__center'>
@@ -18,4 +19,4 @@ const mapStateToProps = (state) => {
 		nextPiece: state.nextPiece,
 	};
 };
-export default connect(mapStateToProps, { initNextPieceAction: types.initNextPiece, nextPieceAction: types.nextPiece })(NextPiece);
+export default connect(mapStateToProps, { initNextPieceAction: types.initNextPiece })(NextPiece);

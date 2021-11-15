@@ -320,32 +320,6 @@ const SHAPE_T_4 = function (x, y) {
 	};
 };
 
-SHAPE_I_1.switch = SHAPE_I_2;
-SHAPE_I_2.switch = SHAPE_I_3;
-SHAPE_I_3.switch = SHAPE_I_4;
-SHAPE_I_4.switch = SHAPE_I_1;
-SHAPE_J_1.switch = SHAPE_J_2;
-SHAPE_J_2.switch = SHAPE_J_3;
-SHAPE_J_3.switch = SHAPE_J_4;
-SHAPE_J_4.switch = SHAPE_J_1;
-SHAPE_L_1.switch = SHAPE_L_2;
-SHAPE_L_2.switch = SHAPE_L_3;
-SHAPE_L_3.switch = SHAPE_L_4;
-SHAPE_L_4.switch = SHAPE_L_1;
-SHAPE_O.switch = SHAPE_O;
-SHAPE_S_1.switch = SHAPE_S_2;
-SHAPE_S_2.switch = SHAPE_S_3;
-SHAPE_S_3.switch = SHAPE_S_4;
-SHAPE_S_4.switch = SHAPE_S_1;
-SHAPE_Z_1.switch = SHAPE_Z_2;
-SHAPE_Z_2.switch = SHAPE_Z_3;
-SHAPE_Z_3.switch = SHAPE_Z_4;
-SHAPE_Z_4.switch = SHAPE_Z_1;
-SHAPE_T_1.switch = SHAPE_T_2;
-SHAPE_T_2.switch = SHAPE_T_3;
-SHAPE_T_3.switch = SHAPE_T_4;
-SHAPE_T_4.switch = SHAPE_T_1;
-
 export {
 	SHAPE_I_1,
 	SHAPE_I_2,

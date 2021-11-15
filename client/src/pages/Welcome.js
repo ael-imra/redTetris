@@ -1,6 +1,5 @@
 import React from 'react';
 import BoxSingIn from '../parts/BoxSingIn';
-// import Image from '../assets/images/image3.jpeg';
 import Header from '../parts/Header';
 
 const Welcome = () => {

@@ -1,7 +1,6 @@
 export const AUTH_LOGIN = 'auth';
 export const URL_CHANGE = 'urlChange';
 export const LIST_ROOMS = 'listRooms';
-export const ADD_USER_NUM_TO_ROOMS = 'addUserNumToRoom';
 export const ADD_MESSAGE = 'addMessage';
 export const ARENA_INIT = 'arenaInit';
 export const ADD_USER = 'listUser';
@@ -19,3 +18,6 @@ export const NEW_ARENA = 'nweArena';
 export const STATE_GAME = 'stateGame';
 export const NEW_SCORE = 'newScore';
 export const NEW_ARENAS = 'newArenas';
+export const ADD_REFERENCE_BOX = 'AddReference';
+export const RESET_GAME = 'resetGame';
+export const PAUSE_GAME = 'pauseGame';

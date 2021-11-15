@@ -5,18 +5,18 @@ import BoxHeader from '../components/BoxHeader';
 import ListUser from './ListUser';
 import actions from '../store/actions';
 
-const LiveGame = ({ infoGame, listUserAction, userActiveAction, initArenas }) => {
+const LiveGame = ({ infoGame, userActiveAction, initArenas }) => {
 	React.useEffect(() => {
 		if (infoGame.length !== 0) userActiveAction(infoGame.players[0]);
 		initArenas([...infoGame.players]);
+		// eslint-disable-next-line
 	}, [infoGame.players]);
 	return (
 		<div className={`game__parts__1 flex flex__justify-content__space-between ${infoGame.options.mode === 'single' ? 'mode-sing' : ''}`}>
-			{console.log(infoGame.arenas)}
 			<div className='game__parts__1__top'>
 				{infoGame.options.mode !== 'single' ? (
 					<>
-						<BoxHeader text='live game' isBorder />
+						<BoxHeader text='live game'  />
 						{infoGame?.userActive ? (
 							<div className='live-game'>
 								<div className='game__parts__1__box1'>
@@ -48,4 +48,4 @@ const mapStateToProps = (state) => {
 		infoGame: state.gameInfo,
 	};
 };
-export default connect(mapStateToProps, { listUserAction: actions.listUser, userActiveAction: actions.userActive, initArenas: actions.arenasInit })(LiveGame);
+export default connect(mapStateToProps, { userActiveAction: actions.userActive, initArenas: actions.arenasInit })(LiveGame);
