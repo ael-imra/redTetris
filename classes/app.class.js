@@ -1,56 +1,71 @@
-const path = require('path')
-const fs = require('fs')
 const parseUrl = require('parseurl')
 const http = require('http')
 const mimes = require('mime-types')
-const { HTTP_ERROR } = require('../utils/errors')
+const { pExt, pJoin, pNormalize, pResolve, fsCreateReadStream, fsExists, fsExistsSync, fsStat } = require('../utils')
+const { HTTP_ERROR, FOLDER_NOT_FOUND, METHOD_NOT_ALLOWED, FORBIDDEN, CANT_READ_FILE } = require('../utils/errors')
+const { HOST } = require('../configs')
 
 module.exports = class App {
     constructor(root, options) {
-        this.root = path.resolve(root || '.')
+        this.root = pResolve(root || '.')
+        if (!fsExistsSync(this.root)) throw Error(FOLDER_NOT_FOUND)
         this.options = options || {}
         if (!this.options.index) this.options.index = 'index.html'
     }
-    serve(port) {
-        this.server = http.createServer((req, res) => {
+    serve(port, next) {
+        this.server = http.createServer(async (req, res) => {
             try {
-                console.log(req.headers, 'O:')
+                if (req.method !== 'GET') throw new HTTP_ERROR(METHOD_NOT_ALLOWED, 405)
                 const url = parseUrl(req)
-                let file = path.normalize(path.join(path.join(this.root, url.pathname)))
-                if (!path.extname(file)) file = path.join(this.root, this.options.index)
-                if (file.indexOf(this.root) === -1) throw new HTTP_ERROR('you do not have permission to this file', 403)
-                fs.exists(file, (exit) => {
-                    if (!exit) file = path.join(this.root, this.options.index)
-                    fs.stat(file, (error, stat) => {
-                        console.log(this.options.cache || 43200, 'cache', file)
-                        const header = {
-                            'content-type': mimes.lookup(file) || 'text/plain',
-                            'Cache-Control': `public, max-age=${this.options.cache || 43200}`,
-                            'content-length': stat.size
-                        }
-                        res.writeHead(200, header)
-                        this.stream(res, file)
-                    })
-                })
+                let file = pNormalize(pJoin(this.root, url.pathname))
+                if (file.indexOf(this.root) === -1) throw new HTTP_ERROR(FORBIDDEN, 403)
+                if (!pExt(file)) file = pJoin(this.root, this.options.index)
+                const exist = await fsExists(file)
+                if (!exist) file = pJoin(this.root, this.options.index)
+                const [error, stat] = await fsStat(file)
+                if (req.headers['if-modified-since'] && new Date(req.headers['if-modified-since']).getTime() === stat.mtime.getTime()) {
+                    res.writeHead(304)
+                    return res.end()
+                }
+                const header = {
+                    'content-type': mimes.lookup(file) || 'text/plain',
+                    'Cache-Control': `public, max-age=${this.options.cache || 43200}`,
+                    'Last-Modified': stat.mtime,
+                    'content-length': stat.size
+                }
+                res.writeHead(200, header)
+                this.stream(res, file)
             } catch (error) {
-                console.log(error)
-                this.handle(res, error)
+                this.handleError(res, error)
             }
         })
-        this.server.listen(process.env.PORT || port || 1337)
+        this.server.listen(port || 9690, () => {
+            if (next)
+                return next()
+            console.log(`Listening on http://${HOST}:${port || 9790}`)
+        })
     }
     stream(res, file) {
-        const readStream = fs.createReadStream(file)
-        readStream.on('error', (error) => {
-            return this.handle(res, new HTTP_ERROR('cannot read this file', 400))
+        const readStream = fsCreateReadStream(file)
+        readStream.on('error', () => {
+            return this.handleError(res, new HTTP_ERROR(CANT_READ_FILE, 400))
         })
         readStream.pipe(res)
     }
-    handle(res, error) {
+    handleError(res, error) {
         if (error instanceof HTTP_ERROR) {
             res.writeHead(error.status, error.header)
             return res.end()
         }
         res.end()
+    }
+    close(next) {
+        if (this.server)
+            return this.server.close(() => {
+                this.server = null
+                if (next)
+                    next()
+            })
+        return next ? next() : null
     }
 }

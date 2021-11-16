@@ -1,0 +1,33 @@
+{
+  "name": "redTetris",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mime-types": "^2.1.34",
+    "mocha": "^9.1.3",
+    "nodemon": "^2.0.15",
+    "parseurl": "^1.3.3",
+    "socket.io": "^4.3.2"
+  },
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/ael-imra/redTetris.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ael-imra/redTetris/issues"
+  },
+  "homepage": "https://github.com/ael-imra/redTetris#readme",
+  "description": ""
+}
