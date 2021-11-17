@@ -2,8 +2,7 @@ const parseUrl = require('parseurl')
 const http = require('http')
 const mimes = require('mime-types')
 const { pExt, pJoin, pNormalize, pResolve, fsCreateReadStream, fsExists, fsExistsSync, fsStat } = require('../utils')
-const { HTTP_ERROR, FOLDER_NOT_FOUND, METHOD_NOT_ALLOWED, FORBIDDEN, CANT_READ_FILE } = require('../utils/errors')
-const { HOST } = require('../configs')
+const { HTTP_ERROR, FOLDER_NOT_FOUND, METHOD_NOT_ALLOWED, FORBIDDEN } = require('../utils/errors')
 
 module.exports = class App {
     constructor(root, options) {
@@ -30,7 +29,7 @@ module.exports = class App {
                 const header = {
                     'content-type': mimes.lookup(file) || 'text/plain',
                     'Cache-Control': `public, max-age=${this.options.cache || 43200}`,
-                    'Last-Modified': stat.mtime,
+                    'Last-Modified': stat.mtime.toISOString(),
                     'content-length': stat.size
                 }
                 res.writeHead(200, header)
@@ -41,15 +40,11 @@ module.exports = class App {
         })
         this.server.listen(port || 9690, () => {
             if (next)
-                return next()
-            console.log(`Listening on http://${HOST}:${port || 9790}`)
+                next()
         })
     }
     stream(res, file) {
         const readStream = fsCreateReadStream(file)
-        readStream.on('error', () => {
-            return this.handleError(res, new HTTP_ERROR(CANT_READ_FILE, 400))
-        })
         readStream.pipe(res)
     }
     handleError(res, error) {
@@ -66,6 +61,8 @@ module.exports = class App {
                 if (next)
                     next()
             })
-        return next ? next() : null
+        if (next)
+            return next()
+        return null
     }
 }
