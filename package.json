@@ -20,10 +20,6 @@
     "test": "mocha",
     "coverage": "nyc mocha"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://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@github.com/ael-imra/redTetris.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
