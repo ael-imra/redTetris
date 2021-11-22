@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/14</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/14</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -124,24 +124,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">32x</span>
+<span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -156,7 +156,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -169,8 +169,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">39x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -184,24 +184,24 @@ import iconSend from '../assets/icons/send.png';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
 &nbsp;
-const Chat = ({ socket, listMessage, AddRefBoxMessageAction }) =&gt; {
+const Chat = ({ socket, listMessage = [], AddRefBoxMessageAction }) =&gt; {
 	const [message, setMessage] = useState('');
 	const chatRef = React.useRef(null);
-	const handleSubmit = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >		setMessage('');</span>
-<span class="cstat-no" title="statement not covered" >		if (message !== '') {</span>
-<span class="cstat-no" title="statement not covered" >			socket.emit('message', message);</span>
+	const handleSubmit = () =&gt; {
+		setMessage('');
+		if (message !== '') {
+			socket.emit('message', message);
 		}
 	};
-	React.useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >		AddRefBoxMessageAction(chatRef);</span>
+	React.useEffect(() =&gt; {
+		AddRefBoxMessageAction(chatRef);
 		// eslint-disable-next-line
 	}, []);
 	return (
 		&lt;div className='chat'&gt;
 			&lt;div className='chat__body u__padding--medium scroll' ref={chatRef}&gt;
-				{listMessage.map(<span class="fstat-no" title="function not covered" >(i</span>tem, key) =&gt; (
-<span class="cstat-no" title="statement not covered" >					&lt;p key={key} className='text__lato text__lato__white text__small text__small__l u__margin--medium__y__x'&gt;</span>
+				{listMessage.map((item, key) =&gt; (
+					&lt;p key={key} className='text__lato text__lato__white text__small text__small__l u__margin--medium__y__x'&gt;
 						{`[${item.name}]`}:
 						&lt;span className='text__lato text__lato__white text__small text__small__l' style={{ wordBreak: 'break-all' }}&gt;
 							{' '}
@@ -215,8 +215,8 @@ const Chat = ({ socket, listMessage, AddRefBoxMessageAction }) =&gt; {
 					className='text__lato text__lato__white  text__small text__small__xl'
 					placeHolder='type your username'
 					style={{ width: '85%' }}
-					onChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; {
-<span class="cstat-no" title="statement not covered" >						setMessage(value);</span>
+					onChange={(value) =&gt; {
+						setMessage(value);
 					}}
 					defaultValue={message}
 					size='small'
@@ -244,7 +244,7 @@ export default connect(matStateToProps, { AddRefBoxMessageAction: actions.AddRef
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Nov 15 2021 11:48:39 GMT+0100 (GMT+01:00)
+                at Fri Nov 19 2021 18:57:35 GMT+0100 (GMT+01:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

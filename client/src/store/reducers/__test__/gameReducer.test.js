@@ -1,17 +1,5 @@
 import * as types from '../../actions/types';
 import * as reducers from '../gameReducer';
-it('test init() function', () => {
-	const array = reducers.init();
-	expect(array.length).toEqual(parseInt(process.env.REACT_APP_HEIGHT_ARENA));
-
-	for (let index = 0; index < parseInt(process.env.REACT_APP_HEIGHT_ARENA); index++) {
-		const line = array[index];
-		for (let index = 0; index < line.length; index++) {
-			const element = line[index];
-			expect(element).toEqual(0);
-		}
-	}
-});
 
 describe('test init() function', () => {
 	let array;
@@ -21,7 +9,7 @@ describe('test init() function', () => {
 	});
 	it('test width of array', () => {
 		expect(array[0].length).toEqual(parseInt(process.env.REACT_APP_WIDTH_ARENA));
-		expect(array[parseInt(process.env.REACT_APP_WIDTH_ARENA) - 1].length).toEqual(parseInt(process.env.REACT_APP_WIDTH_ARENA));
+		// expect(array[parseInt(process.env.REACT_APP_WIDTH_ARENA) - 1].length).toEqual(parseInt(process.env.REACT_APP_WIDTH_ARENA));
 	});
 	it('test content of array ', () => {
 		for (let index = 0; index < parseInt(process.env.REACT_APP_HEIGHT_ARENA); index++) {
@@ -40,10 +28,12 @@ describe('test init() function with parameter', () => {
 	it('test height of array', () => {
 		expect(array.length).toEqual(parseInt(process.env.REACT_APP_WIDTH_ARENA_NEXT_PIECE));
 	});
+
 	it('test width of array', () => {
 		expect(array[0].length).toEqual(parseInt(process.env.REACT_APP_WIDTH_ARENA_NEXT_PIECE));
 		expect(array[parseInt(process.env.REACT_APP_WIDTH_ARENA_NEXT_PIECE) - 1].length).toEqual(parseInt(process.env.REACT_APP_WIDTH_ARENA_NEXT_PIECE));
 	});
+
 	it('test content of array ', () => {
 		for (let index = 0; index < parseInt(process.env.REACT_APP_WIDTH_ARENA_NEXT_PIECE); index++) {
 			const line = array[index];
@@ -54,6 +44,7 @@ describe('test init() function with parameter', () => {
 		}
 	});
 });
+
 describe('test ArenaInit() function', () => {
 	let array;
 	beforeEach(() => (array = reducers.ArenaInit(['test1', 'test2'])));
@@ -61,6 +52,24 @@ describe('test ArenaInit() function', () => {
 		expect(Object.keys(array).length).toEqual(2);
 		expect(array.test1.length).toEqual(parseInt(process.env.REACT_APP_HEIGHT_ARENA));
 		expect(array.test2.length).toEqual(parseInt(process.env.REACT_APP_HEIGHT_ARENA));
+	});
+});
+
+describe('test myArena() reducer', () => {
+	let action;
+	it('test with ARENA_INIT type', () => {
+		action = reducers.myArena([], { type: types.ARENA_INIT });
+		expect(action.myArena).toEqual(reducers.init());
+	});
+
+	it('test with LIVE_ARENA_INIT type', () => {
+		action = reducers.myArena([], { type: types.LIVE_ARENA_INIT });
+		expect(action.liveArena).toEqual(reducers.init());
+	});
+	
+	it('test with LIVE_ARENA_INIT type', () => {
+		action = reducers.myArena([], { type: types.LIVE_ARENA, payload: 'new Arena' });
+		expect(action.liveArena).toEqual('new Arena');
 	});
 });
 
@@ -74,10 +83,11 @@ describe('test reducer nextPieceReducer', () => {
 		const nextPiece = reducers.nextPieceReducer([], {
 			type: types.NEXT_PIECE,
 			payload: [
-				[1, 1, 0, 0],
-				[0, 1, 0, 0],
-				[0, 1, 0, 0],
-				[0, 0, 0, 0],
+				[1, 1, 0, 0, 0],
+				[0, 1, 0, 0, 0],
+				[0, 1, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0],
 			],
 		});
 		for (let index = 0; index < parseInt(process.env.REACT_APP_WIDTH_ARENA_NEXT_PIECE); index++) {
@@ -99,27 +109,61 @@ describe('test reducer userReducer', () => {
 		const test_2 = reducers.userReducer({ players: ['root'], userActive: 'root' }, { type: types.ADD_USER, payload: 'test' });
 		expect(test_2.players).toEqual(['root', 'test']);
 	});
+
 	it('test remove user', () => {
 		const user = reducers.userReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.REMOVE_USER, payload: 'test1' });
 		expect(user.players.length).toEqual(2);
 		expect(user.players).toEqual(['test2', 'test3']);
 	});
+
 	it('test remove user bad user', () => {
 		const user = reducers.userReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.REMOVE_USER, payload: 'tet1' });
 		expect(user.players.length).toEqual(3);
 		expect(user.players).toEqual(['test1', 'test2', 'test3']);
 	});
+
 	it('test user active', () => {
 		const user = reducers.userReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.USER_ACTIVE, payload: 'no-root' });
 		expect(user.userActive).toEqual('no-root');
 	});
+
 	it('test init  arenas for users', () => {
-		const user = reducers.userReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.ARENAS_INIT, payload: ['test-1', 'test-2', 'test-3', 'test-4'] });
+		const user = reducers.userReducer(null, { type: types.ARENAS_INIT, payload: ['test-1', 'test-2', 'test-3', 'test-4'] });
 		expect(user.arenas).toEqual(reducers.ArenaInit(['test-1', 'test-2', 'test-3', 'test-4']));
 	});
+
 	it('test bad type', () => {
 		const user = reducers.userReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: 'cefeffe', payload: ['test-1', 'test-2', 'test-3', 'test-4'] });
 		expect(user).toEqual({ players: ['test1', 'test2', 'test3'], userActive: 'root' });
+	});
+	it('test pause game reducer', () => {
+		const user = reducers.userReducer({ pause: false }, { type: types.PAUSE_GAME });
+		expect(user).toEqual({ pause: true });
+	});
+	it('test pause game reducer', () => {
+		const user = reducers.userReducer({ pause: false, players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.RESET_GAME });
+		expect(user).toEqual({});
+	});
+	it('test reference BoxChat reducer', () => {
+		const user = reducers.userReducer(
+			{ pause: false, players: ['test1', 'test2', 'test3'], userActive: 'root', refBoxChat: '' },
+			{ type: types.ADD_REFERENCE_BOX, payload: 'refBoxChat' }
+		);
+		expect(user.refBoxChat).toEqual('refBoxChat');
+	});
+	it('test add message reducer', () => {
+		const user = reducers.userReducer(
+			{
+				messages: [
+					{ name: 'ShadowRoot', message: 'test' },
+					{ name: 'ShadowRoot2', message: 'test2' },
+				],
+			},
+			{ type: types.ADD_MESSAGE, payload: { name: 'root', message: 'yhh' } }
+		);
+		expect(user.messages[0]).toEqual({ name: 'ShadowRoot', message: 'test' });
+		expect(user.messages[1]).toEqual({ name: 'ShadowRoot2', message: 'test2' });
+		expect(user.messages[2]).toEqual({ name: 'root', message: 'yhh' });
 	});
 });
 

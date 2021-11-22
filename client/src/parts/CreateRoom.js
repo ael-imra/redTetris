@@ -10,21 +10,22 @@ import { Validator } from '../assets/utils/validator';
 import { connect } from 'react-redux';
 
 const CreateRoom = ({ visible, setVisible, socket }) => {
-	const [infoRoom, setInfoRoom] = React.useState({ name: '', type: '', numMax: 0, number: 0 });
-	const [error, setError] = React.useState({ name: false, type: false, numMax: false });
+	const [infoRoom, setInfoRoom] = React.useState({ name: '', type: '', numMax: 0, number: 0, mode: '' });
+	const [error, setError] = React.useState({ name: false, type: false, numMax: false, mode: false });
 	const handleCloseModel = () => {
 		setVisible(false);
-		setInfoRoom({ name: '', type: '', numMax: 0 });
-		setError({ name: false, type: false, numMax: false });
+		setInfoRoom({ name: '', type: '', numMax: 0, mode: '' });
+		setError({ name: false, type: false, numMax: false, mode: false });
 	};
 	const handleSubmit = () => {
-		const listError = { name: false, type: false, numMax: false };
+		const listError = { name: false, type: false, numMax: false, mode: false };
 		if (!Validator('name', infoRoom.name)) listError.name = true;
-		if (!Validator('typeRoom', infoRoom.type)) listError.type = true;
-		if (!Validator('numPlayer', infoRoom.numMax) && infoRoom.type !== 'single') listError.numMax = true;
-		if (listError.name || listError.type || listError.numMax) setError({ ...listError });
+		if (!Validator('typeRoom', infoRoom.mode)) listError.mode = true;
+		if (!Validator('typePrivacy', infoRoom.type)) listError.type = true;
+		if (!Validator('numPlayer', infoRoom.numMax) && infoRoom.mode !== 'single') listError.numMax = true;
+		if (listError.name || listError.type || listError.numMax || listError.type) setError({ ...listError });
 		else {
-			socket.emit('create room', infoRoom.name, { maxPlayers: infoRoom.numMax, mode: infoRoom.type });
+			socket.emit('create room', infoRoom.name, { maxPlayers: infoRoom.numMax, mode: infoRoom.mode, privacy: infoRoom.type });
 			handleCloseModel();
 		}
 	};
@@ -40,11 +41,12 @@ const CreateRoom = ({ visible, setVisible, socket }) => {
 				<p className='text__game text__small text__medium text__center'>Create room</p>
 				<div className='hr u__margin--medium__y u__margin--medium__x'></div>
 				<p className='text__lato text__small text__small__xl ' style={{ marginLeft: 5 }}>
-					Name : <span style={{ color: 'red', display: error.name ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}>name must be ahrof</span>
+					Name :{' '}
+					<span style={{ color: 'red', display: error.name ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}>Name Must Contain between 3 - 15 Characters length</span>
 				</p>
 				<Input
 					className='u__margin--medium__x__x text__lato text__lato__white  text__small text__small__xl u__margin--medium__y'
-					placeHolder='type your username'
+					placeHolder='Type Room Name'
 					onChange={(value) => {
 						setInfoRoom({ ...infoRoom, name: value });
 						setError({ ...error, name: false });
@@ -55,10 +57,11 @@ const CreateRoom = ({ visible, setVisible, socket }) => {
 					isError={error.name}
 					onEnter={handleSubmit}
 				/>
-				{infoRoom.type === 'multi' ? (
+				{infoRoom.mode === 'multi' ? (
 					<div className='create-room__menu__player'>
 						<p className='text__lato text__small text__small__xl' style={{ marginLeft: 5 }}>
-							max players :<span style={{ color: 'red', display: error.numMax ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}>name must be ahrof</span>
+							max players :
+							<span style={{ color: 'red', display: error.numMax ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}>Max Players Must Be between 2 and 10</span>
 						</p>
 						<Input
 							className='u__margin--medium__x__x text__lato text__lato__white  text__small text__small__xl u__margin--medium__y'
@@ -78,17 +81,32 @@ const CreateRoom = ({ visible, setVisible, socket }) => {
 					''
 				)}
 				<p className='text__lato text__small text__small__xl' style={{ marginLeft: 5 }}>
-					Type room : <span style={{ color: 'red', display: error.type ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}>name must be ahrof</span>
+					Type room : <span style={{ color: 'red', display: error.type ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}>You Should Select A Type</span>
 				</p>
 				<Radio
 					name='type'
 					className='u__margin--medium__y u__margin--medium__x'
 					onChange={(value) => {
-						setInfoRoom({ ...infoRoom, type: value });
+						setInfoRoom({ ...infoRoom, mode: value });
 					}}
 					option={[
 						{ label: 'single', value: 'single', icon: { normal: userA, checked: user } },
 						{ label: 'multiple', value: 'multi', icon: { normal: groupA, checked: group } },
+					]}
+					defaultValue={infoRoom.mode}
+				/>
+				<p className='text__lato text__small text__small__xl' style={{ marginLeft: 5 }}>
+					Type privacy: <span style={{ color: 'red', display: error.type ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}>You Should Select A Type</span>
+				</p>
+				<Radio
+					name='visible'
+					className='u__margin--medium__y u__margin--medium__x'
+					onChange={(value) => {
+						setInfoRoom({ ...infoRoom, type: value });
+					}}
+					option={[
+						{ label: 'public', value: 'public' },
+						{ label: 'private', value: 'private' },
 					]}
 					defaultValue={infoRoom.type}
 				/>

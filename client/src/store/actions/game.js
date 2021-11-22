@@ -127,3 +127,15 @@ export const pauseGame = () => {
 		type: types.PAUSE_GAME,
 	};
 };
+export const liveArena = (newArena) => {
+	return {
+		type: types.LIVE_ARENA,
+		payload: newArena,
+	};
+};
+export const liveArenaInit = () => {
+	return {
+		type: types.LIVE_ARENA_INIT,
+	};
+};
+

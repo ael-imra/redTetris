@@ -26,9 +26,13 @@ export const nextPieceReducer = (state = [], action) => {
 export const myArena = (state = [], action) => {
 	switch (action.type) {
 		case types.ARENA_INIT:
-			return init();
+			return { ...state, myArena: init() };
 		case types.NEW_ARENA:
-			return action.payload;
+			return { ...state, myArena: action.payload };
+		case types.LIVE_ARENA:
+			return { ...state, liveArena: action.payload };
+		case types.LIVE_ARENA_INIT:
+			return { ...state, liveArena: init() };
 		default:
 			return state;
 	}
@@ -43,7 +47,7 @@ export const startGame = (state = false, action) => {
 			return state;
 	}
 };
-export const userReducer = (state = { players: [], score: 0, messages: [], pause: false }, action) => {
+export const userReducer = (state = { players: [], score: 0, messages: [] }, action) => {
 	switch (action.type) {
 		case types.ADD_USER:
 			return { ...state, players: [...state.players, action.payload] };
@@ -68,9 +72,10 @@ export const userReducer = (state = { players: [], score: 0, messages: [], pause
 		case types.ADD_REFERENCE_BOX:
 			return { ...state, refBoxChat: action.payload };
 		case types.RESET_GAME:
-			return { ...state };
+			return {};
 		case types.PAUSE_GAME:
-			return { ...state, pause: !state.pause };
+			console.log('test', state.pause, '|');
+			return { ...state, pause: state.pause ? false : true };
 		default:
 			return state;
 	}

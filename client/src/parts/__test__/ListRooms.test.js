@@ -1,9 +1,8 @@
 import { mount } from 'enzyme/build';
 import ItemJoin from '../../components/ItemJoin';
 import Root from '../../Root';
-import * as MushSocket from '../../__mocks__/socket';
+// import * as MushSocket from '../../__mocks__/socket';
 import ListRooms from '../ListRooms';
-
 
 let component;
 
@@ -11,13 +10,19 @@ beforeEach(() => {
 	component = mount(
 		<Root
 			initialState={{
-				socket: MushSocket,
-				listRooms: [
-					{ name: 'A1', maxPlayer: 10, type: 'multiple', countPlayer: 7 },
-					{ name: 'B2', maxPlayer: 9, type: 'multiple', countPlayer: 6 },
-					{ name: 'C3', maxPlayer: 8, type: 'multiple', countPlayer: 5 },
-					{ name: 'C4', maxPlayer: 7, type: 'multiple', countPlayer: 4 },
-				],
+				socket: {
+					emit: jest.fn(() => {
+						window.location.href = '/#A1[sel-hamr]';
+					}),
+				},
+				rooms: {
+					list: [
+						{ name: 'A1', maxPlayer: 10, type: 'multiple', countPlayer: 7 },
+						{ name: 'B2', maxPlayer: 9, type: 'multiple', countPlayer: 6 },
+						{ name: 'C3', maxPlayer: 8, type: 'multiple', countPlayer: 5 },
+						{ name: 'C4', maxPlayer: 7, type: 'multiple', countPlayer: 4 },
+					],
+				},
 			}}>
 			<ListRooms />
 		</Root>

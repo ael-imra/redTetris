@@ -1,8 +1,6 @@
 import { mount } from 'enzyme';
 import Arena from '../../components/Arena';
-import Button from '../../components/Button';
 import Chat from '../../components/Chat';
-import ItemJoin from '../../components/ItemJoin';
 import NextPiece from '../../components/NextPiece';
 import Header from '../../parts/Header';
 import LiveGame from '../../parts/LiveGame';
@@ -25,6 +23,20 @@ describe('test before start game in auth === hosted', () => {
 						options: {
 							mode: 'single',
 						},
+					},
+					myArena: {
+						list: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
+						liveArena: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
 					},
 					socket: { off: jest.fn(() => {}), on: jest.fn(() => {}) },
 					startGame: false,
@@ -59,6 +71,7 @@ describe('test before start game in auth === hosted', () => {
 		expect(components.find(NextPiece).length).toEqual(1);
 	});
 });
+
 describe('test before start game in auth !== hosted', () => {
 	beforeEach(() => {
 		components = mount(
@@ -72,6 +85,20 @@ describe('test before start game in auth !== hosted', () => {
 						options: {
 							mode: 'single',
 						},
+					},
+					myArena: {
+						list: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
+						liveArena: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
 					},
 					socket: { off: jest.fn(() => {}), on: jest.fn(() => {}) },
 					startGame: false,
@@ -105,6 +132,20 @@ describe('test in start game ', () => {
 						options: {
 							mode: 'single',
 						},
+					},
+					myArena: {
+						list: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
+						liveArena: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
 					},
 					socket: { off: jest.fn(() => {}), on: jest.fn(() => {}) },
 					startGame: true,
@@ -161,6 +202,20 @@ describe('test in end game', () => {
 							if (param === 'exit room') window.location.href = '/';
 						}),
 					},
+					myArena: {
+						list: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
+						liveArena: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
+					},
 					startGame: true,
 				}}>
 				<Game />
@@ -191,7 +246,20 @@ describe('test players === 0', () => {
 							mode: 'single',
 						},
 					},
-
+					myArena: {
+						list: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
+						liveArena: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
+					},
 					socket: { off: jest.fn(() => {}), on: jest.fn(() => {}) },
 					startGame: true,
 				}}>

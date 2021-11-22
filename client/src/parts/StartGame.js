@@ -2,15 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import BoxHeader from '../components/BoxHeader';
 import ListUser from './ListUser';
-import actions from '../store/actions';
 
-const StartGame = ({ gameInfo, removeUserAction, socket }) => {
-	React.useEffect(() => {
-		socket.on('player exit', (name) => {
-			removeUserAction(name);
-		});
-	});
-
+const StartGame = ({ gameInfo, socket }) => {
 	return (
 		<div className='start-container u__margin--auto__x'>
 			<BoxHeader text='setting game' />
@@ -47,4 +40,4 @@ const mapStateToProps = (state) => {
 		socket: state.socket,
 	};
 };
-export default connect(mapStateToProps, { removeUserAction: actions.removeUser })(StartGame);
+export default connect(mapStateToProps)(StartGame);

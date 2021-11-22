@@ -7,7 +7,6 @@ import actions from '../store/actions';
 import { Validator } from '../assets/utils/validator';
 import { io } from 'socket.io-client';
 
-
 const BoxSingIn = (props) => {
 	const [username, setUsername] = useState('');
 	const [errorLogin, setErrorLogin] = useState(false);
@@ -19,7 +18,6 @@ const BoxSingIn = (props) => {
 				withCredentials: true,
 			});
 			props.socketConnect(socket);
-			// props.setAuth(username);
 		} else setErrorLogin(true);
 	};
 	return (
@@ -31,7 +29,7 @@ const BoxSingIn = (props) => {
 				Join now and play with friends Join now and play with friends Join now and play with friends oin now and play with{' '}
 			</p>
 			<p className='text__lato text__small text__small__l text__error box-sing-in__error' style={errorLogin ? { opacity: 1 } : { opacity: 0 }}>
-				Error username is roeg
+				Username is Wrong must contain characters between 3 and 15
 			</p>
 			<Input
 				className='u__margin--medium__x text__lato text__lato__white  text__small text__small__xl'

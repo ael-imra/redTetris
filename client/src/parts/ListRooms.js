@@ -22,7 +22,7 @@ const ListRooms = ({ listRooms, socket }) => {
 };
 const mapStateToProps = (state) => {
 	return {
-		listRooms: state.listRooms,
+		listRooms: state.rooms.list,
 		socket: state.socket,
 	};
 };

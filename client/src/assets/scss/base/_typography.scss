@@ -203,6 +203,21 @@
 				word-spacing: 10px;
 			}
 		}
+		&__letter-spacing {
+			letter-spacing: 5px;
+			&__small {
+				letter-spacing: 2px;
+			}
+			&__large {
+				letter-spacing: 10px;
+			}
+		}
+		&__black {
+			color: $color-white;
+		}
+		&__white {
+			color: $color-black;
+		}
 	}
 	&__error {
 		color: red;

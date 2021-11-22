@@ -9,6 +9,5 @@ export const authAction = (username) => {
 export const logOutAction = () => {
 	return {
 		type: types.LOGOUT,
-		payload: false,
 	};
 };

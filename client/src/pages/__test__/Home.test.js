@@ -6,13 +6,13 @@ import Header from '../../parts/Header';
 import ListRooms from '../../parts/ListRooms';
 import Root from '../../Root';
 import Home from '../Home';
-import * as socketMush from '../../__mocks__/socket';
+// import * as socketMush from '../../__mocks__/socket';
 let components;
 beforeEach(() => {
 	components = mount(
 		<Root
 			initialState={{
-				socket: socketMush,
+				// socket: socketMush,
 				auth: 'selhamr',
 			}}>
 			<Home />

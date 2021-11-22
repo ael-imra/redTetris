@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import Button from '../components/Button';
 import Header from '../parts/Header';
@@ -8,34 +8,9 @@ import Input from '../components/Input';
 import ListRooms from '../parts/ListRooms';
 import CreateRoom from '../parts/CreateRoom';
 import actions from '../store/actions';
-const Home = ({ socket, listRoomsAction, auth, changeUrlAction, initGameAction, initArena, initNextPieceAction }) => {
-	const [nameSearch, setNameSearch] = useState('');
-	const [interval, setIntervalDestroy] = useState(null);
+const Home = ({ socket, nameSearchAction }) => {
 	const [visible, setVisible] = React.useState(false);
-	React.useEffect(() => {
-		socket.off('list rooms');
-		socket.off('room joined');
-		socket.on('list rooms', (listRoom) => {
-			listRoomsAction(listRoom.data);
-		});
-		socket.on('room joined', (room) => {
-			let gameInfo = room;
-			initArena();
-			initNextPieceAction();
-			gameInfo.players = gameInfo.players.filter((player) => player !== auth);
-			initGameAction({ ...gameInfo });
-			window.location.href = `#${gameInfo.name}[${auth}]`;
-			changeUrlAction(`#${gameInfo.name}[${auth}]`);
-		});
-		socket.emit('list rooms', nameSearch);
-		if (interval) clearInterval(interval);
-		setIntervalDestroy(
-			setInterval(() => {
-				socket.emit('list rooms', nameSearch);
-			}, 2000)
-		);
-		// eslint-disable-next-line
-	}, [nameSearch]);
+	const [nameSearch, setNameSearch] = React.useState('');
 	return (
 		<div className='home'>
 			<Header type='home' />
@@ -65,6 +40,7 @@ const Home = ({ socket, listRoomsAction, auth, changeUrlAction, initGameAction, 
 						setNameSearch(value);
 					}}
 					onEnter={() => {
+						nameSearchAction(nameSearch);
 						socket.emit('list rooms', nameSearch);
 					}}
 					defaultValue={nameSearch}
@@ -78,13 +54,8 @@ const Home = ({ socket, listRoomsAction, auth, changeUrlAction, initGameAction, 
 const mapStateToProps = (state) => {
 	return {
 		socket: state.socket,
-		auth: state.auth,
 	};
 };
 export default connect(mapStateToProps, {
-	listRoomsAction: actions.addRoom,
-	changeUrlAction: actions.changePath,
-	initGameAction: actions.initGame,
-	initArena: actions.arenaInit,
-	initNextPieceAction: actions.initNextPiece,
+	nameSearchAction: actions.nameSearch,
 })(Home);

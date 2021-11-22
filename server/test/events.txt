@@ -1,0 +1,27 @@
+Events
+-server
+    Listener:
+    - connect -> name
+    - create room -> name options
+    - join room -> name
+    - list room -> page limit
+    - exit room
+    - start game
+    - pause game
+    - restart game
+    - move piece
+    - kick player -> playername
+    - message -> message info
+    Emit:
+    - connected -> player info
+    - room joined -> room info
+    - player joined -> player info
+    - list room -> list room
+    - room exited
+    - game started
+    - game paused
+    - game restarted
+    - piece moved -> piece info
+    - piece completed -> engine info
+    - player kicked
+    - message -> message

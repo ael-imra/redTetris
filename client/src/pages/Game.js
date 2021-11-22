@@ -7,86 +7,12 @@ import NextPiece from '../components/NextPiece';
 import Header from '../parts/Header';
 import LiveGame from '../parts/LiveGame';
 import StartGame from '../parts/StartGame';
-import actions from '../store/actions';
-import * as shapes from '../assets/utils/shapes';
-import { draw } from '../assets/utils/draw';
-import { init } from '../store/reducers/gameReducer';
 import Button from '../components/Button';
-const Game = ({
-	myArena,
-	startGame,
-	gameInfo,
-	socket,
-	addUserInRoomAction,
-	auth,
-	changeUrlAction,
-	startGameAction,
-	newArenaAction,
-	StateGameActon,
-	newScoreAction,
-	nextPieceAction,
-	newArenasAction,
-	addMessageAction,
-	resetGameAction,
-	pauseGameAction,
-}) => {
-	const [arena, setArena] = React.useState(myArena);
+const Game = ({ arena, startGame, gameInfo, socket, auth }) => {
 	const arenaRef = useRef(null);
-	const chatRef = useRef(null);
-	const resetNext = init(0, true);
 	React.useEffect(() => {
 		if (arenaRef && arenaRef?.current) arenaRef.current.focus();
 	}, [startGame]);
-	React.useEffect(() => {
-		socket.off('game started');
-		socket.off('piece moved');
-		socket.off('piece completed');
-		socket.off('room exited');
-		socket.off('player joined');
-		socket.off('message');
-		socket.on('player joined', (player) => {
-			addUserInRoomAction(player.name);
-		});
-
-		socket.on('room exited', () => {
-			window.location.href = '/#';
-			changeUrlAction('/');
-			resetGameAction();
-		});
-
-		socket.on('message', (message) => {
-			addMessageAction(message.message, message.name);
-			setTimeout((gameInfo.refBoxChat.current.scrollTop = gameInfo.refBoxChat.current.scrollHeight), 0);
-		});
-
-		socket.on('game started', () => {
-			startGameAction(true);
-		});
-		socket.on('game paused', () => {
-			pauseGameAction();
-		});
-
-		socket.on('piece moved', (info) => {
-			if (info.player === auth) {
-				const newShape = shapes[info.shape](...info.point);
-				let test = draw(newShape, JSON.parse(JSON.stringify(myArena)), info.color);
-				const shadow = shapes[info.shape](info.point[0], info.shadow);
-				setArena(draw(shadow, JSON.parse(JSON.stringify(test)), 7));
-			}
-		});
-
-		socket.on('piece completed', (info) => {
-			if (info.player === auth) {
-				nextPieceAction(draw(shapes[info.nextPiecePiece](2, 2), JSON.parse(JSON.stringify(resetNext))));
-				StateGameActon(!info.failed && !info.win ? 'waiting' : info.win ? 'win' : 'failed');
-				newArenaAction(info.field);
-				newScoreAction(info.score);
-			} else {
-				newArenasAction(info.field, info.player);
-			}
-		});
-		// eslint-disable-next-line
-	}, [myArena, arena, gameInfo]);
 
 	return (
 		<div className='game flex flex__direction__column'>
@@ -98,7 +24,6 @@ const Game = ({
 			</div>
 			<div className='game__parts flex flex__justify-content__space-evenly'>
 				{gameInfo.players.length !== 0 ? <LiveGame /> : <div className='game__parts__1'></div>}
-
 				<div className='game__parts__2'>
 					{gameInfo.hosted === auth && !startGame ? (
 						<StartGame />
@@ -107,16 +32,6 @@ const Game = ({
 							<p className='text__debug  text__large__l text__center ' style={{ marginBottom: 50 }}>
 								waiting host to start game
 							</p>
-							<Button
-								type='primary'
-								text='Back to home'
-								size='large'
-								font='game'
-								style={{ padding: '1.5rem 4rem' }}
-								onclick={() => {
-									socket.emit('exit room');
-								}}
-							/>
 						</div>
 					) : (
 						''
@@ -124,9 +39,9 @@ const Game = ({
 					{(gameInfo.hosted === auth && startGame) || gameInfo.hosted !== auth ? (
 						<Arena
 							centerAlign
-							data={arena}
+							data={arena.liveArena}
 							onKeyDown={(e) => {
-								socket.emit('move piece', e.keyCode);
+								if (e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 37 || e.keyCode === 32) socket.emit('move piece', e.keyCode);
 							}}
 							refArena={arenaRef}
 						/>
@@ -140,18 +55,23 @@ const Game = ({
 							<p className='text__debug  text__large__l text__center ' style={{ marginBottom: 20 }}>
 								{gameInfo.stateGame}
 							</p>
-							<Button
-								type='primary'
-								text='Back to home'
-								size='large'
-								font='game'
-								style={{ padding: '1.5rem 4rem' }}
-								onclick={() => {
-									socket.emit('exit room');
-								}}
-							/>
+							{gameInfo.hosted === auth ? (
+								<Button
+									type='primary'
+									text='Replay'
+									size='large'
+									font='game'
+									style={{ padding: '1.5rem 4rem' }}
+									onclick={() => {
+										socket.emit('restart game');
+									}}
+								/>
+							) : (
+								''
+							)}
 						</div>
 					)}
+					{console.log(gameInfo.pause)}
 					{gameInfo && gameInfo.pause && startGame ? (
 						<div className='Result-game flex flex__align-items__center  flex__direction__column flex__justify-content__center game-result'>
 							<p className='text__debug  text__large__l text__center ' style={{ marginBottom: 20 }}>
@@ -165,18 +85,16 @@ const Game = ({
 						<Button
 							type='primary'
 							text='leave game'
-							// size='large'
 							font='game'
 							style={{ padding: '1.5rem 4rem' }}
 							onclick={() => {
 								socket.emit('exit room');
 							}}
 						/>
-						{startGame ? (
+						{startGame && gameInfo.hosted === auth ? (
 							<Button
 								type='primary'
 								text={gameInfo.pause ? 'resume' : 'pause game'}
-								// size='large'
 								font='game'
 								style={{ padding: '1.5rem 4rem' }}
 								onclick={() => {
@@ -206,7 +124,7 @@ const Game = ({
 					</div>
 					<div className='game__parts__3__chat'>
 						<BoxHeader text='Box chat' />
-						<Chat chartRef={chatRef} />
+						<Chat />
 					</div>
 				</div>
 			</div>
@@ -216,24 +134,11 @@ const Game = ({
 
 const mapStateToProps = (state) => {
 	return {
-		myArena: state.myArena,
+		arena: state.myArena,
 		startGame: state.startGame,
 		gameInfo: state.gameInfo,
 		socket: state.socket,
 		auth: state.auth,
-		nextPiece: state.nextPiece,
 	};
 };
-export default connect(mapStateToProps, {
-	addUserInRoomAction: actions.listUser,
-	changeUrlAction: actions.changePath,
-	startGameAction: actions.startGame,
-	newArenaAction: actions.newArena,
-	StateGameActon: actions.stateGame,
-	nextPieceAction: actions.nextPiece,
-	newScoreAction: actions.newScore,
-	newArenasAction: actions.newArenas,
-	addMessageAction: actions.addMessage,
-	resetGameAction: actions.ResetGame,
-	pauseGameAction: actions.pauseGame,
-})(Game);
+export default connect(mapStateToProps)(Game);

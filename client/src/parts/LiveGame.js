@@ -16,7 +16,7 @@ const LiveGame = ({ infoGame, userActiveAction, initArenas }) => {
 			<div className='game__parts__1__top'>
 				{infoGame.options.mode !== 'single' ? (
 					<>
-						<BoxHeader text='live game'  />
+						<BoxHeader text='live game' />
 						{infoGame?.userActive ? (
 							<div className='live-game'>
 								<div className='game__parts__1__box1'>

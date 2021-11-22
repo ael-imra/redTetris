@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../components/Button';
 
-const ItemList = ({ index, value, active, onUserActive, onRemove }) => (
+export const ItemList = ({ index, value, active, onUserActive, onRemove }) => (
 	<div
 		className={`flex flex__align-items__center ${active === value ? 'list-User__item-active' : 'list-User__item'} `}
 		onClick={() => {
