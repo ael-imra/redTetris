@@ -14,4 +14,5 @@ module.exports = {
     },
     MAX_PLAYERS: 10,
     MIN_PLAYERS: 2,
+    MODE_SINGLE: 'single'
 }

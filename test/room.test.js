@@ -31,6 +31,33 @@ describe('Room Class', () => {
         data.room5.add(data.player6)
         expect(data.room5.add(new Player('testPlayer'))).to.equal(false)
     })
+    it('Should get room information', () => {
+        const info = data.room5.info
+        expect(info).to.instanceOf(Object)
+        expect(info.name).to.equal('room5')
+        expect(info.hosted).to.equal('player5')
+        expect(info.players).to.instanceOf(Array)
+        expect(info.options).to.instanceOf(Object)
+    })
+    it('Should change options of room5', () => {
+        data.room5.setOptions({
+            mode: 'multi',
+            maxPlayers: 3,
+        })
+        expect(data.room5.options).to.instanceOf(Object)
+        expect(data.room5.options.mode).to.equal('multi')
+        expect(data.room5.options.maxPlayers).to.equal(3)
+    })
+    it('Should kick player from room5', () => {
+        data.player7 = new Player('player7')
+        data.player7.join('room5')
+        expect(data.player7.room).to.instanceOf(Room)
+        data.room5.kick(data.player5, data.player7.name)
+        expect(data.player7.room).to.equal(undefined)
+    })
+    it('Should kick return false with player not exist', () => {
+        expect(data.room5.kick(data.player5, 'notExist')).to.equal(false)
+    })
     it('Should exit hosted player from room', () => {
         data.room5.exit(data.player5)
         expect(data.room5.hosted).to.equal(data.player6)
