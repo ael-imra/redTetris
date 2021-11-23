@@ -2,6 +2,7 @@ const Room = require('../classes/room.class')
 const Player = require('../classes/player.class')
 const expect = require('chai').expect
 const { MAX_PLAYERS, MIN_PLAYERS } = require('../configs')
+const Game = require('../classes/game.class')
 
 describe('Room Class', () => {
     const data = {}
@@ -57,6 +58,41 @@ describe('Room Class', () => {
     })
     it('Should kick return false with player not exist', () => {
         expect(data.room5.kick(data.player5, 'notExist')).to.equal(false)
+    })
+    it('Should start game', () => {
+        data.room5.startGame(data.player5, (info) => info)
+        expect(data.room5.game).to.instanceOf(Game)
+        expect(data.room5.game.isStarted).to.equal(true)
+    })
+    it('Should pause game', () => {
+        data.room5.pauseGame(data.player5)
+        expect(data.room5.game.isPaused).to.equal(true)
+    })
+    it('Should restart game', () => {
+        data.room5.restartGame(data.player5)
+        expect(data.room5.game.isPaused).to.equal(false)
+        expect(data.room5.game.isStarted).to.equal(true)
+    })
+    it('Should throw room need at least 2 player to start game', () => {
+        expect(() => data.room4.startGame(data.player4)).to.throw('room need at least 2 player to start game')
+    })
+    it('Should throw game already started', () => {
+        expect(() => data.room5.startGame(data.player5)).to.throw('game already started')
+    })
+    it('Should startGame return false', () => {
+        expect(data.room5.startGame(data.player4)).to.equal(false)
+    })
+    it('Should pauseGame return false', () => {
+        data.room5.game.isStarted = false
+        expect(data.room5.pauseGame(data.player5)).to.equal(false)
+    })
+    it('Should pauseGame return false', () => {
+        expect(data.room5.restartGame(data.player4)).to.equal(false)
+        expect(data.room5.restartGame(data.player5)).to.equal(false)
+    })
+    it('Should quit game', () => {
+        data.room5.game.quit()
+        expect(data.room5.game).to.equal(undefined)
     })
     it('Should exit hosted player from room', () => {
         data.room5.exit(data.player5)

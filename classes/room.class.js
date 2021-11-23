@@ -7,6 +7,7 @@ const {
 } = require('../configs')
 const { CustomError } = require('../utils/errors')
 const { removeUnexpectedProperties, validate } = require('../utils')
+const Game = require('./game.class')
 const _rooms = {}
 
 class Room {
@@ -69,7 +70,12 @@ class Room {
         return false
     }
     kick(player, username) {
-        if (player && player.name === this.hosted.name && player.name !== username && this.players[username])
+        if (
+            player &&
+            player.name === this.hosted.name &&
+            player.name !== username &&
+            this.players[username]
+        )
             return this.exit(this.players[username])
         return false
     }
@@ -83,6 +89,37 @@ class Room {
             delete this.players[player.name]
             return true
         }
+        return false
+    }
+
+    /**
+     * listener is function
+     * every time piece move listener is invoke
+     */
+    startGame(player, listener) {
+        if (
+            this.options.mode !== MODE_SINGLE &&
+            Object.keys(this.players).length === 1
+        )
+            throw new CustomError('room need at least 2 player to start game')
+        if (this.hosted.name === player.name) {
+            if (!this.game) {
+                this.game = new Game(this)
+                this.listener = listener
+            }
+            return this.game.start()
+        }
+        return false
+    }
+    pauseGame(player) {
+        if (this.game && this.hosted.name === player.name && this.game.isStarted) {
+            this.game.pause()
+            return true
+        }
+        return false
+    }
+    restartGame(player) {
+        if (this.hosted.name === player.name && this.game.isStarted) return this.game.restart()
         return false
     }
 }
