@@ -4,15 +4,14 @@ import '../assets/scss/style.scss';
 import Game from '../pages/Game';
 import Home from '../pages/Home';
 import Welcome from '../pages/Welcome';
-import actions from '../store/actions/';
 import Error from './Error';
 import SocketMiddle from '../services/middleware';
 const App = ({ auth, url }) => {
 	return (
 		<>
 			<SocketMiddle>
-				{console.log(auth)}
 				<Error />
+				{console.log(url, 'url	')}
 				{auth === null ? '' : auth === false ? <Welcome /> : url === '/' ? <Home /> : <Game />}
 			</SocketMiddle>
 		</>

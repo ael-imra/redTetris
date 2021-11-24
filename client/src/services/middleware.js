@@ -21,6 +21,7 @@ const SocketMiddle = (props) => {
 			socket.emit('join room', roomName);
 			props.socketConnect(socket);
 		} else props.setAuth(false);
+		// eslint-disable-next-line
 	}, []);
 	React.useEffect(() => {
 		if (props.socket) {
@@ -50,8 +51,7 @@ const SocketMiddle = (props) => {
 				props.liveArenaInitAction();
 			});
 			props.socket.on('game started', () => {
-				props.liveArenaInitAction();
-				props.startGameAction(true);
+				props.startGameAction();
 			});
 			props.socket.on('player joined', (player) => {
 				props.addUserInRoomAction(player.name);
@@ -61,13 +61,12 @@ const SocketMiddle = (props) => {
 	}, [props.socket]);
 
 	React.useEffect(() => {
-		// console.log(props.gameInfo.name, '||', props.gameInfo?.name);
-		if (props.socket && !props.gameInfo.name) {
+		if (props.socket && !props.gameStore.name) {
 			props.socket.emit('list rooms', props.rooms.nameSearch);
 			if (interval) clearInterval(interval);
 			setIntervalDestroy(
 				setInterval(() => {
-					props.socket.emit('list rooms', props.rooms.nameSearch);
+					if (!props.gameStore.name) props.socket.emit('list rooms', props.rooms.nameSearch);
 				}, 2000)
 			);
 		}
@@ -78,45 +77,45 @@ const SocketMiddle = (props) => {
 		if (props.socket) {
 			props.socket.off('piece moved');
 			props.socket.off('piece completed');
-			props.socket.on('piece moved', (info) => {
-				if (info.player === props.auth) {
-					const newShape = shapes[info.shape](...info.point);
-					let test = draw(newShape, JSON.parse(JSON.stringify(props.arena.myArena)), info.color);
-					const shadow = shapes[info.shape](info.point[0], info.shadow);
-					props.liveArenaAction(draw(shadow, test, 7));
-				}
-			});
 			props.socket.on('piece completed', (info) => {
 				if (info.player === props.auth) {
 					props.nextPieceAction(draw(shapes[info.nextPiecePiece](2, 2), resetNext));
-					props.StateGameActon(!info.failed && !info.win ? 'waiting' : info.win ? 'win' : 'failed');
 					props.newArenaAction(info.field);
+					props.liveArenaAction(info.field);
 					props.newScoreAction(info.score);
+					props.StateGameActon(!info.failed && !info.win ? 'waiting' : info.win ? 'winner' : 'failed');
 				} else {
 					props.newArenasAction(info.field, info.player);
 				}
 			});
+			props.socket.on('piece moved', (info) => {
+				if (info.player === props.auth) {
+					const newShape = shapes[info.shape](...info.point);
+					let test = draw(newShape, JSON.parse(JSON.stringify(props.gameStore.arenaTmp)), info.color);
+					const shadow = shapes[info.shape](info.point[0], info.shadow);
+					props.liveArenaAction(draw(shadow, test, 7));
+				}
+			});
 		}
 		// eslint-disable-next-line
-	}, [props.arena, props.socket]);
+	}, [props.gameStore, props.socket]);
+
 	React.useEffect(() => {
 		if (props.socket) {
 			props.socket.off('message');
 			props.socket.on('message', (message) => {
 				props.addMessageAction(message.message, message.name);
-				setTimeout((props.gameInfo.refBoxChat.current.scrollTop = props.gameInfo.refBoxChat.current.scrollHeight), 0);
+				setTimeout((props.gameStore.refBoxChat.current.scrollTop = props.gameStore.refBoxChat.current.scrollHeight), 0);
 			});
 		}
 		// eslint-disable-next-line
-	}, [props.socket, props.gameInfo]);
+	}, [props.socket, props.gameStore]);
+
 	React.useEffect(() => {
 		if (props.socket) {
 			props.socket.off('room joined');
 			props.socket.on('room joined', (room) => {
 				let gameInfo = room;
-				props.initArena();
-				props.initNextPieceAction();
-				props.liveArenaInitAction();
 				gameInfo.players = gameInfo.players.filter((player) => player !== props.auth);
 				props.initGameAction({ ...gameInfo });
 				window.location.href = `#${gameInfo.name}[${props.auth}]`;
@@ -129,12 +128,9 @@ const SocketMiddle = (props) => {
 };
 const matStateToProps = (state) => {
 	return {
-		arena: state.myArena,
-		startGame: state.startGame,
-		gameInfo: state.gameInfo,
+		gameStore: state.game,
 		socket: state.socket,
 		auth: state.auth,
-		nextPiece: state.nextPiece,
 		rooms: state.rooms,
 	};
 };

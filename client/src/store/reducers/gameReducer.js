@@ -13,41 +13,7 @@ export const ArenaInit = (listUser) => {
 	}
 	return arenas;
 };
-export const nextPieceReducer = (state = [], action) => {
-	switch (action.type) {
-		case types.NEXT_PIECE:
-			return action.payload;
-		case types.INIT_NEXT_PIECE:
-			return init(0, true);
-		default:
-			return state;
-	}
-};
-export const myArena = (state = [], action) => {
-	switch (action.type) {
-		case types.ARENA_INIT:
-			return { ...state, myArena: init() };
-		case types.NEW_ARENA:
-			return { ...state, myArena: action.payload };
-		case types.LIVE_ARENA:
-			return { ...state, liveArena: action.payload };
-		case types.LIVE_ARENA_INIT:
-			return { ...state, liveArena: init() };
-		default:
-			return state;
-	}
-};
-export const startGame = (state = false, action) => {
-	switch (action.type) {
-		case types.START_GAME:
-			return true;
-		case types.RESET_GAME:
-			return false;
-		default:
-			return state;
-	}
-};
-export const userReducer = (state = { players: [], score: 0, messages: [] }, action) => {
+export const gameReducer = (state = { players: [], score: 0, messages: [] }, action) => {
 	switch (action.type) {
 		case types.ADD_USER:
 			return { ...state, players: [...state.players, action.payload] };
@@ -62,7 +28,7 @@ export const userReducer = (state = { players: [], score: 0, messages: [] }, act
 			newArenas[action.payload.user] = action.payload.newArena;
 			return { ...state, arenas: { ...newArenas } };
 		case types.INIT_GAME:
-			return { ...action.payload };
+			return { ...action.payload, nextPiece: init(0, true), arenaTmp: init(), liveArena: init(), score: 0 };
 		case types.STATE_GAME:
 			return { ...state, stateGame: action.payload };
 		case types.NEW_SCORE:
@@ -74,8 +40,21 @@ export const userReducer = (state = { players: [], score: 0, messages: [] }, act
 		case types.RESET_GAME:
 			return {};
 		case types.PAUSE_GAME:
-			console.log('test', state.pause, '|');
 			return { ...state, pause: state.pause ? false : true };
+		case types.START_GAME:
+			return { ...state, startGame: true };
+		case types.ARENA_INIT:
+			return { ...state, arenaTmp: init() };
+		case types.NEW_ARENA:
+			return { ...state, arenaTmp: action.payload };
+		case types.LIVE_ARENA:
+			return { ...state, liveArena: action.payload };
+		case types.LIVE_ARENA_INIT:
+			return { ...state, liveArena: init() };
+		case types.NEXT_PIECE:
+			return { ...state, nextPiece: action.payload };
+		case types.INIT_NEXT_PIECE:
+			return { ...state, nextPiece: init(0, true) };
 		default:
 			return state;
 	}

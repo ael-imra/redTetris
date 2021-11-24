@@ -8,11 +8,11 @@ import Header from '../parts/Header';
 import LiveGame from '../parts/LiveGame';
 import StartGame from '../parts/StartGame';
 import Button from '../components/Button';
-const Game = ({ arena, startGame, gameInfo, socket, auth }) => {
+const Game = ({ gameStore, socket, auth }) => {
 	const arenaRef = useRef(null);
 	React.useEffect(() => {
 		if (arenaRef && arenaRef?.current) arenaRef.current.focus();
-	}, [startGame]);
+	}, [arenaRef]);
 
 	return (
 		<div className='game flex flex__direction__column'>
@@ -23,11 +23,11 @@ const Game = ({ arena, startGame, gameInfo, socket, auth }) => {
 				</p>
 			</div>
 			<div className='game__parts flex flex__justify-content__space-evenly'>
-				{gameInfo.players.length !== 0 ? <LiveGame /> : <div className='game__parts__1'></div>}
+				{gameStore.players.length !== 0 ? <LiveGame /> : <div className='game__parts__1'></div>}
 				<div className='game__parts__2'>
-					{gameInfo.hosted === auth && !startGame ? (
+					{gameStore.hosted === auth && !gameStore.startGame ? (
 						<StartGame />
-					) : gameInfo.hosted !== auth && !startGame ? (
+					) : gameStore.hosted !== auth && !gameStore.startGame ? (
 						<div className='Result-game flex flex__align-items__center  flex__direction__column flex__justify-content__center waiting'>
 							<p className='text__debug  text__large__l text__center ' style={{ marginBottom: 50 }}>
 								waiting host to start game
@@ -36,10 +36,10 @@ const Game = ({ arena, startGame, gameInfo, socket, auth }) => {
 					) : (
 						''
 					)}
-					{(gameInfo.hosted === auth && startGame) || gameInfo.hosted !== auth ? (
+					{(gameStore.hosted === auth && gameStore.startGame) || gameStore.hosted !== auth ? (
 						<Arena
 							centerAlign
-							data={arena.liveArena}
+							data={gameStore.liveArena}
 							onKeyDown={(e) => {
 								if (e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 37 || e.keyCode === 32) socket.emit('move piece', e.keyCode);
 							}}
@@ -48,14 +48,14 @@ const Game = ({ arena, startGame, gameInfo, socket, auth }) => {
 					) : (
 						''
 					)}
-					{(gameInfo && !gameInfo.stateGame) || (gameInfo && gameInfo.stateGame === 'waiting') ? (
+					{(gameStore && !gameStore.stateGame) || (gameStore && gameStore.stateGame === 'waiting') ? (
 						''
 					) : (
 						<div className='Result-game flex flex__align-items__center  flex__direction__column flex__justify-content__center game-result'>
 							<p className='text__debug  text__large__l text__center ' style={{ marginBottom: 20 }}>
-								{gameInfo.stateGame}
+								{gameStore.stateGame}
 							</p>
-							{gameInfo.hosted === auth ? (
+							{gameStore.hosted === auth ? (
 								<Button
 									type='primary'
 									text='Replay'
@@ -71,8 +71,7 @@ const Game = ({ arena, startGame, gameInfo, socket, auth }) => {
 							)}
 						</div>
 					)}
-					{console.log(gameInfo.pause)}
-					{gameInfo && gameInfo.pause && startGame ? (
+					{gameStore && gameStore.pause  ? (
 						<div className='Result-game flex flex__align-items__center  flex__direction__column flex__justify-content__center game-result'>
 							<p className='text__debug  text__large__l text__center ' style={{ marginBottom: 20 }}>
 								pause game
@@ -91,10 +90,10 @@ const Game = ({ arena, startGame, gameInfo, socket, auth }) => {
 								socket.emit('exit room');
 							}}
 						/>
-						{startGame && gameInfo.hosted === auth ? (
+						{gameStore && gameStore.hosted === auth ? (
 							<Button
 								type='primary'
-								text={gameInfo.pause ? 'resume' : 'pause game'}
+								text={gameStore.pause ? 'resume' : 'pause game'}
 								font='game'
 								style={{ padding: '1.5rem 4rem' }}
 								onclick={() => {
@@ -107,7 +106,7 @@ const Game = ({ arena, startGame, gameInfo, socket, auth }) => {
 					</div>
 				</div>
 
-				<div className={`game__parts__3 ${gameInfo.options.mode === 'single' ? 'mode-sing' : ''}`}>
+				<div className={`game__parts__3 ${gameStore.options.mode === 'single' ? 'mode-sing' : ''}`}>
 					<div className='flex flex__justify-content__space-between'>
 						<div className='game__parts__3__box'>
 							<BoxHeader text='Next Piece' />
@@ -118,7 +117,7 @@ const Game = ({ arena, startGame, gameInfo, socket, auth }) => {
 						<div className='game__parts__3__box'>
 							<BoxHeader text='You Score' />
 							<div className='flex flex__align-items__center flex__justify-content__center game__parts__3__box__div'>
-								<p className='text__game text__lato__white text__small text__large__l'>{gameInfo.score}</p>
+								<p className='text__game text__lato__white text__small text__large__l'>{gameStore.score}</p>
 							</div>
 						</div>
 					</div>
@@ -134,9 +133,9 @@ const Game = ({ arena, startGame, gameInfo, socket, auth }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		arena: state.myArena,
-		startGame: state.startGame,
-		gameInfo: state.gameInfo,
+		// arena: state.myArena,
+		// gameStore: state.startGame,
+		gameStore: state.game,
 		socket: state.socket,
 		auth: state.auth,
 	};

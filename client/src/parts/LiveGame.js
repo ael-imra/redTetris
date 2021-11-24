@@ -5,27 +5,27 @@ import BoxHeader from '../components/BoxHeader';
 import ListUser from './ListUser';
 import actions from '../store/actions';
 
-const LiveGame = ({ infoGame, userActiveAction, initArenas }) => {
+const LiveGame = ({ gameStore, userActiveAction, initArenas }) => {
 	React.useEffect(() => {
-		if (infoGame.length !== 0) userActiveAction(infoGame.players[0]);
-		initArenas([...infoGame.players]);
+		if (gameStore.length !== 0) userActiveAction(gameStore.players[0]);
+		initArenas([...gameStore.players]);
 		// eslint-disable-next-line
-	}, [infoGame.players]);
+	}, [gameStore.players]);
 	return (
-		<div className={`game__parts__1 flex flex__justify-content__space-between ${infoGame.options.mode === 'single' ? 'mode-sing' : ''}`}>
+		<div className={`game__parts__1 flex flex__justify-content__space-between ${gameStore.options.mode === 'single' ? 'mode-sing' : ''}`}>
 			<div className='game__parts__1__top'>
-				{infoGame.options.mode !== 'single' ? (
+				{gameStore.options.mode !== 'single' ? (
 					<>
 						<BoxHeader text='live game' />
-						{infoGame?.userActive ? (
+						{gameStore?.userActive ? (
 							<div className='live-game'>
 								<div className='game__parts__1__box1'>
-									<Arena size='small' className='u__margin--medium__x__x' data={infoGame.arenas[infoGame.userActive]} />
+									<Arena size='small' className='u__margin--medium__x__x' data={gameStore.arenas[gameStore.userActive]} />
 								</div>
 								<div className='game__parts__1__box1'>
 									<ListUser
-										list={infoGame.players}
-										active={infoGame.userActive}
+										list={gameStore.players}
+										active={gameStore.userActive}
 										onUserActive={(index) => {
 											userActiveAction(index);
 										}}
@@ -45,7 +45,7 @@ const LiveGame = ({ infoGame, userActiveAction, initArenas }) => {
 };
 const mapStateToProps = (state) => {
 	return {
-		infoGame: state.gameInfo,
+		gameStore: state.game,
 	};
 };
 export default connect(mapStateToProps, { userActiveAction: actions.userActive, initArenas: actions.arenasInit })(LiveGame);

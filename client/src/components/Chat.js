@@ -52,7 +52,7 @@ const Chat = ({ socket, listMessage = [], AddRefBoxMessageAction }) => {
 };
 const matStateToProps = (state) => {
 	return {
-		listMessage: state.gameInfo.messages,
+		listMessage: state.game.messages,
 		auth: state.auth,
 		socket: state.socket,
 	};

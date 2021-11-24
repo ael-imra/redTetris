@@ -3,24 +3,24 @@ import { connect } from 'react-redux';
 import BoxHeader from '../components/BoxHeader';
 import ListUser from './ListUser';
 
-const StartGame = ({ gameInfo, socket }) => {
+const StartGame = ({ gameStore, socket }) => {
 	return (
 		<div className='start-container u__margin--auto__x'>
 			<BoxHeader text='setting game' />
 			<div className='start-container__list-User'>
-				{gameInfo.players ? (
+				{gameStore.players ? (
 					<ListUser
-						list={gameInfo.players}
+						list={gameStore.players}
 						isBorder
 						onRemove={(name) => {
 							socket.emit('kick', name);
 						}}
-						mode={gameInfo.options.mode}
+						mode={gameStore.options.mode}
 						button={{
 							text: 'Start Game',
 							type: 'primary',
 							font: 'game',
-							disabled: gameInfo.players.length === 0 && gameInfo.options.mode !== 'single' ? true : false,
+							disabled: gameStore.players.length === 0 && gameStore.options.mode !== 'single' ? true : false,
 							onclick: () => {
 								socket.emit('start game');
 							},
@@ -36,7 +36,7 @@ const StartGame = ({ gameInfo, socket }) => {
 };
 const mapStateToProps = (state) => {
 	return {
-		gameInfo: state.gameInfo,
+		gameStore: state.game,
 		socket: state.socket,
 	};
 };

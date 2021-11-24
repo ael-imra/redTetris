@@ -4,10 +4,6 @@ import types from '../store/actions';
 import Piece from './Piece';
 
 const NextPiece = ({ nextPiece, initNextPieceAction }) => {
-	React.useEffect(() => {
-		initNextPieceAction();
-		// eslint-disable-next-line
-	}, []);
 	return (
 		<div className='arena arena__next-piece arena__center'>
 			{nextPiece.length === 0 ? '' : nextPiece.map((line, key) => line.map((item, key) => <Piece value={item} key={key} />))}
@@ -16,7 +12,7 @@ const NextPiece = ({ nextPiece, initNextPieceAction }) => {
 };
 const mapStateToProps = (state) => {
 	return {
-		nextPiece: state.nextPiece,
+		nextPiece: state.game.nextPiece,
 	};
 };
 export default connect(mapStateToProps, { initNextPieceAction: types.initNextPiece })(NextPiece);

@@ -6,6 +6,7 @@ const Validator = function (key, value) {
 		typePrivacy: value.length !== 0 && (value === 'public' || value === 'private'),
 		name: value.match(/^[A-Za-z0-9]+$/) && value.length > 3 && value.length < 15,
 		numPlayer: value.match(/^[0-9]+$/) && parseInt(value) > 1 && parseInt(value) <= 10,
+		// eslint-disable-next-line
 		urlRoom: value.match(/^\#[A-Za-z0-9]{3,15}\[[A-Za-z0-9]{3,15}\]$/),
 	};
 	return objectKeys[key] ? true : false;

@@ -81,7 +81,7 @@ const CreateRoom = ({ visible, setVisible, socket }) => {
 					''
 				)}
 				<p className='text__lato text__small text__small__xl' style={{ marginLeft: 5 }}>
-					Type room : <span style={{ color: 'red', display: error.type ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}>You Should Select A Type</span>
+					Type room : <span style={{ color: 'red', display: error.mode ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}>You Should Select A Type</span>
 				</p>
 				<Radio
 					name='type'
