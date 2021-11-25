@@ -19,6 +19,7 @@ describe('Room Class', () => {
     it('Should create room with min player', () => {
         data.player5 = new Player('player5')
         data.room5 = new Room(data.player5, 'room5', { maxPlayers: -1, mode: 'multi' })
+        data.player5.room = data.room5
         expect(data.room5).to.instanceOf(Room)
         expect(data.room5.options).to.instanceOf(Object)
         expect(data.room5.options.maxPlayers).to.equal(MIN_PLAYERS)

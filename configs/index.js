@@ -17,5 +17,9 @@ module.exports = {
     MODE_SINGLE: 'single',
     PLAYGROUND_HEIGHT: 20,
     PLAYGROUND_WIDTH: 10,
-    COLORS: [1, 2, 3, 4, 5]
+    COLORS: [1, 2, 3, 4, 5],
+    MOVE_DOWN: 40,
+    MOVE_UP: 38,
+    MOVE_LEFT: 37,
+    MOVE_RIGHT: 39
 }
