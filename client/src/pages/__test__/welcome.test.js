@@ -20,3 +20,4 @@ it('has a <BoxSingIn /> component', () => {
 it('has a welcome className component', () => {
   expect(components.find(Welcome).find('.welcome').length).toEqual(1);
 });
+

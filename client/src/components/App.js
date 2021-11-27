@@ -6,12 +6,12 @@ import Home from '../pages/Home';
 import Welcome from '../pages/Welcome';
 import Error from './Error';
 import SocketMiddle from '../services/middleware';
-const App = ({ auth, url }) => {
+import actions from '../store/actions/';
+const App = ({ auth, url, closeErrorAction, error }) => {
 	return (
 		<>
 			<SocketMiddle>
-				<Error />
-				{console.log(url, 'url	')}
+				<Error closeErrorAction={closeErrorAction} error={error} />
 				{auth === null ? '' : auth === false ? <Welcome /> : url === '/' ? <Home /> : <Game />}
 			</SocketMiddle>
 		</>
@@ -21,6 +21,7 @@ const mapStateToProps = (state) => {
 	return {
 		auth: state.auth,
 		url: state.url,
+		error: state.error,
 	};
 };
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, { closeErrorAction: actions.errorClose })(App);

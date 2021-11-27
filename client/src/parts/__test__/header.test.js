@@ -3,9 +3,10 @@ import Button from '../../components/Button';
 import Logo from '../../components/Logo';
 import Root from '../../Root';
 import Header from '../Header';
-
+let result = '';
 describe('testing header not login', () => {
 	let component;
+	result = '';
 	beforeEach(() => {
 		component = mount(
 			<Root>

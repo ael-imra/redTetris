@@ -6,13 +6,11 @@ import Header from '../../parts/Header';
 import ListRooms from '../../parts/ListRooms';
 import Root from '../../Root';
 import Home from '../Home';
-// import * as socketMush from '../../__mocks__/socket';
 let components;
 beforeEach(() => {
 	components = mount(
 		<Root
 			initialState={{
-				// socket: socketMush,
 				auth: 'selhamr',
 			}}>
 			<Home />
@@ -56,6 +54,5 @@ it('has click state visible', () => {
 it('has change  state  input', () => {
 	expect(components.find(Input).prop('defaultValue')).toEqual('');
 	components.find(Input).simulate('change', { target: { value: 'width' } });
-	components.update();
 	expect(components.find(Input).prop('defaultValue')).toEqual('width');
 });

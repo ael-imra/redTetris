@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>2/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -93,8 +93,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -103,8 +103,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -117,27 +117,27 @@ import '../assets/scss/style.scss';
 import Game from '../pages/Game';
 import Home from '../pages/Home';
 import Welcome from '../pages/Welcome';
-import actions from '../store/actions/';
 import Error from './Error';
 import SocketMiddle from '../services/middleware';
-const App = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> auth = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span> authAction, socket, url, handleErrorAction }) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >	return (</span>
+import actions from '../store/actions/';
+const App = ({ auth, url, closeErrorAction, error }) =&gt; {
+	return (
 		&lt;&gt;
 			&lt;SocketMiddle&gt;
-				&lt;Error /&gt;
-				{!auth ? &lt;Welcome /&gt; : url === '/' ? &lt;Home /&gt; : &lt;Game /&gt;}
+				&lt;Error closeErrorAction={closeErrorAction} error={error} /&gt;
+				{auth === null ? <span class="branch-0 cbranch-no" title="branch not covered" >'' </span>: auth === false ? &lt;Welcome /&gt; : <span class="branch-1 cbranch-no" title="branch not covered" >url === '/' ? &lt;Home /&gt; : &lt;Game /&gt;}</span>
 			&lt;/SocketMiddle&gt;
 		&lt;/&gt;
 	);
 };
-const mapStateToProps = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >	return {</span>
+const mapStateToProps = (state) =&gt; {
+	return {
 		auth: state.auth,
 		url: state.url,
-		socket: state.socket,
+		error: state.error,
 	};
 };
-export default connect(mapStateToProps, { authAction: actions.authAction, handleErrorAction: actions.errorActive })(App);
+export default connect(mapStateToProps, { closeErrorAction: actions.errorClose })(App);
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -145,7 +145,7 @@ export default connect(mapStateToProps, { authAction: actions.authAction, handle
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Nov 19 2021 18:57:35 GMT+0100 (GMT+01:00)
+                at Sat Nov 27 2021 13:04:08 GMT+0100 (GMT+01:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

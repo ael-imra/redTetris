@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/6</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/6</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -105,8 +105,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -124,7 +124,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -136,8 +136,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,32 +148,32 @@ import { connect } from 'react-redux';
 import BoxHeader from '../components/BoxHeader';
 import ListUser from './ListUser';
 &nbsp;
-const StartGame = ({ gameInfo, socket }) =&gt; {
+const StartGame = ({ gameStore, socket }) =&gt; {
 	return (
 		&lt;div className='start-container u__margin--auto__x'&gt;
 			&lt;BoxHeader text='setting game' /&gt;
 			&lt;div className='start-container__list-User'&gt;
-				{gameInfo.players ? (
+				{gameStore.players ? (
 					&lt;ListUser
-						list={gameInfo.players}
+						list={gameStore.players}
 						isBorder
 						onRemove={<span class="fstat-no" title="function not covered" >(n</span>ame) =&gt; {
 <span class="cstat-no" title="statement not covered" >							socket.emit('kick', name);</span>
 						}}
-						mode={gameInfo.options.mode}
+						mode={gameStore.options.mode}
 						button={{
 							text: 'Start Game',
 							type: 'primary',
 							font: 'game',
-							disabled: gameInfo.players.length === 0 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >gameInfo.options.mode !== 'single' </span>? <span class="branch-0 cbranch-no" title="branch not covered" >true </span>: false,
-							onclick: <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >								socket.emit('start game');</span>
+							disabled: gameStore.players.length === 0 &amp;&amp; gameStore.options.mode !== 'single' ? true : false,
+							onclick: () =&gt; {
+								socket.emit('start game');
 							},
 							className: 'u__margin--auto__x u__margin--medium__x btn__Box-Shadow',
 						}}
 					/&gt;
 				) : (
-<span class="branch-1 cbranch-no" title="branch not covered" >					''</span>
+					''
 				)}
 			&lt;/div&gt;
 		&lt;/div&gt;
@@ -181,7 +181,7 @@ const StartGame = ({ gameInfo, socket }) =&gt; {
 };
 const mapStateToProps = (state) =&gt; {
 	return {
-		gameInfo: state.gameInfo,
+		gameStore: state.game,
 		socket: state.socket,
 	};
 };
@@ -193,7 +193,7 @@ export default connect(mapStateToProps)(StartGame);
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Nov 19 2021 18:57:35 GMT+0100 (GMT+01:00)
+                at Sat Nov 27 2021 13:04:08 GMT+0100 (GMT+01:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

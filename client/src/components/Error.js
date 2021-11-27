@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import imageClose from '../assets/images/error.png';
-import actions from '../store/actions/';
+import Header from '../parts/Header';
 
 const Error = ({ error, closeErrorAction }) => {
 	return (
@@ -13,6 +13,7 @@ const Error = ({ error, closeErrorAction }) => {
 					<p className='text__lato text__small text__small__l'>{error.content}</p>
 				</div>
 			</div>
+
 			<div
 				className='error__close'
 				onClick={() => {
@@ -23,9 +24,5 @@ const Error = ({ error, closeErrorAction }) => {
 		</div>
 	);
 };
-const mapStateToProps = (state) => {
-	return {
-		error: state.error,
-	};
-};
-export default connect(mapStateToProps, { closeErrorAction: actions.errorClose })(Error);
+
+export default Error;

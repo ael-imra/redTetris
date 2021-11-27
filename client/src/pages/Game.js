@@ -71,7 +71,7 @@ const Game = ({ gameStore, socket, auth }) => {
 							)}
 						</div>
 					)}
-					{gameStore && gameStore.pause  ? (
+					{gameStore && gameStore.pause ? (
 						<div className='Result-game flex flex__align-items__center  flex__direction__column flex__justify-content__center game-result'>
 							<p className='text__debug  text__large__l text__center ' style={{ marginBottom: 20 }}>
 								pause game
@@ -90,7 +90,7 @@ const Game = ({ gameStore, socket, auth }) => {
 								socket.emit('exit room');
 							}}
 						/>
-						{gameStore && gameStore.hosted === auth ? (
+						{gameStore && gameStore.hosted === auth && gameStore.startGame && (gameStore.stateGame === 'waiting' || !gameStore.stateGame) ? (
 							<Button
 								type='primary'
 								text={gameStore.pause ? 'resume' : 'pause game'}

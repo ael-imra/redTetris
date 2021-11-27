@@ -1,6 +1,7 @@
-import { mount, shallow } from 'enzyme/build';
+import { shallow } from 'enzyme';
+import { mount } from 'enzyme/build';
 import Root from '../../Root';
-import Err from '../Error';
+import Error from '../Error';
 
 let component;
 let visible;
@@ -8,19 +9,15 @@ describe('has error', () => {
 	beforeEach(() => {
 		visible = true;
 		component = mount(
-			<Root
-				initialState={{
-					error: {
-						state: visible,
-						content: 'hi am soufiane',
-					},
-				}}>
-				<Err
-					closeErrorAction={() => {
-						console.log('poi');
-					}}
-				/>
-			</Root>
+			<Error
+				error={{
+					state: visible,
+					content: 'hi am soufiane',
+				}}
+				closeErrorAction={() => {
+					visible = false;
+				}}
+			/>
 		);
 	});
 
@@ -30,6 +27,8 @@ describe('has error', () => {
 
 	it('has button close', () => {
 		expect(component.find('.error__close').length).toEqual(1);
+		component.find('.error__close').simulate('click');
+		expect(visible).toEqual(false);
 	});
 });
 
@@ -37,14 +36,11 @@ describe('has error', () => {
 	beforeEach(() => {
 		visible = false;
 		component = mount(
-			<Root
-				initialState={{
-					error: {
-						state: visible,
-					},
-				}}>
-				<Err />
-			</Root>
+			<Error
+				error={{
+					state: visible,
+				}}
+			/>
 		);
 	});
 	it('test class Error', () => {

@@ -9,7 +9,6 @@ describe('test init() function', () => {
 	});
 	it('test width of array', () => {
 		expect(array[0].length).toEqual(parseInt(process.env.REACT_APP_WIDTH_ARENA));
-		// expect(array[parseInt(process.env.REACT_APP_WIDTH_ARENA) - 1].length).toEqual(parseInt(process.env.REACT_APP_WIDTH_ARENA));
 	});
 	it('test content of array ', () => {
 		for (let index = 0; index < parseInt(process.env.REACT_APP_HEIGHT_ARENA); index++) {
@@ -21,7 +20,6 @@ describe('test init() function', () => {
 		}
 	});
 });
-
 describe('test init() function with parameter', () => {
 	let array;
 	beforeEach(() => (array = reducers.init(0, true)));
@@ -55,32 +53,136 @@ describe('test ArenaInit() function', () => {
 	});
 });
 
-describe('test myArena() reducer', () => {
-	let action;
+describe('test reducer gameReducer', () => {
+	it('test players users', () => {
+		const result = reducers.gameReducer({ players: [], userActive: 'root' }, { type: types.ADD_USER, payload: 'test1' });
+		expect(result.players.length).toEqual(1);
+		expect(result.players).toEqual(['test1']);
+		const result_2 = reducers.gameReducer({ players: ['root'], userActive: 'root' }, { type: types.ADD_USER, payload: 'test' });
+		expect(result_2.players).toEqual(['root', 'test']);
+	});
+
+	it('test remove user', () => {
+		const result = reducers.gameReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.REMOVE_USER, payload: 'test1' });
+		expect(result.players.length).toEqual(2);
+		expect(result.players).toEqual(['test2', 'test3']);
+	});
+
+	it('test remove user bad user', () => {
+		const result = reducers.gameReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.REMOVE_USER, payload: 'tet1' });
+		expect(result.players.length).toEqual(3);
+		expect(result.players).toEqual(['test1', 'test2', 'test3']);
+	});
+
+	it('test user active', () => {
+		const result = reducers.gameReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.USER_ACTIVE, payload: 'no-root' });
+		expect(result.userActive).toEqual('no-root');
+	});
+
+	it('test init  arenas for users', () => {
+		const result = reducers.gameReducer(null, { type: types.ARENAS_INIT, payload: ['test-1', 'test-2', 'test-3', 'test-4'] });
+		expect(result.arenas).toEqual(reducers.ArenaInit(['test-1', 'test-2', 'test-3', 'test-4']));
+	});
+
+	it('test bad type', () => {
+		const result = reducers.gameReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: 'cefeffe', payload: ['test-1', 'test-2', 'test-3', 'test-4'] });
+		expect(result).toEqual({ players: ['test1', 'test2', 'test3'], userActive: 'root' });
+	});
+	it('test pause game reducer', () => {
+		const result = reducers.gameReducer({ pause: false }, { type: types.PAUSE_GAME });
+		expect(result).toEqual({ pause: true });
+	});
+
+	it('test continue game reducer', () => {
+		const result = reducers.gameReducer({ pause: true }, { type: types.PAUSE_GAME });
+		expect(result).toEqual({ pause: false });
+	});
+
+	it('test pause game reducer', () => {
+		const result = reducers.gameReducer({ pause: false, players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.RESET_GAME });
+		expect(result).toEqual({});
+	});
+
+	it('test with NEW_ARENAS types', () => {
+		const result = reducers.gameReducer({ players: ['test1', 'test2', 'test3'], arenas: [] }, { type: types.NEW_ARENAS, payload: { user: 'test1', newArena: 'new Arena' } });
+		expect(result.arenas['test1']).toEqual('new Arena');
+	});
+
+	it('test with STATE_GAME types', () => {
+		const result = reducers.gameReducer(null, { type: types.STATE_GAME, payload: 'win' });
+		expect(result.stateGame).toEqual('win');
+	});
+
+	it('test with NEW_ARENA types', () => {
+		const result = reducers.gameReducer(null, { type: types.NEW_ARENA, payload: 'NEW_ARENA' });
+		expect(result.arenaTmp).toEqual('NEW_ARENA');
+	});
+
+	it('test with CHANGE_HOSTED types', () => {
+		const result = reducers.gameReducer({ hosted: 'soufiane' }, { type: types.CHANGE_HOSTED, payload: 'root' });
+		expect(result.hosted).toEqual('root');
+	});
+
+	it('test with NEW_SCORE types', () => {
+		const result = reducers.gameReducer(null, { type: types.NEW_SCORE, payload: 100 });
+		expect(result.score).toEqual(100);
+	});
+
+	it('test with INIT_GAME types', () => {
+		const result = reducers.gameReducer(null, { type: types.INIT_GAME, payload: { name: 'test1' } });
+		expect(result.nextPiece).toEqual(reducers.init(0, true));
+		expect(result.arenaTmp).toEqual(reducers.init());
+		expect(result.liveArena).toEqual(reducers.init());
+		expect(result.score).toEqual(0);
+	});
+
+	it('test reference BoxChat reducer', () => {
+		const result = reducers.gameReducer(
+			{ pause: false, players: ['test1', 'test2', 'test3'], userActive: 'root', refBoxChat: '' },
+			{ type: types.ADD_REFERENCE_BOX, payload: 'refBoxChat' }
+		);
+		expect(result.refBoxChat).toEqual('refBoxChat');
+	});
+	it('test add message reducer', () => {
+		const result = reducers.gameReducer(
+			{
+				messages: [
+					{ name: 'ShadowRoot', message: 'test' },
+					{ name: 'ShadowRoot2', message: 'test2' },
+				],
+			},
+			{ type: types.ADD_MESSAGE, payload: { name: 'root', message: 'yhh' } }
+		);
+		expect(result.messages[0]).toEqual({ name: 'ShadowRoot', message: 'test' });
+		expect(result.messages[1]).toEqual({ name: 'ShadowRoot2', message: 'test2' });
+		expect(result.messages[2]).toEqual({ name: 'root', message: 'yhh' });
+	});
+	it('test start game', () => {
+		const result = reducers.gameReducer({ players: [], userActive: 'root' }, { type: types.START_GAME });
+		expect(result.startGame).toEqual(true);
+	});
 	it('test with ARENA_INIT type', () => {
-		action = reducers.myArena([], { type: types.ARENA_INIT });
-		expect(action.myArena).toEqual(reducers.init());
+		const result = reducers.gameReducer([], { type: types.ARENA_INIT });
+		expect(result.arenaTmp).toEqual(reducers.init());
 	});
 
 	it('test with LIVE_ARENA_INIT type', () => {
-		action = reducers.myArena([], { type: types.LIVE_ARENA_INIT });
-		expect(action.liveArena).toEqual(reducers.init());
+		const result = reducers.gameReducer([], { type: types.LIVE_ARENA_INIT });
+		expect(result.liveArena).toEqual(reducers.init());
 	});
-	
-	it('test with LIVE_ARENA_INIT type', () => {
-		action = reducers.myArena([], { type: types.LIVE_ARENA, payload: 'new Arena' });
-		expect(action.liveArena).toEqual('new Arena');
-	});
-});
 
-describe('test reducer nextPieceReducer', () => {
+	it('test with LIVE_ARENA_INIT type', () => {
+		const result = reducers.gameReducer([], { type: types.LIVE_ARENA, payload: 'new Arena' });
+		expect(result.liveArena).toEqual('new Arena');
+	});
+
 	it('test init next piece', () => {
-		const nextPiece = reducers.nextPieceReducer([], { type: types.INIT_NEXT_PIECE });
-		expect(nextPiece).toEqual(reducers.init(0, true));
+		const action = reducers.gameReducer([], { type: types.INIT_NEXT_PIECE });
+		expect(action.nextPiece).toEqual(reducers.init(0, true));
 	});
 
 	it('test next piece', () => {
-		const nextPiece = reducers.nextPieceReducer([], {
+		const action = reducers.gameReducer([], {
 			type: types.NEXT_PIECE,
 			payload: [
 				[1, 1, 0, 0, 0],
@@ -91,85 +193,12 @@ describe('test reducer nextPieceReducer', () => {
 			],
 		});
 		for (let index = 0; index < parseInt(process.env.REACT_APP_WIDTH_ARENA_NEXT_PIECE); index++) {
-			const line = nextPiece[index];
+			const line = action.nextPiece[index];
 			for (let x = 0; x < line.length; x++) {
-				const element = nextPiece[index][x];
+				const element = line[x];
 				if ((index === 0 && x === 0) || (index === 0 && x === 1) || (index === 1 && x === 1) || (index === 2 && x === 1)) expect(element).toEqual(1);
 				else expect(element).toEqual(0);
 			}
 		}
-	});
-});
-
-describe('test reducer userReducer', () => {
-	it('test players users', () => {
-		const test_1 = reducers.userReducer({ players: [], userActive: 'root' }, { type: types.ADD_USER, payload: 'test1' });
-		expect(test_1.players.length).toEqual(1);
-		expect(test_1.players).toEqual(['test1']);
-		const test_2 = reducers.userReducer({ players: ['root'], userActive: 'root' }, { type: types.ADD_USER, payload: 'test' });
-		expect(test_2.players).toEqual(['root', 'test']);
-	});
-
-	it('test remove user', () => {
-		const user = reducers.userReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.REMOVE_USER, payload: 'test1' });
-		expect(user.players.length).toEqual(2);
-		expect(user.players).toEqual(['test2', 'test3']);
-	});
-
-	it('test remove user bad user', () => {
-		const user = reducers.userReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.REMOVE_USER, payload: 'tet1' });
-		expect(user.players.length).toEqual(3);
-		expect(user.players).toEqual(['test1', 'test2', 'test3']);
-	});
-
-	it('test user active', () => {
-		const user = reducers.userReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.USER_ACTIVE, payload: 'no-root' });
-		expect(user.userActive).toEqual('no-root');
-	});
-
-	it('test init  arenas for users', () => {
-		const user = reducers.userReducer(null, { type: types.ARENAS_INIT, payload: ['test-1', 'test-2', 'test-3', 'test-4'] });
-		expect(user.arenas).toEqual(reducers.ArenaInit(['test-1', 'test-2', 'test-3', 'test-4']));
-	});
-
-	it('test bad type', () => {
-		const user = reducers.userReducer({ players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: 'cefeffe', payload: ['test-1', 'test-2', 'test-3', 'test-4'] });
-		expect(user).toEqual({ players: ['test1', 'test2', 'test3'], userActive: 'root' });
-	});
-	it('test pause game reducer', () => {
-		const user = reducers.userReducer({ pause: false }, { type: types.PAUSE_GAME });
-		expect(user).toEqual({ pause: true });
-	});
-	it('test pause game reducer', () => {
-		const user = reducers.userReducer({ pause: false, players: ['test1', 'test2', 'test3'], userActive: 'root' }, { type: types.RESET_GAME });
-		expect(user).toEqual({});
-	});
-	it('test reference BoxChat reducer', () => {
-		const user = reducers.userReducer(
-			{ pause: false, players: ['test1', 'test2', 'test3'], userActive: 'root', refBoxChat: '' },
-			{ type: types.ADD_REFERENCE_BOX, payload: 'refBoxChat' }
-		);
-		expect(user.refBoxChat).toEqual('refBoxChat');
-	});
-	it('test add message reducer', () => {
-		const user = reducers.userReducer(
-			{
-				messages: [
-					{ name: 'ShadowRoot', message: 'test' },
-					{ name: 'ShadowRoot2', message: 'test2' },
-				],
-			},
-			{ type: types.ADD_MESSAGE, payload: { name: 'root', message: 'yhh' } }
-		);
-		expect(user.messages[0]).toEqual({ name: 'ShadowRoot', message: 'test' });
-		expect(user.messages[1]).toEqual({ name: 'ShadowRoot2', message: 'test2' });
-		expect(user.messages[2]).toEqual({ name: 'root', message: 'yhh' });
-	});
-});
-
-describe('test reducer startGame', () => {
-	it('test start game', () => {
-		const gameState = reducers.startGame({ players: [], userActive: 'root' }, { type: types.START_GAME });
-		expect(gameState).toEqual(true);
 	});
 });

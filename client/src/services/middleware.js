@@ -42,14 +42,11 @@ const SocketMiddle = (props) => {
 			props.socket.on('list rooms', (listRoom) => {
 				props.listRoomsAction(listRoom.data);
 			});
-			props.socket.on('player exit', (name) => {
+			props.socket.on('player exited', ({ name, hosted }) => {
 				props.removeUserAction(name);
+				props.changeHostedConnect(hosted);
 			});
-			props.socket.on('game restarted', () => {
-				props.initArena();
-				props.initNextPieceAction();
-				props.liveArenaInitAction();
-			});
+
 			props.socket.on('game started', () => {
 				props.startGameAction();
 			});
@@ -61,12 +58,25 @@ const SocketMiddle = (props) => {
 	}, [props.socket]);
 
 	React.useEffect(() => {
+		if (props.socket) {
+			props.socket.off('game restarted');
+			props.socket.on('game restarted', (room) => {
+				let gameInfo = room;
+				gameInfo.players = gameInfo.players.filter((player) => player !== props.auth);
+				props.initGameAction({ ...gameInfo });
+			});
+		}
+	}, [props.auth, props.socket]);
+	React.useEffect(() => {
 		if (props.socket && !props.gameStore.name) {
 			props.socket.emit('list rooms', props.rooms.nameSearch);
 			if (interval) clearInterval(interval);
 			setIntervalDestroy(
 				setInterval(() => {
-					if (!props.gameStore.name) props.socket.emit('list rooms', props.rooms.nameSearch);
+					if (!props.gameStore.name) {
+						console.log('ok');
+						props.socket.emit('list rooms', props.rooms.nameSearch);
+					}
 				}, 2000)
 			);
 		}
@@ -157,4 +167,5 @@ export default connect(matStateToProps, {
 	removeUserAction: actions.removeUser,
 	setAuth: actions.authAction,
 	socketConnect: actions.socketConnect,
+	changeHostedConnect: actions.changeHosted,
 })(SocketMiddle);

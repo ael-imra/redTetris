@@ -77,6 +77,28 @@ describe('action arenasInit()', () => {
 	});
 });
 
+describe('action initGame()', () => {
+	let actionCreator;
+	beforeEach(() => (actionCreator = actions.initGame({ root: 'soufiane' })));
+	it('has the correct type', () => {
+		expect(actionCreator.type).toEqual(types.INIT_GAME);
+	});
+	it('has the correct payload', () => {
+		expect(actionCreator.payload).toEqual({ root: 'soufiane' });
+	});
+});
+
+describe('action changeHosted()', () => {
+	let actionCreator;
+	beforeEach(() => (actionCreator = actions.changeHosted('new user')));
+	it('has the correct type', () => {
+		expect(actionCreator.type).toEqual(types.CHANGE_HOSTED);
+	});
+	it('has the correct payload', () => {
+		expect(actionCreator.payload).toEqual('new user');
+	});
+});
+
 describe('action nextPiece()', () => {
 	let actionCreator;
 	beforeEach(() => (actionCreator = actions.nextPiece(['test'])));

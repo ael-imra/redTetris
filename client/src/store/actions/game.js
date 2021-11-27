@@ -78,14 +78,14 @@ export const newArena = (arena) => {
 	};
 };
 
-export const pieceMove = (map) => {
-	return {
-		type: types.PIECE_MOVE,
-		payload: {
-			map,
-		},
-	};
-};
+// export const pieceMove = (map) => {
+// 	return {
+// 		type: types.PIECE_MOVE,
+// 		payload: {
+// 			map,
+// 		},
+// 	};
+// };
 
 export const stateGame = (state) => {
 	return {
@@ -139,3 +139,9 @@ export const liveArenaInit = () => {
 	};
 };
 
+export const changeHosted = (hosted) => {
+	return {
+		type: types.CHANGE_HOSTED,
+		payload: hosted,
+	};
+};

@@ -21,7 +21,6 @@ const Radio = ({ name, option = [], style, className, onChange, defaultValue }) 
 
 export const Option = ({ label, value, id, name, icon, onChange, defaultValue }) => {
 	const refBox = React.useRef(null);
-	console.log(refBox);
 	return (
 		<div className='radio__box u__margin--small__l u__margin--small__r'>
 			<input

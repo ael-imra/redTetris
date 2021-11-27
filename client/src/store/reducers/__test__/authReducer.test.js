@@ -15,7 +15,7 @@ it('login bad test', () => {
 		payload: 'soufiane',
 	};
 	const auth = authReducer(undefined, action);
-	expect(auth).toEqual(false);
+	expect(auth).toEqual(null);
 });
 
 it('logout test', () => {

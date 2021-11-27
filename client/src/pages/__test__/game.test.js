@@ -16,30 +16,34 @@ describe('test before start game in auth === hosted', () => {
 			<Root
 				initialState={{
 					auth: 'root',
-					gameInfo: {
+					game: {
 						players: ['root', 'root1'],
 						hosted: 'root',
 						messages: [],
 						options: {
 							mode: 'single',
 						},
-					},
-					myArena: {
-						list: [
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-						],
+						startGame: false,
 						liveArena: [
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 						],
+						arenaTmp: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
+						nextPiece: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
 					},
-					socket: { off: jest.fn(() => {}), on: jest.fn(() => {}) },
-					startGame: false,
+					socket: { off: jest.fn(() => {}) },
 				}}>
 				<Game />
 			</Root>
@@ -77,31 +81,35 @@ describe('test before start game in auth !== hosted', () => {
 		components = mount(
 			<Root
 				initialState={{
-					auth: 'roodt',
-					gameInfo: {
+					auth: 'noroot',
+					game: {
 						players: ['root', 'root1'],
 						hosted: 'root',
 						messages: [],
 						options: {
 							mode: 'single',
 						},
-					},
-					myArena: {
-						list: [
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-						],
+						startGame: false,
 						liveArena: [
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 						],
+						arenaTmp: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
+						nextPiece: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
 					},
-					socket: { off: jest.fn(() => {}), on: jest.fn(() => {}) },
-					startGame: false,
+					socket: { off: jest.fn(() => {}) },
 				}}>
 				<Game />
 			</Root>
@@ -126,29 +134,34 @@ describe('test in start game ', () => {
 			<Root
 				initialState={{
 					auth: 'root',
-					gameInfo: {
+					game: {
 						players: ['root', 'root1'],
 						hosted: 'root',
+						messages: [],
 						options: {
 							mode: 'single',
 						},
-					},
-					myArena: {
-						list: [
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-						],
+						startGame: true,
 						liveArena: [
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 						],
+						arenaTmp: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
+						nextPiece: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
 					},
-					socket: { off: jest.fn(() => {}), on: jest.fn(() => {}) },
-					startGame: true,
+					socket: { off: jest.fn(() => {}) },
 				}}>
 				<Game />
 			</Root>
@@ -177,60 +190,6 @@ describe('test in start game ', () => {
 	});
 });
 
-describe('test in end game', () => {
-	beforeEach(() => {
-		components = mount(
-			<Root
-				initialState={{
-					auth: 'root',
-					gameInfo: {
-						players: ['root', 'root1'],
-						hosted: 'root',
-						messages: [],
-						options: {
-							mode: 'single',
-						},
-						stateGame: 'failed',
-					},
-
-					socket: {
-						off: jest.fn(() => {}),
-						on: jest.fn((param) => {
-							if (param === 'room exited') window.location.href = '/';
-						}),
-						emit: jest.fn((param) => {
-							if (param === 'exit room') window.location.href = '/';
-						}),
-					},
-					myArena: {
-						list: [
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-						],
-						liveArena: [
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-						],
-					},
-					startGame: true,
-				}}>
-				<Game />
-			</Root>
-		);
-	});
-
-	it('has a box result', () => {
-		expect(components.find(Header).length).toEqual(1);
-		expect(components.find('.game-result').length).toEqual(1);
-		window.location.href = '/#sel[root]';
-		components.find('.game-result button').simulate('click');
-		expect(window.location.hash).toEqual('');
-	});
-});
 
 describe('test players === 0', () => {
 	beforeEach(() => {
@@ -238,30 +197,35 @@ describe('test players === 0', () => {
 			<Root
 				initialState={{
 					auth: 'root',
-					gameInfo: {
+					game: {
 						players: [],
 						hosted: 'root',
 						messages: [],
 						options: {
 							mode: 'single',
 						},
-					},
-					myArena: {
-						list: [
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-							[1, 2, 3, 4],
-						],
+						stateGame: 'failed',
+						startGame: true,
 						liveArena: [
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 							[1, 2, 3, 4],
 						],
+						arenaTmp: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
+						nextPiece: [
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+							[1, 2, 3, 4],
+						],
 					},
-					socket: { off: jest.fn(() => {}), on: jest.fn(() => {}) },
-					startGame: true,
+					socket: { off: jest.fn(() => {}), emit: jest.fn(() => {}) },
 				}}>
 				<Game />
 			</Root>

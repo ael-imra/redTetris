@@ -24,11 +24,7 @@ beforeEach(() => {
 	);
 	testSocket = '';
 });
-it('test element of CreateRoom', () => {
-	expect(component.find('div').length).toEqual(6);
-	expect(component.find(Input).length).toEqual(1);
-	expect(component.find('p').length).toEqual(5);
-});
+
 
 it('test change data create room', () => {
 	component
@@ -38,14 +34,19 @@ it('test change data create room', () => {
 
 	component
 		.find('.radio__box__radio')
-		.at(1)
+		.at(0)
 		.simulate('change', { target: { value: 'multi' } });
+	component
+		.find('.radio__box__radio')
+		.at(3)
+		.simulate('change', { target: { value: 'public' } });
 
 	component
 		.find(Input)
 		.at(1)
 		.simulate('change', { target: { value: '10' } });
-	expect(component.find(Radio).prop('defaultValue')).toEqual('multi');
+	expect(component.find(Radio).at(0).prop('defaultValue')).toEqual('multi');
+	expect(component.find(Radio).at(1).prop('defaultValue')).toEqual('public');
 	expect(component.find(Input).at(0).prop('defaultValue')).toEqual('root');
 	expect(component.find(Input).at(1).prop('defaultValue')).toEqual('10');
 	expect(testSocket).toEqual('');

@@ -11,7 +11,7 @@ beforeEach(() => {
 	component = mount(
 		<Root
 			initialState={{
-				gameInfo: {
+				game: {
 					messages: [
 						{ name: 'soufiane', message: 'test' },
 						{ name: 'hamri', message: 'test}' },
@@ -31,14 +31,12 @@ it('length list message', () => {
 	expect(component.find('p').length).toEqual(2);
 });
 it('seed message ', () => {
-	// expect(.length).toEqual(2);
 	component.find(Input).simulate('change', { target: { value: 'hi dad' } });
 	component.find(Button).simulate('click');
 	expect(result).toEqual('send');
 });
 
 it('seed message empty', () => {
-	// expect(.length).toEqual(2);
 	component.find(Input).simulate('change', { target: { value: '' } });
 	component.find(Button).simulate('click');
 	expect(result).toEqual('');
