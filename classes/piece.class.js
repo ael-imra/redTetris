@@ -1,4 +1,4 @@
-const { PLAYGROUND_WIDTH, COLORS, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, MOVE_UP } = require('../configs')
+const { PLAYGROUND_WIDTH, COLORS, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DEEP_DOWN } = require('../configs')
 const shapes = require('../utils/shapes')
 
 class Piece {
@@ -27,6 +27,10 @@ class Piece {
             this.point[0] -= 1
         else if (key === MOVE_RIGHT && this.engine.isFit(this.shape(...this.incX(1))))
             this.point[0] += 1
+        else if (key === MOVE_DEEP_DOWN) {
+            this.point[1] = this.engine.getShadow()
+            this.engine.next()
+        }
         else if (!this.engine.isFit(this.shape(...this.incY(1))))
             this.engine.next()
     }

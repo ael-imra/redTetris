@@ -1,3 +1,4 @@
+const { MODE_SINGLE, COLOR_BLOCKED_LINE } = require("../configs")
 const Engine = require("./engine.class")
 const Piece = require("./piece.class")
 
@@ -26,6 +27,8 @@ class Game {
             for (const player of Object.values(this.room.players)) {
                 this.engines[player.name] = new Engine(this, player)
                 this.engines[player.name].start()
+                if (typeof this.room.listener === 'function')
+                    this.room.listener('piece completed', this.engines[player.name].player)
             }
             this.isStarted = true
         }
@@ -41,7 +44,14 @@ class Game {
         return delete this.room.game
     }
     pause() {
-        return this.isPaused = !this.isPaused
+        for (const player of Object.keys(this.room.players))
+            if (!this.isPaused) {
+                this.engines[player].clean()
+            }
+            else
+                this.engines[player].start()
+        this.isPaused = !this.isPaused
+        return true
     }
     restart() {
         for (const player of Object.values(this.room.players))
@@ -58,6 +68,31 @@ class Game {
         if (player && this.engines[player.name]) {
             this.engines[player.name].clean()
             delete this.engines[player.name]
+            return true
+        }
+        return false
+    }
+    addPenalty(player) {
+        if (this.room.options.mode !== MODE_SINGLE)
+            for (const key of Object.keys(this.engines)) {
+                if (key !== player.name) {
+                    const field = this.engines[key].field
+                    for (let y = field.length - 1; y >= 0; y--)
+                        if (field[y][0] !== COLOR_BLOCKED_LINE) {
+                            for (let x = 0; x < field[y].length; x++)
+                                field[y][x] = COLOR_BLOCKED_LINE
+                            break
+                        }
+                }
+                if (typeof this.room.listener === 'function')
+                    this.room.listener('piece completed', this.engines[key].player)
+            }
+        return true
+    }
+    checkWinner() {
+        const engines = Object.values(this.engines).filter(eng => !eng.isFailed)
+        if (engines.length === 1) {
+            engines[0].win()
             return true
         }
         return false

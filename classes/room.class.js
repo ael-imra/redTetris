@@ -82,9 +82,13 @@ class Room {
     exit(player) {
         if (player) {
             const players = Object.keys(this.players)
+            if (players.length === 1 && this.game)
+                this.game.quit()
             if (this.hosted.name === player.name && players.length > 1)
                 this.hosted = this.players[players[1]]
             else if (this.hosted.name === player.name) delete _rooms[this.name]
+            if (this.game && this.game.engines && this.game.engines[player.name])
+                this.game.engines[player.name].clean()
             delete this.players[player.name].room
             delete this.players[player.name]
             return true
