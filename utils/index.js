@@ -20,6 +20,8 @@ const pResolve = path.resolve
 const validate = function (type, value) {
     if (type === 'name' && typeof value === 'string')
         return /[a-zA-Z0-9]{3,25}/.test(value)
+    else if (type === 'message' && typeof value === 'string')
+        return /.{3,255}/.test(value)
     return false
 }
 const removeUnexpectedProperties = function (
@@ -45,7 +47,16 @@ const removeUnexpectedProperties = function (
             obj[prop] || defaultValues[prop]
     return newObject
 }
-
+const escape = function (str) {
+    const htmlEntities = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&apos;"
+    };
+    return str.replace(/([&<>\"'])/g, match => htmlEntities[match]);
+}
 module.exports = {
     fsExists,
     fsExistsSync,
@@ -56,5 +67,6 @@ module.exports = {
     fsCreateReadStream,
     pResolve,
     validate,
-    removeUnexpectedProperties
+    removeUnexpectedProperties,
+    escape
 }
