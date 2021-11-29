@@ -12,15 +12,15 @@ class Socket {
             })
         else if (server)
             this.io = new io.Server(server)
-        this.io.use(socketCookieParser())
-        this.io.use(this.middleware)
-        this.io.on('connect', ((socket) => socket))
+        if (this.io) {
+            this.io.use(socketCookieParser())
+            this.io.use(this.middleware)
+            this.io.on('connect', ((socket) => socket))
+        }
     }
     middleware(socket, next) {
-        const cookies = socket && socket.request && socket.request.cookies ? socket.request.cookies : null
-        const name = cookies && cookies.name ? cookies.name : null
-        if (name) {
-            socket.username = name
+        if (socket?.request?.cookies?.name) {
+            socket.username = socket.request.cookies.name
             return next()
         }
         return next(new Error('name is required'))
