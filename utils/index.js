@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const { HTML_ENTITIES } = require('../configs')
 
 const fsExists = (f) =>
     new Promise((r) => fs.exists(f, r))
@@ -48,14 +49,10 @@ const removeUnexpectedProperties = function (
     return newObject
 }
 const escape = function (str) {
-    const htmlEntities = {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&apos;"
-    };
-    return str.replace(/([&<>\"'])/g, match => htmlEntities[match]);
+    let escapedStr = ""
+    for (let i = 0; i < str.length; i++)
+        escapedStr += HTML_ENTITIES[str[i]] ? HTML_ENTITIES[str[i]] : str[i]
+    return escapedStr
 }
 module.exports = {
     fsExists,

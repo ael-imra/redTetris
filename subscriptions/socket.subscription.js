@@ -2,6 +2,7 @@ const CustomError = require('../utils/errors')
 const Player = require('../classes/player.class')
 const { validate } = require('../utils')
 const RoomSubscription = require('./room.subscription')
+const GameSubscription = require('./game.subscription')
 
 module.exports = class SocketSubscription {
     constructor(master, socket) {
@@ -24,6 +25,10 @@ module.exports = class SocketSubscription {
         this.socket.on('kick', this.kickRoom.bind(this))
         this.socket.on('message', this.sendMessage.bind(this))
         this.socket.on('message', this.sendMessage.bind(this))
+        this.socket.on('start game', this.startGame.bind(this))
+        this.socket.on('pause game', this.pauseGame.bind(this))
+        this.socket.on('restart game', this.restartGame.bind(this))
+        this.socket.on('move piece', this.movePiece.bind(this))
         this.socket.on('disconnect', this.disconnect.bind(this))
     }
 
@@ -32,7 +37,6 @@ module.exports = class SocketSubscription {
             const rooms = RoomSubscription.get.call(this, name, page, limit)
             this.socket.emit('list rooms', rooms)
         } catch (error) {
-            console.log(error)
             this.handleError(error)
         }
     }
@@ -71,6 +75,7 @@ module.exports = class SocketSubscription {
                 this.player.room &&
                 RoomSubscription.kick.call(this, username)
             ) {
+                ``
                 const room = this.player.room
                 const master = this.master.getSocket(username)
                 if (master) {
@@ -80,10 +85,10 @@ module.exports = class SocketSubscription {
                 this.io
                     .to(room.name)
                     .emit('message', {
-                        name: this.player.name,
+                        name: username,
                         message: 'kicked from room',
                     })
-                this.io.to(room.name).emit('player exited', { name, hosted: room.hosted.name })
+                this.io.to(room.name).emit('player exited', { name: username, hosted: room.hosted.name })
             }
         } catch (error) {
             this.handleError(error)
@@ -125,9 +130,76 @@ module.exports = class SocketSubscription {
     disconnect() {
         try {
             if (this.player) {
+                const room = this.player.room
+                const name = this.player.name
+                if (room) {
+                    this.io
+                        .to(room.name)
+                        .emit('message', { name, message: 'exited from room' })
+                    this.io
+                        .to(room.name)
+                        .emit('player exited', { name, hosted: room.hosted.name })
+                }
                 this.player.disconnect()
-                // const master = this.master.getSocket(this.player.name)
-                // master.removeSocket(this.player.name)
+                this.master.removeSocket(this.player.name)
+            }
+        } catch (error) {
+            this.handleError(error)
+        }
+    }
+
+    startGame() {
+        try {
+            if (GameSubscription.start.call(this, this.listener.bind(this))) {
+                const room = this.player.room
+                this.io.to(room.name).emit('game started')
+                // const info = GameSubscription.getInfo.call(this, 'piece completed')
+                // if (info)
+                //     this.io.to(room.name).emit('piece completed', info)
+            }
+        } catch (error) {
+            this.handleError(error)
+        }
+    }
+
+    pauseGame() {
+        try {
+            if (GameSubscription.pause.call(this)) {
+                const room = this.player.room
+                console.log("PAUSED")
+                this.io.to(room.name).emit('game paused')
+            }
+        } catch (error) {
+            this.handleError(error)
+        }
+    }
+
+    restartGame() {
+        try {
+            if (GameSubscription.restart.call(this)) {
+                const room = this.player.room
+                this.io.to(room.name).emit('game restarted')
+            }
+        } catch (error) {
+            this.handleError(error)
+        }
+    }
+
+    movePiece(key) {
+        try {
+            GameSubscription.move.call(this, key)
+        } catch (error) {
+            this.handleError(error)
+        }
+    }
+
+    listener(event, player) {
+        try {
+            if (player && player.room) {
+                const room = player.room
+                const info = GameSubscription.getInfo.call({ player }, event)
+                if (info)
+                    this.io.to(room.name).emit(event, info)
             }
         } catch (error) {
             this.handleError(error)

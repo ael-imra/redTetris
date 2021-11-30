@@ -20,6 +20,12 @@ class Socket {
             this.io.on('connect', ((socket) => _sockets[socket.username] = new SocketSubscription(this, socket)).bind(this))
         }
     }
+    getSocket(username) {
+        return _sockets[username]
+    }
+    removeSocket(username) {
+        delete _sockets[username]
+    }
     middleware(socket, next) {
         if (socket?.request?.cookies?.name) {
             socket.username = socket.request.cookies.name

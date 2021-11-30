@@ -2,6 +2,7 @@ const Socket = require('../classes/socket.class')
 const socketClient = require('socket.io-client')
 const { expect } = require('chai')
 const App = require('../classes/app.class')
+const { MOVE_LEFT } = require('../configs')
 const ROOT_DIR = `${__dirname}/../static`
 
 function connect(port, name) {
@@ -148,17 +149,99 @@ describe('Socket Class', () => {
             io2.on('room joined', () => {
                 io.on('player exited', (obj) => {
                     expect(obj).to.instanceOf(Object)
-                    expect(obj.name).to.instanceOf('player2')
-                    expect(obj.hosted).to.instanceOf('player')
-                    expect(rooms.data.length).to.equal(2)
+                    expect(obj.name).to.equal('player2')
+                    expect(obj.hosted).to.equal('player')
                     io.disconnect()
                     io2.disconnect()
                     done()
                 })
                 io.emit('kick', 'player2')
             })
-            io2.emit('join room', 'room2')
+            io2.emit('join room', 'room1')
         })
         io.emit('create room', 'room1', { mode: 'multi' })
+    })
+    it('Should exit player from room1', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            io.on('room exited', () => {
+                io.disconnect()
+                done()
+            })
+            io.emit('exit room')
+        })
+        io.emit('create room', 'room1')
+    })
+    it('Should send message', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            const io2 = connect(1338, 'player2')
+            io2.on('room joined', () => {
+                io.on('message', (msg) => {
+                    expect(msg).to.instanceOf(Object)
+                    expect(msg.name).to.equal('player')
+                    expect(msg.message).to.equal('hello%20world')
+                    io.disconnect()
+                    io2.disconnect()
+                    done()
+                })
+                io.emit('message', 'hello world')
+            })
+            io2.emit('join room', 'room1')
+        })
+        io.emit('create room', 'room1', { mode: 'multi' })
+    })
+    it('Should start game', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            io.on('game started', () => {
+                io.disconnect()
+                done()
+            })
+            io.emit('start game')
+        })
+        io.emit('create room', 'room1')
+    })
+    it('Should pause game', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            io.on('game started', () => {
+                io.on('game paused', () => {
+                    io.disconnect()
+                    done()
+                })
+                io.emit('pause game')
+            })
+            io.emit('start game')
+        })
+        io.emit('create room', 'room1')
+    })
+    it('Should restart game', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            io.on('game started', () => {
+                io.on('game restarted', () => {
+                    io.disconnect()
+                    done()
+                })
+                io.emit('restart game')
+            })
+            io.emit('start game')
+        })
+        io.emit('create room', 'room1')
+    })
+    it('Should move piece', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            io.on('game started', () => {
+                io.on('piece moved', () => {
+                    io.disconnect()
+                    done()
+                })
+                io.emit('move piece', MOVE_LEFT)
+            })
+            io.emit('start game')
+        })
+        io.emit('create room', 'room1')
     })
 })

@@ -36,7 +36,7 @@ module.exports = class RoomSubscription {
         return null
     }
     static kick(username) {
-        if (validate('name', 'username') && this.player && this.player.room)
+        if (validate('name', username) && this.player && this.player.room)
             return this.player.room.kick(this.player, username)
         return false
     }
