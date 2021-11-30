@@ -3,14 +3,9 @@ import { connect } from 'react-redux';
 import Arena from '../components/Arena';
 import BoxHeader from '../components/BoxHeader';
 import ListUser from './ListUser';
-import actions from '../store/actions';
+import Actions from '../store/actions';
 
-const LiveGame = ({ gameStore, userActiveAction, initArenas }) => {
-	React.useEffect(() => {
-		if (gameStore.length !== 0) userActiveAction(gameStore.players[0]);
-		initArenas([...gameStore.players]);
-		// eslint-disable-next-line
-	}, [gameStore.players]);
+const LiveGame = ({ gameStore, userActiveAction }) => {
 	return (
 		<div className={`game__parts__1 flex flex__justify-content__space-between ${gameStore.options.mode === 'single' ? 'mode-sing' : ''}`}>
 			<div className='game__parts__1__top'>
@@ -43,9 +38,6 @@ const LiveGame = ({ gameStore, userActiveAction, initArenas }) => {
 		</div>
 	);
 };
-const mapStateToProps = (state) => {
-	return {
-		gameStore: state.game,
-	};
-};
-export default connect(mapStateToProps, { userActiveAction: actions.userActive, initArenas: actions.arenasInit })(LiveGame);
+
+export default connect(null, { userActiveAction: Actions.userActive })(LiveGame);
+//

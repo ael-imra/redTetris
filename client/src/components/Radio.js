@@ -1,9 +1,14 @@
 import React from 'react';
 
 const Radio = ({ name, option = [], style, className, onChange, defaultValue }) => {
+	const [option1, setOption1] = React.useState(option);
+	React.useEffect(() => {
+		setOption1(option);
+		// eslint-disable-next-line
+	}, [option]);
 	return (
 		<div className={`radio flex flex__align-items__center flex__justify-content__center ${className}`} style={{ ...style }}>
-			{option.map((item, key) => (
+			{option1.map((item, key) => (
 				<Option
 					label={item.label}
 					value={item.value}

@@ -4,6 +4,7 @@ import Chat from '../../components/Chat';
 import NextPiece from '../../components/NextPiece';
 import Header from '../../parts/Header';
 import LiveGame from '../../parts/LiveGame';
+import Settings from '../../parts/Settings';
 import StartGame from '../../parts/StartGame';
 import Root from '../../Root';
 import Game from '../Game';
@@ -43,7 +44,7 @@ describe('test before start game in auth === hosted', () => {
 							[1, 2, 3, 4],
 						],
 					},
-					socket: { off: jest.fn(() => {}) },
+					socket: { off: jest.fn(() => {}), emit: jest.fn(() => {}) },
 				}}>
 				<Game />
 			</Root>
@@ -68,7 +69,10 @@ describe('test before start game in auth === hosted', () => {
 	});
 
 	it('has a LiveGame component', () => {
-		expect(components.find(LiveGame).length).toEqual(1);
+		expect(components.find(LiveGame).length).toEqual(0);
+	});
+	it('has a LiveGame component', () => {
+		expect(components.find(Settings).length).toEqual(1);
 	});
 
 	it('has a NextPiece component', () => {
@@ -189,7 +193,6 @@ describe('test in start game ', () => {
 		expect(components.find(NextPiece).length).toEqual(1);
 	});
 });
-
 
 describe('test players === 0', () => {
 	beforeEach(() => {

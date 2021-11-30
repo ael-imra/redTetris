@@ -8,9 +8,10 @@ import group from '../assets/images/group.png';
 import groupA from '../assets/images/groupA.png';
 import { Validator } from '../assets/utils/validator';
 import { connect } from 'react-redux';
+import Range from '../components/Range';
 
 const CreateRoom = ({ visible, setVisible, socket }) => {
-	const [infoRoom, setInfoRoom] = React.useState({ name: '', type: '', numMax: 0, number: 0, mode: '' });
+	const [infoRoom, setInfoRoom] = React.useState({ name: '', type: '', numMax: 0, number: 0, mode: '', speed: 1000 });
 	const [error, setError] = React.useState({ name: false, type: false, numMax: false, mode: false });
 	const handleCloseModel = () => {
 		setVisible(false);
@@ -25,7 +26,7 @@ const CreateRoom = ({ visible, setVisible, socket }) => {
 		if (!Validator('numPlayer', infoRoom.numMax) && infoRoom.mode !== 'single') listError.numMax = true;
 		if (listError.name || listError.type || listError.numMax || listError.type) setError({ ...listError });
 		else {
-			socket.emit('create room', infoRoom.name, { maxPlayers: infoRoom.numMax, mode: infoRoom.mode, privacy: infoRoom.type });
+			socket.emit('create room', infoRoom.name, { maxPlayers: infoRoom.numMax, mode: infoRoom.mode, privacy: infoRoom.type, speed: infoRoom.speed });
 			handleCloseModel();
 		}
 	};
@@ -80,6 +81,15 @@ const CreateRoom = ({ visible, setVisible, socket }) => {
 				) : (
 					''
 				)}
+				<p className='text__lato text__small text__small__xl text__lato__white' style={{ marginLeft: 5 }}>
+					Level: <span style={{ color: 'red', display: error.mode ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}>You Should Select A Type</span>
+				</p>
+				<Range
+					onChange={(value) => {
+						setInfoRoom({ ...infoRoom, speed: value });
+					}}
+					value={infoRoom.speed}
+				/>
 				<p className='text__lato text__small text__small__xl' style={{ marginLeft: 5 }}>
 					Type room : <span style={{ color: 'red', display: error.mode ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}>You Should Select A Type</span>
 				</p>

@@ -142,6 +142,16 @@ describe('action newArenas()', () => {
 		expect(actionCreator.payload).toEqual({ newArena: 'new Arena', user: 'root' });
 	});
 });
+describe('action newArenas()', () => {
+	let actionCreator;
+	beforeEach(() => (actionCreator = actions.changeOptions('options')));
+	it('has the correct type', () => {
+		expect(actionCreator.type).toEqual(types.CHANGE_OPTIONS);
+	});
+	it('has the correct payload', () => {
+		expect(actionCreator.payload).toEqual('options');
+	});
+});
 
 describe('action AddRefBoxMessage()', () => {
 	let actionCreator;

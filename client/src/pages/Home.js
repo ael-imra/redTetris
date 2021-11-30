@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Button from '../components/Button';
 import Header from '../parts/Header';
@@ -8,9 +8,28 @@ import Input from '../components/Input';
 import ListRooms from '../parts/ListRooms';
 import CreateRoom from '../parts/CreateRoom';
 import actions from '../store/actions';
-const Home = ({ socket, nameSearchAction }) => {
+const Home = ({ socket, nameSearchAction, rooms, gameStore }) => {
 	const [visible, setVisible] = React.useState(false);
 	const [nameSearch, setNameSearch] = React.useState('');
+	const [interval, setIntervalDestroy] = useState(null);
+
+	React.useEffect(() => {
+		if (socket) {
+			if (interval) clearInterval(interval);
+			setIntervalDestroy(
+				setInterval(
+					(gameStore) => {
+						if (!gameStore.name) {
+							socket.emit('list rooms', rooms.nameSearch);
+						}
+					},
+					2000,
+					gameStore
+				)
+			);
+		}
+		// eslint-disable-next-line
+	}, [rooms, socket, gameStore]);
 	return (
 		<div className='home'>
 			<Header type='home' />
@@ -54,6 +73,8 @@ const Home = ({ socket, nameSearchAction }) => {
 const mapStateToProps = (state) => {
 	return {
 		socket: state.socket,
+		rooms: state.rooms,
+		gameStore: state.game,
 	};
 };
 export default connect(mapStateToProps, {

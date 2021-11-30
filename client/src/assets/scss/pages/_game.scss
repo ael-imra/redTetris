@@ -77,6 +77,14 @@
 					flex-direction: column;
 				}
 			}
+			&__settings {
+				max-width: 500px;
+				background-color: $color-white;
+				border-radius: 10px;
+				&__body {
+					padding: 3rem;
+				}
+			}
 		}
 		&__2 {
 			width: 456px;

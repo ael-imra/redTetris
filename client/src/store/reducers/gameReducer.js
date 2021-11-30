@@ -53,6 +53,8 @@ export const gameReducer = (state = { players: [], score: 0, messages: [] }, act
 			return { ...state, liveArena: init() };
 		case types.NEXT_PIECE:
 			return { ...state, nextPiece: action.payload };
+		case types.CHANGE_OPTIONS:
+			return { ...state, options: { ...action.payload } };
 		case types.INIT_NEXT_PIECE:
 			return { ...state, nextPiece: init(0, true) };
 		case types.CHANGE_HOSTED:

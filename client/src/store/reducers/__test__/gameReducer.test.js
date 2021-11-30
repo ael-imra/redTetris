@@ -180,6 +180,10 @@ describe('test reducer gameReducer', () => {
 		const action = reducers.gameReducer([], { type: types.INIT_NEXT_PIECE });
 		expect(action.nextPiece).toEqual(reducers.init(0, true));
 	});
+	it('test with CHANGE_OPTIONS type', () => {
+		const action = reducers.gameReducer([], { type: types.CHANGE_OPTIONS, payload: { name: 'options' } });
+		expect(action.options.name).toEqual('options');
+	});
 
 	it('test next piece', () => {
 		const action = reducers.gameReducer([], {

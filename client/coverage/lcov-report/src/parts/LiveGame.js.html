@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/9</span>
+                <span class='fraction'>1/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/8</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>1/3</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -100,28 +100,15 @@
 <a name='L41'></a><a href='#L41'>41</a>
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
-<a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a>
-<a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L44'></a><a href='#L44'>44</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -153,9 +140,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,19 +148,14 @@ import { connect } from 'react-redux';
 import Arena from '../components/Arena';
 import BoxHeader from '../components/BoxHeader';
 import ListUser from './ListUser';
-import actions from '../store/actions';
+import Actions from '../store/actions';
 &nbsp;
-const LiveGame = ({ gameStore, userActiveAction, initArenas }) =&gt; {
-	React.useEffect(() =&gt; {
-		if (gameStore.length !== 0) userActiveAction(gameStore.players[0]);
-		initArenas([...gameStore.players]);
-		// eslint-disable-next-line
-	}, [gameStore.players]);
-	return (
-		&lt;div className={`game__parts__1 flex flex__justify-content__space-between ${gameStore.options.mode === 'single' ? 'mode-sing' : <span class="branch-1 cbranch-no" title="branch not covered" >''}</span>`}&gt;
+const LiveGame = <span class="fstat-no" title="function not covered" >({</span> gameStore, userActiveAction }) =&gt; {
+<span class="cstat-no" title="statement not covered" >	return (</span>
+		&lt;div className={`game__parts__1 flex flex__justify-content__space-between ${gameStore.options.mode === 'single' ? 'mode-sing' : ''}`}&gt;
 			&lt;div className='game__parts__1__top'&gt;
 				{gameStore.options.mode !== 'single' ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >					&lt;&gt;</span>
+					&lt;&gt;
 						&lt;BoxHeader text='live game' /&gt;
 						{gameStore?.userActive ? (
 							&lt;div className='live-game'&gt;
@@ -204,12 +183,9 @@ const LiveGame = ({ gameStore, userActiveAction, initArenas }) =&gt; {
 		&lt;/div&gt;
 	);
 };
-const mapStateToProps = (state) =&gt; {
-	return {
-		gameStore: state.game,
-	};
-};
-export default connect(mapStateToProps, { userActiveAction: actions.userActive, initArenas: actions.arenasInit })(LiveGame);
+&nbsp;
+export default connect(null, { userActiveAction: Actions.userActive })(LiveGame);
+//
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -217,7 +193,7 @@ export default connect(mapStateToProps, { userActiveAction: actions.userActive, 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Nov 27 2021 13:04:08 GMT+0100 (GMT+01:00)
+                at Tue Nov 30 2021 19:41:25 GMT+0100 (GMT+01:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

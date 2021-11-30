@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.87% </span>
+                <span class="strong">93.93% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>31/32</span>
+                <span class='fraction'>31/33</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.33% </span>
+                <span class="strong">93.75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>28/30</span>
+                <span class='fraction'>30/32</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">90% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>9/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.29% </span>
+                <span class="strong">92.85% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>26/27</span>
+                <span class='fraction'>26/28</span>
             </div>
         
             
@@ -183,7 +183,18 @@
 <a name='L124'></a><a href='#L124'>124</a>
 <a name='L125'></a><a href='#L125'>125</a>
 <a name='L126'></a><a href='#L126'>126</a>
-<a name='L127'></a><a href='#L127'>127</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -195,14 +206,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">18x</span>
-<span class="cline-any cline-yes">18x</span>
-<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -214,7 +225,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -270,6 +281,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -304,7 +324,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -319,9 +339,10 @@ import group from '../assets/images/group.png';
 import groupA from '../assets/images/groupA.png';
 import { Validator } from '../assets/utils/validator';
 import { connect } from 'react-redux';
+import Range from '../components/Range';
 &nbsp;
 const CreateRoom = ({ visible, setVisible, socket }) =&gt; {
-	const [infoRoom, setInfoRoom] = React.useState({ name: '', type: '', numMax: 0, number: 0, mode: '' });
+	const [infoRoom, setInfoRoom] = React.useState({ name: '', type: '', numMax: 0, number: 0, mode: '', speed: 1000 });
 	const [error, setError] = React.useState({ name: false, type: false, numMax: false, mode: false });
 	const handleCloseModel = () =&gt; {
 		setVisible(false);
@@ -336,7 +357,7 @@ const CreateRoom = ({ visible, setVisible, socket }) =&gt; {
 		if (!Validator('numPlayer', infoRoom.numMax) &amp;&amp; infoRoom.mode !== 'single') listError.numMax = true;
 		if (listError.name || listError.type || listError.numMax || listError.type) setError({ ...listError });
 		else {
-			socket.emit('create room', infoRoom.name, { maxPlayers: infoRoom.numMax, mode: infoRoom.mode, privacy: infoRoom.type });
+			socket.emit('create room', infoRoom.name, { maxPlayers: infoRoom.numMax, mode: infoRoom.mode, privacy: infoRoom.type, speed: infoRoom.speed });
 			handleCloseModel();
 		}
 	};
@@ -391,6 +412,15 @@ const CreateRoom = ({ visible, setVisible, socket }) =&gt; {
 				) : (
 					''
 				)}
+				&lt;p className='text__lato text__small text__small__xl text__lato__white' style={{ marginLeft: 5 }}&gt;
+					Level: &lt;span style={{ color: 'red', display: error.mode ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}&gt;You Should Select A Type&lt;/span&gt;
+				&lt;/p&gt;
+				&lt;Range
+					onChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; {
+<span class="cstat-no" title="statement not covered" >						setInfoRoom({ ...infoRoom, speed: value });</span>
+					}}
+					value={infoRoom.speed}
+				/&gt;
 				&lt;p className='text__lato text__small text__small__xl' style={{ marginLeft: 5 }}&gt;
 					Type room : &lt;span style={{ color: 'red', display: error.mode ? 'inline-block' : 'none', fontSize: '1.3rem', marginLeft: 5 }}&gt;You Should Select A Type&lt;/span&gt;
 				&lt;/p&gt;
@@ -442,7 +472,7 @@ export default connect(mapStateToProps)(CreateRoom);
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Nov 27 2021 13:04:08 GMT+0100 (GMT+01:00)
+                at Tue Nov 30 2021 19:41:25 GMT+0100 (GMT+01:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

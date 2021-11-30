@@ -1,13 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 
 const Input = (props) => {
 	const refInput = useRef(null);
 	let blue = (e) => {
 		if (props?.onBlur) props.onBlur(e.target.value.trim());
 	};
-	useEffect(() => {
-		refInput.current.focus();
-	}, [props.isError]);
 	const className = `input ${props.className || ''} ${props.isError ? 'input__error' : ''} ${
 		props.color === 'white' ? 'input__white' : props.color === 'blackFocus' ? 'input__blackFocus' : 'input__black'
 	} ${props.size === 'small' ? 'input__small' : 'input__large'}`;

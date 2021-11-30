@@ -8,12 +8,18 @@ import Header from '../parts/Header';
 import LiveGame from '../parts/LiveGame';
 import StartGame from '../parts/StartGame';
 import Button from '../components/Button';
-const Game = ({ gameStore, socket, auth }) => {
+import Settings from '../parts/Settings';
+import actions from '../store/actions';
+const Game = ({ gameStore, socket, auth, userActiveAction, initArenas, onUserActive }) => {
 	const arenaRef = useRef(null);
 	React.useEffect(() => {
-		if (arenaRef && arenaRef?.current) arenaRef.current.focus();
-	}, [arenaRef]);
-
+		if (gameStore.length !== 0) userActiveAction(gameStore.players[0]);
+		initArenas([...gameStore.players]);
+		// eslint-disable-next-line
+	}, [gameStore.players]);
+	const handleSubmit = (data) => {
+		socket.emit('options', data);
+	};
 	return (
 		<div className='game flex flex__direction__column'>
 			<Header type='home' />
@@ -23,7 +29,13 @@ const Game = ({ gameStore, socket, auth }) => {
 				</p>
 			</div>
 			<div className='game__parts flex flex__justify-content__space-evenly'>
-				{gameStore.players.length !== 0 ? <LiveGame /> : <div className='game__parts__1'></div>}
+				{gameStore.options.mode !== 'single' && gameStore.startGame ? (
+					<LiveGame gameStore={gameStore} />
+				) : gameStore.hosted === auth && !gameStore.startGame ? (
+					<Settings info={gameStore.options} startGame={gameStore.startGame} handleSubmit={(data) => handleSubmit(data)} />
+				) : (
+					<div className='game__parts__1'></div>
+				)}
 				<div className='game__parts__2'>
 					{gameStore.hosted === auth && !gameStore.startGame ? (
 						<StartGame />
@@ -111,7 +123,7 @@ const Game = ({ gameStore, socket, auth }) => {
 						<div className='game__parts__3__box'>
 							<BoxHeader text='Next Piece' />
 							<div className='flex flex__align-items__center flex__justify-content__center game__parts__3__box__div'>
-								<NextPiece />
+								<NextPiece nextPiece={gameStore.nextPiece} />
 							</div>
 						</div>
 						<div className='game__parts__3__box'>
@@ -133,11 +145,9 @@ const Game = ({ gameStore, socket, auth }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		// arena: state.myArena,
-		// gameStore: state.startGame,
 		gameStore: state.game,
 		socket: state.socket,
 		auth: state.auth,
 	};
 };
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, { initArenas: actions.arenasInit, userActiveAction: actions.userActive })(Game);

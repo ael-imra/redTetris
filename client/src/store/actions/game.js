@@ -145,3 +145,9 @@ export const changeHosted = (hosted) => {
 		payload: hosted,
 	};
 };
+export const changeOptions = (options) => {
+	return {
+		type: types.CHANGE_OPTIONS,
+		payload: options,
+	};
+};

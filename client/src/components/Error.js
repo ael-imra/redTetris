@@ -1,7 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import imageClose from '../assets/images/error.png';
-import Header from '../parts/Header';
 
 const Error = ({ error, closeErrorAction }) => {
 	return (

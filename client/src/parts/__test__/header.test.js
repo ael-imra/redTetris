@@ -25,7 +25,7 @@ describe('testing header  login', () => {
 	beforeEach(() => {
 		component = mount(
 			<Root initialState={{ auth: 'text' }}>
-				<Header />
+				<Header type='Login' />
 			</Root>
 		);
 	});

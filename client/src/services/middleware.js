@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../store/actions/';
 import * as shapes from '../assets/utils/shapes';
@@ -7,7 +7,6 @@ import { init } from '../store/reducers/gameReducer';
 import { Validator } from '../assets/utils/validator';
 import { io } from 'socket.io-client';
 const SocketMiddle = (props) => {
-	const [interval, setIntervalDestroy] = useState(null);
 	const resetNext = init(0, true);
 	React.useEffect(() => {
 		if (Validator('urlRoom', window.location.hash) && !props.socket) {
@@ -27,22 +26,29 @@ const SocketMiddle = (props) => {
 		if (props.socket) {
 			props.socket.on('connected', (player) => {
 				props.authAction(player.name);
+				props.socket.emit('list rooms');
 			});
+
 			props.socket.on('handle error', (error) => {
 				props.handleErrorAction(error);
 			});
+
 			props.socket.on('game paused', () => {
 				props.pauseGameAction();
 			});
+
 			props.socket.on('room exited', () => {
 				window.location.href = '/#';
 				props.changeUrlAction('/');
 				props.resetGameAction();
 			});
+
 			props.socket.on('list rooms', (listRoom) => {
 				props.listRoomsAction(listRoom.data);
 			});
+
 			props.socket.on('player exited', ({ name, hosted }) => {
+				console.log(hosted);
 				props.removeUserAction(name);
 				props.changeHostedConnect(hosted);
 			});
@@ -50,8 +56,12 @@ const SocketMiddle = (props) => {
 			props.socket.on('game started', () => {
 				props.startGameAction();
 			});
+
 			props.socket.on('player joined', (player) => {
 				props.addUserInRoomAction(player.name);
+			});
+			props.socket.on('options', (info) => {
+				props.changeOptionsAction(info);
 			});
 		}
 		// eslint-disable-next-line
@@ -63,25 +73,11 @@ const SocketMiddle = (props) => {
 			props.socket.on('game restarted', (room) => {
 				let gameInfo = room;
 				gameInfo.players = gameInfo.players.filter((player) => player !== props.auth);
-				props.initGameAction({ ...gameInfo });
+				props.initGameAction({ ...gameInfo, startGame: true });
 			});
 		}
-	}, [props.auth, props.socket]);
-	React.useEffect(() => {
-		if (props.socket && !props.gameStore.name) {
-			props.socket.emit('list rooms', props.rooms.nameSearch);
-			if (interval) clearInterval(interval);
-			setIntervalDestroy(
-				setInterval(() => {
-					if (!props.gameStore.name) {
-						console.log('ok');
-						props.socket.emit('list rooms', props.rooms.nameSearch);
-					}
-				}, 2000)
-			);
-		}
 		// eslint-disable-next-line
-	}, [props.rooms, props.socket]);
+	}, [props.auth, props.socket]);
 
 	React.useEffect(() => {
 		if (props.socket) {
@@ -101,9 +97,9 @@ const SocketMiddle = (props) => {
 			props.socket.on('piece moved', (info) => {
 				if (info.player === props.auth) {
 					const newShape = shapes[info.shape](...info.point);
-					let test = draw(newShape, JSON.parse(JSON.stringify(props.gameStore.arenaTmp)), info.color);
+					let newArena = draw(newShape, JSON.parse(JSON.stringify(props.gameStore.arenaTmp)), info.color);
 					const shadow = shapes[info.shape](info.point[0], info.shadow);
-					props.liveArenaAction(draw(shadow, test, 7));
+					props.liveArenaAction(draw(shadow, newArena, 7));
 				}
 			});
 		}
@@ -115,7 +111,7 @@ const SocketMiddle = (props) => {
 			props.socket.off('message');
 			props.socket.on('message', (message) => {
 				props.addMessageAction(message.message, message.name);
-				setTimeout((props.gameStore.refBoxChat.current.scrollTop = props.gameStore.refBoxChat.current.scrollHeight), 0);
+				setTimeout((props.gameStore.refBoxChat.current.scrollTop = props.gameStore.refBoxChat.current.scrollHeight), 1);
 			});
 		}
 		// eslint-disable-next-line
@@ -168,4 +164,5 @@ export default connect(matStateToProps, {
 	setAuth: actions.authAction,
 	socketConnect: actions.socketConnect,
 	changeHostedConnect: actions.changeHosted,
+	changeOptionsAction: actions.changeOptions,
 })(SocketMiddle);
