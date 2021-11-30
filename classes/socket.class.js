@@ -1,5 +1,7 @@
 const io = require('socket.io')
 const socketCookieParser = require('socket.io-cookie-parser')
+const SocketSubscription = require('../subscriptions/socket.subscription')
+const _sockets = {}
 class Socket {
     run(server, port) {
         if (port)
@@ -15,8 +17,14 @@ class Socket {
         if (this.io) {
             this.io.use(socketCookieParser())
             this.io.use(this.middleware)
-            this.io.on('connect', ((socket) => socket))
+            this.io.on('connect', ((socket) => _sockets[socket.username] = new SocketSubscription(this, socket)).bind(this))
         }
+    }
+    getSocket(username) {
+        return _sockets[username]
+    }
+    removeSocket(username) {
+        delete _sockets[username]
     }
     middleware(socket, next) {
         if (socket?.request?.cookies?.name) {

@@ -29,6 +29,9 @@ class Room {
         this.setOptions(options)
         _rooms[name] = this
     }
+    static get rooms() {
+        return _rooms
+    }
     static getRoom(name) {
         return _rooms[name]
     }

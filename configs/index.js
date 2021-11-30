@@ -24,4 +24,11 @@ module.exports = {
     MOVE_LEFT: 37,
     MOVE_RIGHT: 39,
     MOVE_DEEP_DOWN: 32,
+    HTML_ENTITIES: {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&apos;"
+    }
 }

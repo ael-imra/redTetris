@@ -71,7 +71,6 @@ describe('Engine Class', () => {
         const pieceMovedInfo = engine.generateInfo('piece moved')
         const pieceCompletedInfo = engine.generateInfo('piece completed')
         const info = engine.generateInfo()
-        console.log(engine)
         expect(pieceMovedInfo).to.instanceof(Object)
         expect(pieceMovedInfo.point).to.instanceof(Array)
         expect(pieceMovedInfo.point.length).to.equal(2)
