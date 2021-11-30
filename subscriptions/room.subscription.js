@@ -1,6 +1,6 @@
-const CustomError = require("../utils/errors")
 const Room = require("../classes/room.class")
 const { validate } = require("../utils")
+const { CustomError } = require("../utils/errors")
 
 module.exports = class RoomSubscription {
     static get(name, page, limit) {
@@ -33,7 +33,6 @@ module.exports = class RoomSubscription {
             const room = this.player.room
             return room.info
         }
-        return null
     }
     static kick(username) {
         if (validate('name', username) && this.player && this.player.room)
@@ -41,16 +40,19 @@ module.exports = class RoomSubscription {
         return false
     }
     static message(message) {
-        if (typeof message === 'string' && message.trim() && this.player && this.player.room) {
+        if (validate('message', message) && message.trim() && this.player && this.player.room) {
             const msg = { name: this.player.name, message }
             this.player.room.messages.push(msg)
             return msg
         }
         return null
     }
+    static setOptions(options) {
+        if (typeof options === 'object' && this.player && this.player.room)
+            if (this.player.room.hosted && this.player.room.hosted.name === this.player.name)
+                this.player.room.setOptions(options)
+    }
     static exit() {
-        if (this.player && this.player.room)
-            return this.player.room.exit(this.player)
-        return false
+        return this.player.room.exit(this.player)
     }
 }

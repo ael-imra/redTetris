@@ -1,5 +1,5 @@
 const { MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DEEP_DOWN } = require("../configs")
-const CustomError = require("../utils/errors")
+const { CustomError } = require("../utils/errors")
 
 module.exports = class GameSubscription {
     static getInfo(event) {

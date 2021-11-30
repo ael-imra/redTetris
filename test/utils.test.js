@@ -1,4 +1,4 @@
-const { removeUnexpectedProperties, validate } = require('../utils')
+const { removeUnexpectedProperties, escape } = require('../utils')
 const expect = require('chai').expect
 
 describe('Utils', () => {
@@ -18,6 +18,6 @@ describe('Utils', () => {
         )
     })
     it('Should escape special characters', () => {
-        expect(escape('<script>alert(\'&1"\')</script>')).to.equal('%3Cscript%3Ealert%28%27%261%22%27%29%3C/script%3E')
+        expect(escape('<script>alert(\'&1"\')</script>')).to.equal('&lt;script&gt;alert(&apos;&amp;1&quot;&apos;)&lt;/script&gt;')
     })
 })

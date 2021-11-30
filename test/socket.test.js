@@ -76,6 +76,23 @@ describe('Socket Class', () => {
         })
         io.emit('create room', 'room1')
     })
+    it('Should try to create two room', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            let joined = false
+            io.on('room joined', () => {
+                joined = true
+            })
+            setTimeout(() => {
+                if (!joined) {
+                    io.disconnect()
+                    done()
+                }
+            }, 200)
+            io.emit('create room', 'room2')
+        })
+        io.emit('create room', 'room1')
+    })
     it('Should not join room with single mode', (done) => {
         const io = connect(1338, 'player')
         io.on('room joined', () => {
@@ -103,6 +120,23 @@ describe('Socket Class', () => {
             io2.emit('join room', 'room1')
         })
         io.emit('create room', 'room1', { mode: 'multi' })
+    })
+    it('Should try to join two room', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            let joined = false
+            io.on('room joined', () => {
+                joined = true
+            })
+            setTimeout(() => {
+                if (!joined) {
+                    io.disconnect()
+                    done()
+                }
+            }, 200)
+            io.emit('join room', 'room1')
+        })
+        io.emit('join room', 'room1')
     })
     it('Should get one room', (done) => {
         const io = connect(1338, 'player')
@@ -161,12 +195,41 @@ describe('Socket Class', () => {
         })
         io.emit('create room', 'room1', { mode: 'multi' })
     })
+    it('Should try to kick incorrect player name', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            let exited = false
+            io.on('player exited', () => exited = true)
+            setTimeout(() => {
+                if (!exited) {
+                    io.disconnect()
+                    done()
+                }
+            }, 200)
+            io.emit('kick', 'er')
+        })
+        io.emit('create room', 'room1', { mode: 'multi' })
+    })
     it('Should exit player from room1', (done) => {
         const io = connect(1338, 'player')
         io.on('room joined', () => {
             io.on('room exited', () => {
                 io.disconnect()
                 done()
+            })
+            io.emit('exit room')
+        })
+        io.emit('create room', 'room1')
+    })
+    it('Should try exit twice from room1', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            io.on('room exited', () => {
+                io.emit('exit room')
+                setTimeout(() => {
+                    io.disconnect()
+                    done()
+                }, 200)
             })
             io.emit('exit room')
         })
@@ -180,7 +243,7 @@ describe('Socket Class', () => {
                 io.on('message', (msg) => {
                     expect(msg).to.instanceOf(Object)
                     expect(msg.name).to.equal('player')
-                    expect(msg.message).to.equal('hello%20world')
+                    expect(msg.message).to.equal('hello world')
                     io.disconnect()
                     io2.disconnect()
                     done()
@@ -190,6 +253,35 @@ describe('Socket Class', () => {
             io2.emit('join room', 'room1')
         })
         io.emit('create room', 'room1', { mode: 'multi' })
+    })
+    it('Should not send incorrect message', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            let send = false
+            io.on('message', () => send = true)
+            setTimeout(() => {
+                if (!send) {
+                    io.disconnect()
+                    done()
+                }
+            }, 200)
+            io.emit('message', '        ')
+        })
+        io.emit('create room', 'room1', { mode: 'multi' })
+    })
+    it('Should change options', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            io.on('options', (options) => {
+                expect(options).to.instanceOf(Object)
+                expect(options.speed).to.equal(200)
+                expect(options.mode).to.equal('multi')
+                io.disconnect()
+                done()
+            })
+            io.emit('options', { mode: 'multi', speed: 200 })
+        })
+        io.emit('create room', 'room1')
     })
     it('Should start game', (done) => {
         const io = connect(1338, 'player')
@@ -201,6 +293,15 @@ describe('Socket Class', () => {
             io.emit('start game')
         })
         io.emit('create room', 'room1')
+    })
+    it('Should start game throw you need to join room first', (done) => {
+        const io = connect(1338, 'player')
+        io.on('handle error', (error) => {
+            expect(error).to.equal('you need to join room first')
+            io.disconnect()
+            done()
+        })
+        io.emit('start game')
     })
     it('Should pause game', (done) => {
         const io = connect(1338, 'player')
@@ -216,6 +317,27 @@ describe('Socket Class', () => {
         })
         io.emit('create room', 'room1')
     })
+    it('Should pause game throw game not started yet', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            io.on('handle error', (error) => {
+                expect(error).to.equal('game not started yet')
+                io.disconnect()
+                done()
+            })
+            io.emit('pause game')
+        })
+        io.emit('create room', 'room1')
+    })
+    it('Should pause game throw you need to join room first', (done) => {
+        const io = connect(1338, 'player')
+        io.on('handle error', (error) => {
+            expect(error).to.equal('you need to join room first')
+            io.disconnect()
+            done()
+        })
+        io.emit('pause game')
+    })
     it('Should restart game', (done) => {
         const io = connect(1338, 'player')
         io.on('room joined', () => {
@@ -230,6 +352,27 @@ describe('Socket Class', () => {
         })
         io.emit('create room', 'room1')
     })
+    it('Should restart game throw game not started yet', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            io.on('handle error', (error) => {
+                expect(error).to.equal('game not started yet')
+                io.disconnect()
+                done()
+            })
+            io.emit('restart game')
+        })
+        io.emit('create room', 'room1')
+    })
+    it('Should restart game throw you need to join room first', (done) => {
+        const io = connect(1338, 'player')
+        io.on('handle error', (error) => {
+            expect(error).to.equal('you need to join room first')
+            io.disconnect()
+            done()
+        })
+        io.emit('restart game')
+    })
     it('Should move piece', (done) => {
         const io = connect(1338, 'player')
         io.on('room joined', () => {
@@ -241,6 +384,32 @@ describe('Socket Class', () => {
                 io.emit('move piece', MOVE_LEFT)
             })
             io.emit('start game')
+        })
+        io.emit('create room', 'room1')
+    })
+    it('Should move piece throw Incorrect Key', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            io.on('game started', () => {
+                io.on('handle error', (error) => {
+                    expect(error).to.equal('Incorrect Key')
+                    io.disconnect()
+                    done()
+                })
+                io.emit('move piece', 122)
+            })
+            io.emit('start game')
+        })
+        io.emit('create room', 'room1')
+    })
+    it('Should not move piece', (done) => {
+        const io = connect(1338, 'player')
+        io.on('room joined', () => {
+            io.emit('move piece', MOVE_LEFT)
+            setTimeout(() => {
+                io.disconnect()
+                done()
+            }, 500)
         })
         io.emit('create room', 'room1')
     })

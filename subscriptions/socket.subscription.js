@@ -1,8 +1,8 @@
-const CustomError = require('../utils/errors')
 const Player = require('../classes/player.class')
-const { validate } = require('../utils')
+const { validate, escape } = require('../utils')
 const RoomSubscription = require('./room.subscription')
 const GameSubscription = require('./game.subscription')
+const { CustomError } = require('../utils/errors')
 
 module.exports = class SocketSubscription {
     constructor(master, socket) {
@@ -24,7 +24,7 @@ module.exports = class SocketSubscription {
         this.socket.on('exit room', this.exitRoom.bind(this))
         this.socket.on('kick', this.kickRoom.bind(this))
         this.socket.on('message', this.sendMessage.bind(this))
-        this.socket.on('message', this.sendMessage.bind(this))
+        this.socket.on('options', this.options.bind(this))
         this.socket.on('start game', this.startGame.bind(this))
         this.socket.on('pause game', this.pauseGame.bind(this))
         this.socket.on('restart game', this.restartGame.bind(this))
@@ -97,12 +97,20 @@ module.exports = class SocketSubscription {
 
     sendMessage(message) {
         try {
-            if (validate('message', message.trim())) {
-                const msg = RoomSubscription.message.call(this, escape(message.trim()))
-                if (msg) this.io.to(this.player.room.name).emit('message', msg)
-            }
+            const msg = RoomSubscription.message.call(this, escape(message.trim()))
+            if (msg) this.io.to(this.player.room.name).emit('message', msg)
         } catch (error) {
             this.handleError(error)
+        }
+    }
+
+    options(options) {
+        if (this.player && this.player.room) {
+            const room = this.player.room
+            RoomSubscription.setOptions.call(this, options)
+            this.io
+                .to(room.name)
+                .emit('options', room.options)
         }
     }
 
@@ -166,7 +174,6 @@ module.exports = class SocketSubscription {
         try {
             if (GameSubscription.pause.call(this)) {
                 const room = this.player.room
-                console.log("PAUSED")
                 this.io.to(room.name).emit('game paused')
             }
         } catch (error) {
@@ -178,7 +185,7 @@ module.exports = class SocketSubscription {
         try {
             if (GameSubscription.restart.call(this)) {
                 const room = this.player.room
-                this.io.to(room.name).emit('game restarted')
+                this.io.to(room.name).emit('game restarted', room.info)
             }
         } catch (error) {
             this.handleError(error)
@@ -207,6 +214,7 @@ module.exports = class SocketSubscription {
     }
 
     handleError(error) {
-        this.socket.emit('handle error', error.message)
+        if (error instanceof CustomError)
+            this.socket.emit('handle error', error.message)
     }
 }
