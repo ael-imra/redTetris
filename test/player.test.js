@@ -1,0 +1,101 @@
+const Player = require('../classes/player.class')
+const Room = require('../classes/room.class')
+const expect = require('chai').expect
+
+describe('Player Class', () => {
+    it('Should throw incorrect name', () => {
+        expect(() => new Player('n')).to.throw(
+            'incorrect player name'
+        )
+    })
+    it('Should create player with name player', () => {
+        const player = new Player('player1')
+        expect(player).to.instanceOf(Player)
+        player.disconnect()
+    })
+    it('Should throw player name already exist', () => {
+        const player = new Player('player1')
+        expect(() => new Player('player1')).to.throw('player name already exist')
+        player.disconnect()
+    })
+    it('Should get player with name player1', () => {
+        const player = new Player('player1')
+        const pl = Player.getPlayer('player1')
+        expect(pl).to.instanceOf(Player)
+        expect(pl.name).to.equal('player1')
+        player.disconnect()
+    })
+    it('Should create room throw incorrect room name', () => {
+        const player = new Player('player1')
+        expect(() => player.create()).to.throw('incorrect room name')
+        player.disconnect()
+    })
+    it('Should create room with name room', () => {
+        const player = new Player('player1')
+        player.create('room')
+        expect(player.room).to.instanceOf(Room)
+        expect(player.room.name).to.equal('room')
+        player.disconnect()
+    })
+    it('Should not create new room for current player', () => {
+        const player = new Player('player1')
+        player.create('room')
+        expect(player.create('secondRoom')).to.equal(false)
+        player.disconnect()
+    })
+    it('Should create room throw room with this name already exist', () => {
+        const player = new Player('player1')
+        player.create('room')
+        const newPlayer = new Player('newPlayer')
+        expect(() => newPlayer.create('room')).to.throw('room with this name already exist')
+        newPlayer.disconnect()
+        player.disconnect()
+    })
+    it('Should create with customs options', () => {
+        const player = new Player('player')
+        player.create('room', { mode: 'multi', maxPlayers: 2 })
+        expect(player.room).to.instanceOf(Room)
+        expect(player.room.options).to.instanceOf(Object)
+        expect(player.room.options.mode).to.equal('multi')
+        expect(player.room.options.maxPlayers).to.equal(2)
+        player.disconnect()
+    })
+    it('Should join room throw player already in room', () => {
+        const player = new Player('player1')
+        player.create('room')
+        expect(() => player.join('room')).to.throw('player already in room')
+        player.disconnect()
+    })
+    it('Should join room throw can\'t join this room', () => {
+        const player = new Player('player1')
+        player.create('room')
+        const newPlayer = new Player('newPlayer')
+        expect(() => newPlayer.join('room')).to.throw('can\'t join this room')
+        newPlayer.disconnect()
+        player.disconnect()
+    })
+    it('Should join room create new room', () => {
+        const player = new Player('player1')
+        player.join('room')
+        expect(player.room).to.instanceOf(Room)
+        expect(player.room.name).to.equal('room')
+        player.disconnect()
+    })
+    it('Should join room with name room3', () => {
+        const player = new Player('player')
+        player.create('room', { mode: 'multi', maxPlayers: 2 })
+        const newPlayer = new Player('newPlayer')
+        newPlayer.join('room')
+        expect(newPlayer.room).to.instanceOf(Room)
+        expect(newPlayer.room.name).to.equal('room')
+        newPlayer.disconnect()
+        player.disconnect()
+    })
+    it('Should disconnect exit from room', () => {
+        const player = new Player('player')
+        player.join('room')
+        expect(player.disconnect()).to.equal(true)
+        expect(player.room).to.equal(undefined)
+        expect(Player.getPlayer('player')).to.equal(undefined)
+    })
+})
