@@ -99,7 +99,9 @@ class Room {
                 this.hosted = this.players[players[1]]
             else if (this.hosted.name === player.name) delete _rooms[this.name]
             if (this.game && this.game.engines && this.game.engines[player.name])
-                this.game.engines[player.name].clean()
+                this.game.removePlayer(this.game.engines[player.name].player)
+            if (this.game)
+                this.game.checkWinner()
             delete this.players[player.name].room
             delete this.players[player.name]
             return true
@@ -135,7 +137,7 @@ class Room {
     }
     restartGame(player) {
         if (this.game && this.game.isStarted && this.options.mode !== MODE_SINGLE) throw new CustomError('cat\'t restart game while still players playing')
-        if (this.hosted.name === player.name && this.game.isStarted) return this.game.restart()
+        if (this.hosted.name === player.name) return this.game.restart()
         return false
     }
 }

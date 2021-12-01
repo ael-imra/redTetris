@@ -109,6 +109,8 @@ class Engine {
     win() {
         this.isWin = true
         this.setPiece(this.piece.shape(...this.piece.point))
+        if (typeof this.game.room.listener === 'function')
+            this.game.room.listener('piece completed', this.player)
         this.clean()
     }
     getShadow() {
