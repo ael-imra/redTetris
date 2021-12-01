@@ -22,7 +22,7 @@ const validate = function (type, value) {
     if (type === 'name' && typeof value === 'string')
         return /[a-zA-Z0-9]{3,25}/.test(value)
     else if (type === 'message' && typeof value === 'string')
-        return /.{3,255}/.test(value)
+        return /.{1,255}/.test(value)
     return false
 }
 const removeUnexpectedProperties = function (

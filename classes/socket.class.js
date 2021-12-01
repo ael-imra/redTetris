@@ -1,5 +1,6 @@
 const io = require('socket.io')
 const socketCookieParser = require('socket.io-cookie-parser')
+const { ORIGIN } = require('../configs')
 const SocketSubscription = require('../subscriptions/socket.subscription')
 const _sockets = {}
 class Socket {
@@ -8,12 +9,17 @@ class Socket {
             this.io = io(port, {
                 transports: ['websocket', 'polling'],
                 cors: {
-                    origin: true,
+                    origin: ORIGIN,
                     credentials: true,
                 },
             })
         else if (server)
-            this.io = new io.Server(server)
+            this.io = new io.Server(server, {
+                cors: {
+                    origin: ORIGIN,
+                    credentials: true,
+                }
+            })
         if (this.io) {
             this.io.use(socketCookieParser())
             this.io.use(this.middleware)

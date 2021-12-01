@@ -11,6 +11,7 @@ module.exports = class SocketSubscription {
             this.io = master.io
             this.socket = socket
             this.player = new Player(this.socket.username)
+            this.socket.emit('connected', this.player)
             this.handleEvents()
         } catch (error) {
             this.handleError(error)
@@ -140,6 +141,7 @@ module.exports = class SocketSubscription {
             if (this.player) {
                 const room = this.player.room
                 const name = this.player.name
+                this.player.disconnect()
                 if (room) {
                     this.io
                         .to(room.name)
@@ -148,7 +150,6 @@ module.exports = class SocketSubscription {
                         .to(room.name)
                         .emit('player exited', { name, hosted: room.hosted.name })
                 }
-                this.player.disconnect()
                 this.master.removeSocket(this.player.name)
             }
         } catch (error) {
@@ -205,7 +206,11 @@ module.exports = class SocketSubscription {
             if (player && player.room) {
                 const room = player.room
                 const info = GameSubscription.getInfo.call({ player }, event)
-                if (info)
+                if (event === 'piece completed') {
+                    if (info)
+                        this.io.to(room.name).emit(event, info)
+                }
+                else if (info)
                     this.io.to(room.name).emit(event, info)
             }
         } catch (error) {

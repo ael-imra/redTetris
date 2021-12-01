@@ -110,6 +110,8 @@ class Engine {
         this.isWin = true
         this.setPiece(this.piece.shape(...this.piece.point))
         this.clean()
+        if (typeof this.game.room.listener === 'function')
+            this.game.room.listener('piece completed', this.player)
     }
     getShadow() {
         let y = this.piece.point[1]
