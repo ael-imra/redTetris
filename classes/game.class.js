@@ -75,7 +75,7 @@ class Game {
     addPenalty(player) {
         if (this.room.options.mode !== MODE_SINGLE)
             for (const key of Object.keys(this.engines)) {
-                if (key !== player.name) {
+                if (key !== player.name && !this.engines[key].isFailed) {
                     const field = this.engines[key].field
                     for (let y = field.length - 1; y >= 0; y--)
                         if (field[y][0] !== COLOR_BLOCKED_LINE) {
@@ -92,7 +92,6 @@ class Game {
     checkWinner() {
         const engines = Object.values(this.engines).filter(eng => !eng.isFailed)
         if (engines.length === 1) {
-            this.isStarted = false
             engines[0].win()
             return true
         }

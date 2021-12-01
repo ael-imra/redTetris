@@ -2,8 +2,8 @@ const Socket = require('../classes/socket.class')
 const socketClient = require('socket.io-client')
 const { expect } = require('chai')
 const App = require('../classes/app.class')
-const { MOVE_LEFT } = require('../configs')
-const ROOT_DIR = `${__dirname}/../static`
+const { MOVE_LEFT, CLIENT_DIR } = require('../configs')
+const { pJoin } = require('../utils')
 
 function connect(port, name) {
     return socketClient.connect(`http://localhost:${port}`, {
@@ -44,7 +44,7 @@ describe('Socket Class', () => {
         }, 1000)
     })
     it('Should create socket from server', (done) => {
-        const app = new App(ROOT_DIR)
+        const app = new App(pJoin(__dirname, '..', CLIENT_DIR))
         app.serve(1337, () => {
             const socket = new Socket()
             socket.run(app.server)

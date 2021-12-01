@@ -1,12 +1,12 @@
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const App = require('../classes/app.class')
-const { HOST } = require('../configs')
+const { HOST, CLIENT_DIR } = require('../configs')
 const { pJoin } = require('../utils')
 const { FOLDER_NOT_FOUND } = require('../utils/errors')
 
 chai.use(chaiHttp)
-const app = new App(pJoin(__dirname, '..', 'static'))
+const app = new App(pJoin(__dirname, '..', CLIENT_DIR))
 let headers = {}
 describe('App Class', () => {
     beforeEach((done) => {

@@ -11,7 +11,7 @@ describe('Piece Class', () => {
         const player = new Player('player')
         player.create('room')
         player.room.startGame(player)
-        player.room.pauseGame(player)
+        player.room.game.engines[player.name].clean()
         const engine = player.room.game.engines.player
         const pieces = [engine.piece.shape, engine.nextPiece.shape]
         pieces.push(player.room.game.pieces[2].clone(engine).shape)
@@ -27,7 +27,7 @@ describe('Piece Class', () => {
         const player = new Player('player')
         player.create('room')
         player.room.startGame(player)
-        player.room.pauseGame(player)
+        player.room.game.engines[player.name].clean()
         const engine = player.room.game.engines.player
         engine.piece.point = [4, 4]
         engine.piece.shape = SHAPE_J_1
@@ -40,7 +40,7 @@ describe('Piece Class', () => {
         const player = new Player('player')
         player.create('room')
         player.room.startGame(player)
-        player.room.pauseGame(player)
+        player.room.game.engines[player.name].clean()
         const engine = player.room.game.engines.player
         engine.piece.point = [4, PLAYGROUND_HEIGHT]
         engine.piece.shape = SHAPE_I_1
@@ -53,7 +53,7 @@ describe('Piece Class', () => {
         const player = new Player('player')
         player.create('room')
         player.room.startGame(player)
-        player.room.pauseGame(player)
+        player.room.game.engines[player.name].clean()
         const engine = player.room.game.engines.player
         engine.piece.point = [4, 4]
         engine.piece.shape = SHAPE_I_1
@@ -66,7 +66,7 @@ describe('Piece Class', () => {
         const player = new Player('player')
         player.create('room')
         player.room.startGame(player)
-        player.room.pauseGame(player)
+        player.room.game.engines[player.name].clean()
         const engine = player.room.game.engines.player
         engine.piece.shape = SHAPE_I_2
         engine.piece.point = [PLAYGROUND_WIDTH, 4]
@@ -78,7 +78,7 @@ describe('Piece Class', () => {
         const player = new Player('player')
         player.create('room')
         player.room.startGame(player)
-        player.room.pauseGame(player)
+        player.room.game.engines[player.name].clean()
         const engine = player.room.game.engines.player
         engine.piece.shape = SHAPE_I_2
         engine.piece.point = [-2, 4]
@@ -90,7 +90,7 @@ describe('Piece Class', () => {
         const player = new Player('player')
         player.create('room')
         player.room.startGame(player)
-        player.room.pauseGame(player)
+        player.room.game.engines[player.name].clean()
         const engine = player.room.game.engines.player
         const currentPoint = [4, 4]
         engine.piece.shape = SHAPE_J_1
@@ -103,7 +103,7 @@ describe('Piece Class', () => {
         const player = new Player('player')
         player.create('room')
         player.room.startGame(player)
-        player.room.pauseGame(player)
+        player.room.game.engines[player.name].clean()
         const engine = player.room.game.engines.player
         const currentPoint = [4, 4]
         engine.piece.shape = SHAPE_J_1
@@ -116,7 +116,7 @@ describe('Piece Class', () => {
         const player = new Player('player')
         player.create('room')
         player.room.startGame(player)
-        player.room.pauseGame(player)
+        player.room.game.engines[player.name].clean()
         const engine = player.room.game.engines.player
         const currentPoint = [4, 4]
         engine.piece.point = [4, 4]
@@ -129,7 +129,7 @@ describe('Piece Class', () => {
         const player = new Player('player')
         player.create('room')
         player.room.startGame(player)
-        player.room.pauseGame(player)
+        player.room.game.engines[player.name].clean()
         const engine = player.room.game.engines.player
         engine.piece.point = [4, 4]
         engine.piece.shape = SHAPE_J_1
@@ -141,7 +141,7 @@ describe('Piece Class', () => {
         const player = new Player('player')
         player.create('room')
         player.room.startGame(player)
-        player.room.pauseGame(player)
+        player.room.game.engines[player.name].clean()
         const engine = player.room.game.engines.player
         const currentShape = engine.piece.shape
         engine.piece.point = [4, PLAYGROUND_HEIGHT]

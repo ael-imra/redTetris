@@ -27,7 +27,7 @@ class Engine {
         return field
     }
     movePiece(key) {
-        if (!this.isWin && !this.isFailed) {
+        if (!this.isWin && !this.isFailed && !this.game.isPaused) {
             this.piece.move(key)
             if (typeof this.game.room.listener === 'function' && !this.isFailed)
                 this.game.room.listener('piece moved', this.player)
@@ -110,8 +110,6 @@ class Engine {
         this.isWin = true
         this.setPiece(this.piece.shape(...this.piece.point))
         this.clean()
-        if (typeof this.game.room.listener === 'function')
-            this.game.room.listener('piece completed', this.player)
     }
     getShadow() {
         let y = this.piece.point[1]

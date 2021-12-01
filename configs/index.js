@@ -33,5 +33,6 @@ module.exports = {
     },
     MIN_SPEED: 200,
     MAX_SPEED: 1500,
-    ORIGIN: 'http://localhost:3001'
+    ORIGIN: 'http://localhost:3001',
+    CLIENT_DIR: 'client/build'
 }

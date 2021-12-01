@@ -16,6 +16,7 @@ class Player {
     join(name) {
         if (!this.room) {
             const room = Room.getRoom(name)
+            if (room && room.game && room.game.isStarted) throw new CustomError("can't join room while game started")
             if (room && room.add(this))
                 this.room = room
             else

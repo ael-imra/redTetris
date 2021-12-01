@@ -99,9 +99,7 @@ class Room {
                 this.hosted = this.players[players[1]]
             else if (this.hosted.name === player.name) delete _rooms[this.name]
             if (this.game && this.game.engines && this.game.engines[player.name])
-                this.game.removePlayer(player)
-            if (this.game)
-                this.game.checkWinner()
+                this.game.engines[player.name].clean()
             delete this.players[player.name].room
             delete this.players[player.name]
             return true
@@ -116,7 +114,7 @@ class Room {
     startGame(player, listener) {
         if (
             this.options.mode !== MODE_SINGLE &&
-            Object.keys(this.players).length < MIN_PLAYERS
+            Object.keys(this.players).length === 1
         )
             throw new CustomError('room need at least 2 player to start game')
         if (this.hosted.name === player.name) {
@@ -136,12 +134,8 @@ class Room {
         return false
     }
     restartGame(player) {
-        if (
-            this.options.mode !== MODE_SINGLE &&
-            Object.keys(this.players).length < MIN_PLAYERS
-        )
-            throw new CustomError('room need at least 2 player to start game')
-        if (this.hosted.name === player.name) return this.game.restart()
+        if (this.game && this.game.isStarted && this.options.mode !== MODE_SINGLE) throw new CustomError('cat\'t restart game while still players playing')
+        if (this.hosted.name === player.name && this.game.isStarted) return this.game.restart()
         return false
     }
 }
