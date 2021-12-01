@@ -4,6 +4,8 @@ const {
     MAX_PLAYERS,
     MIN_PLAYERS,
     MODE_SINGLE,
+    MAX_SPEED,
+    MIN_SPEED,
 } = require('../configs')
 const { CustomError } = require('../utils/errors')
 const { removeUnexpectedProperties, validate } = require('../utils')
@@ -50,6 +52,8 @@ class Room {
             ROOM_OPTIONS,
             DEFAULT_ROOM_OPTIONS
         )
+        if (this.options.mode === MODE_SINGLE && Object.keys(this.players).length > 1)
+            this.options.mode = 'multi'
         if (this.options.mode === MODE_SINGLE) this.options.maxPlayers = 1
         else if (
             this.options.maxPlayers > MAX_PLAYERS ||
@@ -57,6 +61,10 @@ class Room {
         )
             this.options.maxPlayers =
                 this.options.maxPlayers > MAX_PLAYERS ? MAX_PLAYERS : MIN_PLAYERS
+        if (this.options.maxPlayers < Object.values(this.players).length)
+            this.options.maxPlayers = Object.values(this.players).length
+        if (this.options.speed < MIN_SPEED || this.options.speed > MAX_SPEED)
+            this.options.speed = this.options.speed > MAX_SPEED ? MAX_SPEED : MIN_SPEED
     }
     add(player) {
         if (!player) throw new CustomError('incorrect player')
@@ -91,7 +99,9 @@ class Room {
                 this.hosted = this.players[players[1]]
             else if (this.hosted.name === player.name) delete _rooms[this.name]
             if (this.game && this.game.engines && this.game.engines[player.name])
-                this.game.engines[player.name].clean()
+                this.game.removePlayer(player)
+            if (this.game)
+                this.game.checkWinner()
             delete this.players[player.name].room
             delete this.players[player.name]
             return true
@@ -106,7 +116,7 @@ class Room {
     startGame(player, listener) {
         if (
             this.options.mode !== MODE_SINGLE &&
-            Object.keys(this.players).length === 1
+            Object.keys(this.players).length < MIN_PLAYERS
         )
             throw new CustomError('room need at least 2 player to start game')
         if (this.hosted.name === player.name) {
@@ -126,7 +136,12 @@ class Room {
         return false
     }
     restartGame(player) {
-        if (this.hosted.name === player.name && this.game.isStarted) return this.game.restart()
+        if (
+            this.options.mode !== MODE_SINGLE &&
+            Object.keys(this.players).length < MIN_PLAYERS
+        )
+            throw new CustomError('room need at least 2 player to start game')
+        if (this.hosted.name === player.name) return this.game.restart()
         return false
     }
 }

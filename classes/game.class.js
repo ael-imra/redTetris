@@ -92,6 +92,7 @@ class Game {
     checkWinner() {
         const engines = Object.values(this.engines).filter(eng => !eng.isFailed)
         if (engines.length === 1) {
+            this.isStarted = false
             engines[0].win()
             return true
         }

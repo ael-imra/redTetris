@@ -1,7 +1,7 @@
 const Room = require('../classes/room.class')
 const Player = require('../classes/player.class')
 const expect = require('chai').expect
-const { MAX_PLAYERS, MIN_PLAYERS } = require('../configs')
+const { MAX_PLAYERS, MIN_PLAYERS, MIN_SPEED, MAX_SPEED } = require('../configs')
 const Game = require('../classes/game.class')
 
 describe('Room Class', () => {
@@ -65,6 +65,32 @@ describe('Room Class', () => {
         expect(player.room.options.mode).to.equal('multi')
         expect(player.room.options.maxPlayers).to.equal(3)
         player.disconnect()
+    })
+    it('Should change max players to 2 and mode to single and speed', () => {
+        const player = new Player('player')
+        const player2 = new Player('player2')
+        const player3 = new Player('player3')
+        player.create('room', { mode: 'multi', maxPlayers: 3 })
+        player2.join('room')
+        player3.join('room')
+        player.room.setOptions({
+            mode: 'single',
+            maxPlayers: 2,
+            speed: 100
+        })
+        expect(player.room.options).to.instanceOf(Object)
+        expect(player.room.options.mode).to.equal('multi')
+        expect(player.room.options.maxPlayers).to.equal(3)
+        expect(player.room.options.speed).to.equal(MIN_SPEED)
+        player.room.setOptions({
+            mode: 'single',
+            maxPlayers: 2,
+            speed: 15000
+        })
+        expect(player.room.options.speed).to.equal(MAX_SPEED)
+        player.disconnect()
+        player2.disconnect()
+        player3.disconnect()
     })
     it('Should kick player from room', () => {
         const player = new Player('player')

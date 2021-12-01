@@ -30,5 +30,8 @@ module.exports = {
         ">": "&gt;",
         '"': "&quot;",
         "'": "&apos;"
-    }
+    },
+    MIN_SPEED: 200,
+    MAX_SPEED: 1500,
+    ORIGIN: 'http://localhost:3001'
 }
