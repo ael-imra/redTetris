@@ -1,0 +1,15 @@
+.logo {
+  padding: 3rem;
+  display: flex;
+  align-items: baseline;
+  margin-top: 15px;
+  cursor: pointer;
+  &__img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  &__text {
+    font-size: 43px;
+  }
+}

@@ -1,0 +1,12 @@
+.box-sing-in {
+  width: 80rem;
+  height: 40rem;
+  &:nth-of-type(1) {
+    font-weight: 400;
+  }
+  &__error {
+    margin-left: 16px;
+    display: list-item;
+    transition: all 0.5s;
+  }
+}
