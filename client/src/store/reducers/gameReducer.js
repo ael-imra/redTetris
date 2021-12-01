@@ -28,7 +28,7 @@ export const gameReducer = (state = { players: [], score: 0, messages: [] }, act
 			newArenas[action.payload.user] = action.payload.newArena;
 			return { ...state, arenas: { ...newArenas } };
 		case types.INIT_GAME:
-			return { ...action.payload, nextPiece: init(0, true), arenaTmp: init(), liveArena: init(), score: 0 };
+			return { refBoxChat: state.refBoxChat, ...action.payload, nextPiece: init(0, true), arenaTmp: init(), liveArena: init(), score: 0 };
 		case types.STATE_GAME:
 			return { ...state, stateGame: action.payload };
 		case types.NEW_SCORE:

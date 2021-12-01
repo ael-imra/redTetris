@@ -129,10 +129,11 @@ describe('test reducer gameReducer', () => {
 	});
 
 	it('test with INIT_GAME types', () => {
-		const result = reducers.gameReducer(null, { type: types.INIT_GAME, payload: { name: 'test1' } });
+		const result = reducers.gameReducer({ refBoxChat: 'ok' }, { type: types.INIT_GAME, payload: { name: 'test1' } });
 		expect(result.nextPiece).toEqual(reducers.init(0, true));
 		expect(result.arenaTmp).toEqual(reducers.init());
 		expect(result.liveArena).toEqual(reducers.init());
+		expect(result.refBoxChat).toEqual('ok');
 		expect(result.score).toEqual(0);
 	});
 

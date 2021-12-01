@@ -26,7 +26,7 @@ const BoxSingIn = (props) => {
 				welcome To <span style={{ color: 'red' }}>Red</span>TETRIS
 			</h2>
 			<p className='text__lato text__lato__white text__small text__small__xl u__margin--small__x text__center'>
-				Join now and play with friends Join now and play with friends Join now and play with friends oin now and play with{' '}
+				Red Tetris is multiplayer puzzle game. Join now and start playing with your friends
 			</p>
 			<p className='text__lato text__small text__small__l text__error box-sing-in__error' style={errorLogin ? { opacity: 1 } : { opacity: 0 }}>
 				Username is Wrong must contain characters between 3 and 15

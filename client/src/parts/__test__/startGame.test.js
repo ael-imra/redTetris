@@ -19,9 +19,9 @@ describe('player !== 0 mode single', () => {
 						},
 					},
 					socket: {
-						emit: jest.fn(() => {
+						emit: () => {
 							result = 'send';
-						}),
+						},
 					},
 				}}>
 				<StartGame />
@@ -59,9 +59,9 @@ describe('player !== 0 mode single', () => {
 						},
 					},
 					socket: {
-						emit: jest.fn(() => {
+						emit: () => {
 							result = 'send';
-						}),
+						},
 					},
 				}}>
 				<StartGame />
@@ -85,9 +85,9 @@ describe('player ===0 mode single', () => {
 						},
 					},
 					socket: {
-						emit: jest.fn(() => {
+						emit: () => {
 							result = 'send';
-						}),
+						},
 					},
 				}}>
 				<StartGame />
@@ -111,9 +111,9 @@ describe('player ===0 mode single', () => {
 						},
 					},
 					socket: {
-						emit: jest.fn(() => {
+						emit: () => {
 							result = 'send';
-						}),
+						},
 					},
 				}}>
 				<StartGame />

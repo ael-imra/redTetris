@@ -18,9 +18,9 @@ beforeEach(() => {
 					],
 				},
 				socket: {
-					emit: jest.fn(() => {
+					emit: () => {
 						result = 'send';
-					}),
+					},
 				},
 			}}>
 			<Chat />

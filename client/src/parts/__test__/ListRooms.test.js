@@ -11,9 +11,9 @@ beforeEach(() => {
 		<Root
 			initialState={{
 				socket: {
-					emit: jest.fn(() => {
+					emit: () => {
 						window.location.href = '/#A1[sel-hamr]';
-					}),
+					},
 				},
 				rooms: {
 					list: [

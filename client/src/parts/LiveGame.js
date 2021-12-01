@@ -7,7 +7,7 @@ import Actions from '../store/actions';
 
 const LiveGame = ({ gameStore, userActiveAction }) => {
 	return (
-		<div className={`game__parts__1 flex flex__justify-content__space-between ${gameStore.options.mode === 'single' ? 'mode-sing' : ''}`}>
+		<div className={`game__parts__1 flex flex__justify-content__space-between `}>
 			<div className='game__parts__1__top'>
 				{gameStore.options.mode !== 'single' ? (
 					<>
@@ -40,4 +40,3 @@ const LiveGame = ({ gameStore, userActiveAction }) => {
 };
 
 export default connect(null, { userActiveAction: Actions.userActive })(LiveGame);
-//

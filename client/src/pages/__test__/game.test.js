@@ -44,7 +44,7 @@ describe('test before start game in auth === hosted', () => {
 							[1, 2, 3, 4],
 						],
 					},
-					socket: { off: jest.fn(() => {}), emit: jest.fn(() => {}) },
+					socket: { off: () => {}, emit: () => {} },
 				}}>
 				<Game />
 			</Root>
@@ -113,7 +113,7 @@ describe('test before start game in auth !== hosted', () => {
 							[1, 2, 3, 4],
 						],
 					},
-					socket: { off: jest.fn(() => {}) },
+					socket: { off: () => {} },
 				}}>
 				<Game />
 			</Root>
@@ -165,7 +165,7 @@ describe('test in start game ', () => {
 							[1, 2, 3, 4],
 						],
 					},
-					socket: { off: jest.fn(() => {}) },
+					socket: { off: () => {} },
 				}}>
 				<Game />
 			</Root>
@@ -228,7 +228,7 @@ describe('test players === 0', () => {
 							[1, 2, 3, 4],
 						],
 					},
-					socket: { off: jest.fn(() => {}), emit: jest.fn(() => {}) },
+					socket: { off: () => {}, emit: () => {} },
 				}}>
 				<Game />
 			</Root>

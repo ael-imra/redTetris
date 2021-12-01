@@ -48,7 +48,6 @@ const SocketMiddle = (props) => {
 			});
 
 			props.socket.on('player exited', ({ name, hosted }) => {
-				console.log(hosted);
 				props.removeUserAction(name);
 				props.changeHostedConnect(hosted);
 			});
@@ -56,7 +55,6 @@ const SocketMiddle = (props) => {
 			props.socket.on('game started', () => {
 				props.startGameAction();
 			});
-
 			props.socket.on('player joined', (player) => {
 				props.addUserInRoomAction(player.name);
 			});

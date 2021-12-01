@@ -15,7 +15,7 @@ const CreateRoom = ({ visible, setVisible, socket }) => {
 	const [error, setError] = React.useState({ name: false, type: false, numMax: false, mode: false });
 	const handleCloseModel = () => {
 		setVisible(false);
-		setInfoRoom({ name: '', type: '', numMax: 0, mode: '' });
+		setInfoRoom({ name: '', type: '', numMax: 0, mode: '', speed: 1000 });
 		setError({ name: false, type: false, numMax: false, mode: false });
 	};
 	const handleSubmit = () => {

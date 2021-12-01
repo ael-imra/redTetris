@@ -38,23 +38,8 @@
 				margin-top: 30px;
 				background-color: $color-white;
 			}
-			&.mode-sing {
-				@media (max-width: 1300px) {
-					margin-top: 100px;
-				}
-			}
-			&.mode-sing > &__chat {
-				@media (max-width: 1300px) {
-					height: calc(100% - 350px);
-				}
-			}
 		}
 		&__1 {
-			&.mode-sing {
-				@media (max-width: 1300px) {
-					display: none;
-				}
-			}
 			width: 28%;
 			&__top {
 				width: 100%;
@@ -90,7 +75,6 @@
 			width: 456px;
 			height: 897px !important;
 			position: relative;
-			// background-color: blue;
 		}
 	}
 	&__Box-header {

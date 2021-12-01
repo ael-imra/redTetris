@@ -118,7 +118,7 @@ const Game = ({ gameStore, socket, auth, userActiveAction, initArenas, onUserAct
 					</div>
 				</div>
 
-				<div className={`game__parts__3 ${gameStore.options.mode === 'single' ? 'mode-sing' : ''}`}>
+				<div className={`game__parts__3`}>
 					<div className='flex flex__justify-content__space-between'>
 						<div className='game__parts__3__box'>
 							<BoxHeader text='Next Piece' />

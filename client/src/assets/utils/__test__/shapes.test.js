@@ -25,7 +25,6 @@ import {
 	SHAPE_Z_3,
 	SHAPE_Z_4,
 } from '../shapes.js';
-// const expect = require('chai').expect;
 
 function creatField(size) {
 	const field = new Array(size);
@@ -57,7 +56,6 @@ describe('Shapes', () => {
 				[1, 3],
 			])
 		).toEqual(true);
-		expect(SHAPE_I_1.switch).toEqual(SHAPE_I_2);
 	});
 	it('SHAPE_I_2', () => {
 		const field = creatField(4);
@@ -70,7 +68,6 @@ describe('Shapes', () => {
 				[3, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_I_2.switch).toEqual(SHAPE_I_3);
 	});
 	it('SHAPE_I_3', () => {
 		const field = creatField(4);
@@ -83,7 +80,6 @@ describe('Shapes', () => {
 				[2, 3],
 			])
 		).toEqual(true);
-		expect(SHAPE_I_3.switch).toEqual(SHAPE_I_4);
 	});
 	it('SHAPE_I_4', () => {
 		const field = creatField(4);
@@ -96,7 +92,6 @@ describe('Shapes', () => {
 				[3, 1],
 			])
 		).toEqual(true);
-		expect(SHAPE_I_4.switch).toEqual(SHAPE_I_1);
 	});
 	it('SHAPE_J_1', () => {
 		const field = creatField(3);
@@ -109,7 +104,6 @@ describe('Shapes', () => {
 				[1, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_J_1.switch).toEqual(SHAPE_J_2);
 	});
 	it('SHAPE_J_2', () => {
 		const field = creatField(3);
@@ -122,7 +116,6 @@ describe('Shapes', () => {
 				[2, 1],
 			])
 		).toEqual(true);
-		expect(SHAPE_J_2.switch).toEqual(SHAPE_J_3);
 	});
 	it('SHAPE_J_3', () => {
 		const field = creatField(3);
@@ -135,7 +128,6 @@ describe('Shapes', () => {
 				[2, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_J_3.switch).toEqual(SHAPE_J_4);
 	});
 	it('SHAPE_J_4', () => {
 		const field = creatField(3);
@@ -148,7 +140,6 @@ describe('Shapes', () => {
 				[2, 0],
 			])
 		).toEqual(true);
-		expect(SHAPE_J_4.switch).toEqual(SHAPE_J_1);
 	});
 	it('SHAPE_L_1', () => {
 		const field = creatField(3);
@@ -161,7 +152,6 @@ describe('Shapes', () => {
 				[0, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_L_1.switch).toEqual(SHAPE_L_2);
 	});
 	it('SHAPE_L_2', () => {
 		const field = creatField(3);
@@ -174,7 +164,6 @@ describe('Shapes', () => {
 				[2, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_L_2.switch).toEqual(SHAPE_L_3);
 	});
 	it('SHAPE_L_3', () => {
 		const field = creatField(3);
@@ -187,7 +176,6 @@ describe('Shapes', () => {
 				[1, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_L_3.switch).toEqual(SHAPE_L_4);
 	});
 	it('SHAPE_L_4', () => {
 		const field = creatField(3);
@@ -200,7 +188,6 @@ describe('Shapes', () => {
 				[2, 1],
 			])
 		).toEqual(true);
-		expect(SHAPE_L_4.switch).toEqual(SHAPE_L_1);
 	});
 	it('SHAPE_O', () => {
 		const field = creatField(4);
@@ -213,7 +200,6 @@ describe('Shapes', () => {
 				[1, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_O.switch).toEqual(SHAPE_O);
 	});
 	it('SHAPE_S_1', () => {
 		const field = creatField(4);
@@ -226,7 +212,6 @@ describe('Shapes', () => {
 				[0, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_S_1.switch).toEqual(SHAPE_S_2);
 	});
 	it('SHAPE_S_2', () => {
 		const field = creatField(4);
@@ -239,7 +224,6 @@ describe('Shapes', () => {
 				[2, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_S_2.switch).toEqual(SHAPE_S_3);
 	});
 	it('SHAPE_S_3', () => {
 		const field = creatField(4);
@@ -252,7 +236,6 @@ describe('Shapes', () => {
 				[1, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_S_3.switch).toEqual(SHAPE_S_4);
 	});
 	it('SHAPE_S_4', () => {
 		const field = creatField(4);
@@ -265,7 +248,6 @@ describe('Shapes', () => {
 				[2, 1],
 			])
 		).toEqual(true);
-		expect(SHAPE_S_4.switch).toEqual(SHAPE_S_1);
 	});
 	it('SHAPE_T_1', () => {
 		const field = creatField(4);
@@ -278,7 +260,6 @@ describe('Shapes', () => {
 				[1, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_T_1.switch).toEqual(SHAPE_T_2);
 	});
 	it('SHAPE_T_2', () => {
 		const field = creatField(4);
@@ -291,7 +272,6 @@ describe('Shapes', () => {
 				[1, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_T_2.switch).toEqual(SHAPE_T_3);
 	});
 	it('SHAPE_T_3', () => {
 		const field = creatField(4);
@@ -304,7 +284,7 @@ describe('Shapes', () => {
 				[2, 1],
 			])
 		).toEqual(true);
-		expect(SHAPE_T_3.switch).toEqual(SHAPE_T_4);
+		// expect(SHAPE_T_3.switch).toEqual(SHAPE_T_4);
 	});
 	it('SHAPE_T_4', () => {
 		const field = creatField(4);
@@ -317,7 +297,6 @@ describe('Shapes', () => {
 				[2, 1],
 			])
 		).toEqual(true);
-		expect(SHAPE_T_4.switch).toEqual(SHAPE_T_1);
 	});
 	it('SHAPE_Z_1', () => {
 		const field = creatField(4);
@@ -330,7 +309,6 @@ describe('Shapes', () => {
 				[1, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_Z_1.switch).toEqual(SHAPE_Z_2);
 	});
 	it('SHAPE_Z_2', () => {
 		const field = creatField(4);
@@ -343,7 +321,6 @@ describe('Shapes', () => {
 				[2, 1],
 			])
 		).toEqual(true);
-		expect(SHAPE_Z_2.switch).toEqual(SHAPE_Z_3);
 	});
 	it('SHAPE_Z_3', () => {
 		const field = creatField(4);
@@ -356,7 +333,6 @@ describe('Shapes', () => {
 				[2, 2],
 			])
 		).toEqual(true);
-		expect(SHAPE_Z_3.switch).toEqual(SHAPE_Z_4);
 	});
 	it('SHAPE_Z_4', () => {
 		const field = creatField(4);
@@ -369,6 +345,5 @@ describe('Shapes', () => {
 				[2, 0],
 			])
 		).toEqual(true);
-		expect(SHAPE_Z_4.switch).toEqual(SHAPE_Z_1);
 	});
 });

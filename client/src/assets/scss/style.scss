@@ -8,11 +8,8 @@
 	src: url('../fonts/font1.TTF');
 }
 
-@import 'abstracts/functions';
-@import 'abstracts/mixins';
 @import 'abstracts/variables';
 
-@import 'base/animations';
 @import 'base/base';
 @import 'base/typography';
 @import 'base/utilities';
@@ -30,8 +27,6 @@
 @import 'components/range';
 
 @import 'layout/header';
-@import 'layout/body';
-@import 'layout/footer';
 @import 'layout/sing-in';
 @import 'layout/create-room';
 

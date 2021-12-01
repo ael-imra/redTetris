@@ -3,6 +3,7 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Radio from '../../components/Radio';
 import Root from '../../Root';
+import Range from '../../components/Radio';
 import CreateRoom from '../CreateRoom';
 let component;
 let visible = true;
@@ -14,9 +15,9 @@ beforeEach(() => {
 			initialState={{
 				auth: 'selhamr',
 				socket: {
-					emit: jest.fn((param, param1, param2) => {
+					emit: (param, param1, param2) => {
 						if (param === 'create room') testSocket = `${param1}-${param2.maxPlayers}-${param2.mode}`;
-					}),
+					},
 				},
 			}}>
 			<CreateRoom visible={true} setVisible={() => (visible = !visible)} />
@@ -24,7 +25,6 @@ beforeEach(() => {
 	);
 	testSocket = '';
 });
-
 
 it('test change data create room', () => {
 	component
@@ -45,6 +45,7 @@ it('test change data create room', () => {
 		.find(Input)
 		.at(1)
 		.simulate('change', { target: { value: '10' } });
+	// component.find(Range).simulate('change', { target: { value: 5 } });
 	expect(component.find(Radio).at(0).prop('defaultValue')).toEqual('multi');
 	expect(component.find(Radio).at(1).prop('defaultValue')).toEqual('public');
 	expect(component.find(Input).at(0).prop('defaultValue')).toEqual('root');

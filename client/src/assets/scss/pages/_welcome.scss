@@ -1,9 +1,7 @@
 .welcome {
 	width: 100%;
 	height: 100%;
-	@media (max-width: 900px) {
-		padding: 5rem;
-	}
+
 	&__left {
 		width: 100%;
 		min-width: 600px;
