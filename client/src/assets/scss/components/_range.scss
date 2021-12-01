@@ -1,0 +1,10 @@
+.range {
+	width: 100%;
+	& > p {
+		padding: 6px;
+		border-radius: 5px;
+		border: 1px solid $color-secondary-dark;
+		margin-left: 8px;
+		color: $color-secondary-dark;
+	}
+}

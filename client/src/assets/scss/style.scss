@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+@font-face {
+	font-family: 'DEBUG';
+	src: url('../fonts/DEBUG.otf');
+}
+@font-face {
+	font-family: 'game';
+	src: url('../fonts/font1.TTF');
+}
+
+@import 'abstracts/variables';
+
+@import 'base/base';
+@import 'base/typography';
+@import 'base/utilities';
+
+@import 'components/button';
+@import 'components/input';
+@import 'components/logo';
+@import 'components/itemJoin';
+@import 'components/radio';
+@import 'components/chat';
+@import 'components/arena';
+@import 'components/list-user';
+@import 'components/start-game';
+@import 'components/error';
+@import 'components/range';
+
+@import 'layout/header';
+@import 'layout/sing-in';
+@import 'layout/create-room';
+
+@import 'pages/welcome';
+@import 'pages/home';
+@import 'pages/game';

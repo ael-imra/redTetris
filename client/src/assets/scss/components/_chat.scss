@@ -1,0 +1,16 @@
+.chat {
+	width: 100%;
+	height: calc(100% - 45px);
+	position: relative;
+	&__footer {
+		height: 60px;
+		width: 100%;
+		position: absolute;
+		bottom: 0px;
+		background-color: $color-white;
+	}
+	&__body {
+		overflow-y: auto;
+		height: calc(100% - 50px);
+	}
+}

@@ -1,0 +1,19 @@
+.create-room {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background-color: $color-bg;
+  transition: all 0.5s;
+  &__menu {
+    width: 450px;
+    border-radius: 10px;
+    background-color: $color-black;
+    padding: 1.5rem;
+    &__player {
+      transition: all 0.5s;
+    }
+  }
+}

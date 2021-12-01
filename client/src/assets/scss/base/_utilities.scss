@@ -1,0 +1,43 @@
+.flex {
+	display: flex;
+	&__direction {
+		&__column {
+			flex-direction: column;
+		}
+		&__row {
+			flex-direction: row;
+		}
+	}
+	&__wrap {
+		flex-wrap: wrap;
+	}
+	&__align-items {
+		&__center {
+			align-items: center;
+		}
+	}
+	&__justify-content {
+		&__center {
+			justify-content: center;
+		}
+		&__space-between {
+			justify-content: space-between;
+		}
+		&__space-evenly {
+			justify-content: space-evenly;
+		}
+	}
+}
+.hr {
+	width: 100%;
+	height: 0.5px;
+	background-color: $color-bg;
+}
+
+.scroll::-webkit-scrollbar {
+	width: 1em;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+	background-color: $color-secondary-dark;
+}
