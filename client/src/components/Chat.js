@@ -5,7 +5,7 @@ import iconSend from '../assets/icons/send.png';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
 
-const Chat = ({ socket, listMessage = [], AddRefBoxMessageAction, gameStore }) => {
+const Chat = ({ socket, listMessage = [], AddRefBoxMessageAction }) => {
 	const [message, setMessage] = useState('');
 	const chatRef = React.useRef(null);
 	const handleSubmit = () => {
@@ -54,7 +54,6 @@ const matStateToProps = (state) => {
 		listMessage: state.game.messages,
 		auth: state.auth,
 		socket: state.socket,
-		gameStore: state.game,
 	};
 };
 export default connect(matStateToProps, { AddRefBoxMessageAction: actions.AddRefBoxMessage })(Chat);

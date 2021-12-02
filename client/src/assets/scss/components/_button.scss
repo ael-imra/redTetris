@@ -51,18 +51,8 @@
 		border: 1px solid $color-white;
 		color: $color-white;
 	}
-	&__animated:hover :not(.btn__Box-Shadow) {
-		transform: translateY(0px);
-		box-shadow: 0 1rem 2rem rgba($color-secondary-dark, 0.2);
-
-		&::after {
-			transform: scaleX(1.4) scaleY(1.6);
-			opacity: 0;
-		}
-	}
 	&:active {
 		transform: translateY(5px);
-		// box-shadow: none;
 	}
 	&__icon {
 		width: 2rem;

@@ -17,10 +17,6 @@ beforeEach(() => {
 	);
 });
 
-it('test blue', () => {
-	component.simulate('blur', { target: { value: '' } });
-	expect(onBlurValue).toEqual(true);
-});
 
 it('test onKeyUp with code 13', () => {
 	component.simulate('KeyUp', { keyCode: 13 });

@@ -43,7 +43,7 @@ const BoxSingIn = (props) => {
 				onEnter={handleErrorLogin}
 				defaultValue={username}
 			/>
-			<Button size='large' type='gradient' font='game' className='u__margin--large__x btn__Box-Shadow' text='Join to game' animated icon={iconPlay} onclick={handleErrorLogin} />
+			<Button size='large' type='gradient' font='game' className='u__margin--large__x btn__Box-Shadow' text='Join to game' icon={iconPlay} onclick={handleErrorLogin} />
 		</div>
 	);
 };

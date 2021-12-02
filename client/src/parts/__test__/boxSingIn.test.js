@@ -46,7 +46,6 @@ describe('test login', () => {
 	it('test change error', () => {
 		component.find(Input).simulate('change', { target: { value: '-' } });
 		component.find('button').simulate('click');
-		component.find(Input).simulate('change', { target: { value: 'soufiane' } });
-		expect(component.find(Input).prop('isError')).toEqual(false);
+		expect(component.find(Input).prop('isError')).toEqual(true);
 	});
 });
