@@ -136,7 +136,7 @@ class Room {
         return false
     }
     restartGame(player) {
-        if (this.game && this.game.isStarted && this.options.mode !== MODE_SINGLE) throw new CustomError('cat\'t restart game while still players playing')
+        if (this.options.mode !== MODE_SINGLE && Object.keys(this.players).length < MIN_PLAYERS) throw new CustomError('cat\'t restart game while still players playing')
         if (this.hosted.name === player.name) return this.game.restart()
         return false
     }

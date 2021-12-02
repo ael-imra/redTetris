@@ -18,9 +18,9 @@
     "socket.io-cookie-parser": "^1.0.0"
   },
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "npm run build --prefix ./client && nodemon index.js",
     "test": "mocha",
-    "coverage": "nyc mocha"
+    "coverage": "npm run coverage --prefix ./client && nyc mocha"
   },
   "keywords": [],
   "author": "",
