@@ -83,7 +83,7 @@ const Game = ({ gameStore, socket, auth, userActiveAction, initArenas, onUserAct
 							)}
 						</div>
 					)}
-					{gameStore && gameStore.pause ? (
+					{gameStore && gameStore.pause && ((gameStore && !gameStore.stateGame) || (gameStore && gameStore.stateGame === 'waiting')) ? (
 						<div className='Result-game flex flex__align-items__center  flex__direction__column flex__justify-content__center game-result'>
 							<p className='text__debug  text__large__l text__center ' style={{ marginBottom: 20 }}>
 								pause game
